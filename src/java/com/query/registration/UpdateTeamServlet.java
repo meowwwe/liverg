@@ -78,6 +78,25 @@ public class UpdateTeamServlet extends HttpServlet {
             int rowsAffectedCoach = pstm.executeUpdate();
             pstm.close();
 
+            // Check if the old coachIC is still associated with any team
+            String checkOldCoachQuery = "SELECT COUNT(*) FROM TEAM WHERE coachIC = ?";
+            pstm = con.prepareStatement(checkOldCoachQuery);
+            pstm.setInt(1, oldCoachIC);
+            rs = pstm.executeQuery();
+            rs.next();
+            int oldCoachCount = rs.getInt(1);
+            rs.close();
+            pstm.close();
+
+            if (oldCoachCount == 0) {
+                // Delete the old coach if not associated with any team
+                String deleteOldCoachQuery = "DELETE FROM COACH WHERE coachIC = ?";
+                pstm = con.prepareStatement(deleteOldCoachQuery);
+                pstm.setInt(1, oldCoachIC);
+                pstm.executeUpdate();
+                pstm.close();
+            }
+
             if (rowsAffectedTeam > 0 && rowsAffectedCoach > 0) {
                 // Commit transaction if all operations were successful
                 con.commit();
