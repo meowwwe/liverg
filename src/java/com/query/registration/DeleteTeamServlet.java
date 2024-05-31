@@ -60,7 +60,13 @@ public class DeleteTeamServlet extends HttpServlet {
             // Send error response
             PrintWriter out = response.getWriter();
             response.setContentType("text/plain");
-            out.println("Internal server error: " + e.getMessage());
+
+            // Check for foreign key constraint violation
+            if (e.getMessage().contains("Cannot delete or update a parent row: a foreign key constraint fails") && e.getMessage().contains("CONSTRAINT `gymnast_ibfk_2` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`)")) {
+                out.println("Please delete gymnasts first.");
+            } else {
+                out.println("Internal server error: " + e.getMessage());
+            }
 
             try {
                 con.rollback(); // Rollback transaction in case of error
