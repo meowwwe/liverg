@@ -106,15 +106,16 @@ public class Gymnast {
   this.gymnastCategory = gymnastCategory;
  }
 
- public void addGymnast(String gymnastName, int gymnastIC, String gymnastICPic, String gymnastSchool, String gymnastCategory) throws SQLException {
+ public void addGymnast(String gymnastName, int gymnastIC, String gymnastICPic, String gymnastSchool, String gymnastCategory, int teamID) throws SQLException {
 
-  String sql = "INSERT INTO GYMNAST(gymnastName,gymnastIC,gymnastICPic,gymnastSchool,gymnastCategory) VALUES (?,?,?,?,?)";
+  String sql = "INSERT INTO GYMNAST(gymnastName,gymnastIC,gymnastICPic,gymnastSchool,gymnastCategory,teamID) VALUES (?,?,?,?,?,?)";
   pstm = con.prepareStatement(sql);
   pstm.setString(1, gymnastName);
   pstm.setInt(2, gymnastIC);
   pstm.setString(3, gymnastICPic);
   pstm.setString(4, gymnastSchool);
   pstm.setString(5, gymnastCategory);
+  pstm.setInt(6, teamID);
   pstm.executeUpdate();
  }
 

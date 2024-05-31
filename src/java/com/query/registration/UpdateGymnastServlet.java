@@ -41,6 +41,7 @@ public class UpdateGymnastServlet extends HttpServlet {
   try {
    int updateGymnastID = Integer.parseInt(request.getParameter("updateGymnastID"));
    int updateGymnastIC = Integer.parseInt(request.getParameter("updateGymnastIC"));
+   int updateGymnastTeam = Integer.parseInt(request.getParameter("updateGymnastTeam"));
    String updateGymnastName = request.getParameter("updateGymnastName");
    String updateGymnastSchool = request.getParameter("updateGymnastSchool");
    String updateGymnastCategory = request.getParameter("updateGymnastCategory");
@@ -114,9 +115,9 @@ public class UpdateGymnastServlet extends HttpServlet {
    // Update the database with the new file path (if uploaded)
    String updateQuery;
    if (newFileName != null) { // Check if new file is uploaded
-    updateQuery = "UPDATE GYMNAST SET gymnastName = ?, gymnastIC = ?, gymnastIcPic = ?, gymnastSchool = ?, gymnastCategory = ? WHERE gymnastID = ?";
+    updateQuery = "UPDATE GYMNAST SET gymnastName = ?, gymnastIC = ?, gymnastIcPic = ?, gymnastSchool = ?, gymnastCategory = ?,teamID = ? WHERE gymnastID = ?";
    } else {
-    updateQuery = "UPDATE GYMNAST SET gymnastName = ?, gymnastIC = ?, gymnastSchool = ?, gymnastCategory = ? WHERE gymnastID = ?";
+    updateQuery = "UPDATE GYMNAST SET gymnastName = ?, gymnastIC = ?, gymnastSchool = ?, gymnastCategory = ?, teamID = ? WHERE gymnastID = ?";
    }
    pstm = con.prepareStatement(updateQuery);
    pstm.setString(1, updateGymnastName);
@@ -125,11 +126,13 @@ public class UpdateGymnastServlet extends HttpServlet {
     pstm.setString(3, newFileName); // Set the new file name
     pstm.setString(4, updateGymnastSchool);
     pstm.setString(5, updateGymnastCategory);
-    pstm.setInt(6, updateGymnastID);
+    pstm.setInt(6, updateGymnastTeam);
+    pstm.setInt(7, updateGymnastID);
    } else {
     pstm.setString(3, updateGymnastSchool);
     pstm.setString(4, updateGymnastCategory);
-    pstm.setInt(5, updateGymnastID);
+    pstm.setInt(5, updateGymnastTeam);
+    pstm.setInt(6, updateGymnastID);
    }
 
    int rowsAffected = pstm.executeUpdate();

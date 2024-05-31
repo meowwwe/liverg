@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-public class ListGymnastServlet extends HttpServlet {
+public class ListTeamServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -30,19 +30,19 @@ public class ListGymnastServlet extends HttpServlet {
 
         try {
             // Prepare and execute query to fetch data
-            pstm = con.prepareStatement("SELECT * FROM GYMNAST G JOIN TEAM T ON G.TEAMID = T.TEAMID");
+            pstm = con.prepareStatement("SELECT * FROM COACH C JOIN TEAM T ON C.COACHIC = T.COACHIC");
             rs = pstm.executeQuery();
 
             // Convert ResultSet to JSON
             JSONArray jsonArray = new JSONArray();
             while (rs.next()) {
                 JSONObject obj = new JSONObject();
-                obj.put("gymnastID", rs.getInt("gymnastID"));
-                obj.put("gymnastIC", rs.getInt("gymnastIC"));
-                obj.put("gymnastICPic", rs.getString("gymnastICPic"));
-                obj.put("gymnastName", rs.getString("gymnastName"));
-                obj.put("gymnastSchool", rs.getString("gymnastSchool"));
-                obj.put("gymnastCategory", rs.getString("gymnastCategory"));
+                obj.put("coachIC", rs.getInt("coachIC"));
+                obj.put("fisioIC", rs.getInt("fisioIC"));
+                obj.put("coachName", rs.getString("coachName"));
+                obj.put("coachPOD", rs.getString("coachPOD"));
+                obj.put("fisioName", rs.getString("fisioName"));
+                obj.put("fisioPOD", rs.getString("fisioPOD"));
                 obj.put("teamName", rs.getString("teamName"));
                 jsonArray.add(obj);
             }

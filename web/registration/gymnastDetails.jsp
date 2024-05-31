@@ -2,6 +2,31 @@
 <%@ page import="jakarta.servlet.http.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.connection.DBConnect" %>
+<%@ page import="com.registration.bean.Team" %>
+
+
+<%
+    Connection con = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    List<Team> teams = new ArrayList<>(); // Assuming you have a Team class
+
+    try {
+        DBConnect db = new DBConnect();
+        con = db.getConnection();
+        stmt = con.createStatement();
+        rs = stmt.executeQuery("SELECT * FROM TEAM");
+
+        // Fetch data from ResultSet and store it in the teams list
+        while (rs.next()) {
+            Team team = new Team();
+            team.setTeamID(rs.getInt("teamID"));
+            team.setTeamName(rs.getString("teamName"));
+            teams.add(team);
+        }
+%> 
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -182,6 +207,7 @@
                 <th scope="col">Gymnast Identity Card</th>
                 <th scope="col">Gymnast School</th>
                 <th scope="col">Gymnast Category</th>
+                <th scope="col">Gymnast Team</th>
                 <th scope="col">Action</th>
                </tr>
               </thead>
@@ -235,12 +261,23 @@
                    </div>
                    <div class="mb-3">
                     <label class="form-label">Gymnast Category</label>
-                    <select name="gymnastCategory" id="gymnastCategory" class="form-control">
+                    <select name="gymnastCategory" id="gymnastCategory" class="form-control" style="color: black">
+                     <option value="" hidden>Select a Category</option>
                      <option value="Pre-Junior">Pre-Junior</option>
                      <option value="Junior">Junior</option>
                      <option value="Senior">Senior</option>
                     </select>
                    </div>
+                   <div class="mb-3">
+                    <label class="form-label">Gymnast Team</label>
+                    <select name="gymnastTeam" id="gymnastTeam" class="form-control" style="color: black">
+                     <option value="" hidden>Select a Team</option>
+                     <% for (Team team : teams) { %>
+                     <option value="<%= team.getTeamID() %>"><%= team.getTeamName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
+
                    <button type="button" onclick="addGymnast()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
                   </form>
                  </div>
@@ -291,9 +328,20 @@
                      <option value="Senior">Senior</option>
                     </select>
                    </div>
+
+                   <div class="mb-3">
+                    <label class="form-label">Gymnast Team</label>
+                    <select name="updateGymnastTeam" id="updateGymnastTeam" class="form-control" style="color: black">
+                     <option value="" hidden>Select a Team</option>
+                     <% for (Team team : teams) { %>
+                     <option value="<%= team.getTeamID() %>"><%= team.getTeamName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
                    <div class="mb-3">
                     <input type="text" hidden name="updateGymnastID" id="updateGymnastID" class="form-control">
                    </div>
+
                    <button type="button" onclick="updateGymnast()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
                   </form>
                  </div>
@@ -303,6 +351,21 @@
                 </div>
                </div>
               </div>
+
+              <%
+                 } catch (SQLException e) {
+                     e.printStackTrace();
+                 } finally {
+                     // Close resources
+                     try {
+                         if (rs != null) rs.close();
+                         if (stmt != null) stmt.close();
+                         if (con != null) con.close();
+                     } catch (SQLException ex) {
+                         ex.printStackTrace();
+                     }
+                 }
+              %>
 
               <!-- Modal Display Image Identity -->
               <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
@@ -383,6 +446,7 @@
                         var gymnastICCell = $('<td>').text(gymnast.gymnastIC);
                         var gymnastSchoolCell = $('<td>').text(gymnast.gymnastSchool);
                         var gymnastCategoryCell = $('<td>').text(gymnast.gymnastCategory);
+                        var gymnastTeamCell = $('<td>').text(gymnast.teamName);
 
                         // Create edit and delete buttons
                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
@@ -427,7 +491,7 @@
                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
                         // Append cells to the row
-                        row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, actionCell);
+                        row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastTeamCell, actionCell);
 
                         // Append row to the table body
                         $('#gymnastTableBody').append(row);
@@ -534,7 +598,7 @@
          });
         }
        </script>
-       
+
        <script>
         function displayGymnast(gymnastID) {
          $.ajax({
@@ -548,6 +612,7 @@
            $('#updateGymnastSchool').val(gymnast.gymnastSchool);
            $('#updateGymnastCategory').val(gymnast.gymnastCategory);
            $('#updateGymnastID').val(gymnast.gymnastID);
+           $('#updateGymnastTeam').val(gymnast.teamID);
 
            //$('#updateGymnastModal').modal('show');
           },

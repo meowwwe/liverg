@@ -100,6 +100,26 @@
         <servlet-name>DeleteGymnastServlet</servlet-name>
         <servlet-class>com.query.registration.DeleteGymnastServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddTeamServlet</servlet-name>
+        <servlet-class>com.registration.servlet.AddTeamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ListTeamServlet</servlet-name>
+        <servlet-class>com.query.registration.ListTeamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DisplayTeamServlet</servlet-name>
+        <servlet-class>com.query.registration.DisplayTeamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateTeamServlet</servlet-name>
+        <servlet-class>com.query.registration.UpdateTeamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteTeamServlet</servlet-name>
+        <servlet-class>com.query.registration.DeleteTeamServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LiveScoringServlet</servlet-name>
         <url-pattern>/LiveScoring</url-pattern>
@@ -202,6 +222,26 @@
     <servlet-mapping>
         <servlet-name>DeleteGymnastServlet</servlet-name>
         <url-pattern>/DeleteGymnastServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddTeamServlet</servlet-name>
+        <url-pattern>/AddTeamServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListTeamServlet</servlet-name>
+        <url-pattern>/ListTeamServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DisplayTeamServlet</servlet-name>
+        <url-pattern>/DisplayTeamServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateTeamServlet</servlet-name>
+        <url-pattern>/UpdateTeamServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteTeamServlet</servlet-name>
+        <url-pattern>/DeleteTeamServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>10</session-timeout>

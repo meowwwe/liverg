@@ -31,6 +31,8 @@ public class AddGymnastServlet extends HttpServlet {
    String gymnastICStr = request.getParameter("gymnastIC");
    String gymnastCategory = request.getParameter("gymnastCategory");
    String gymnastSchool = request.getParameter("gymnastSchool");
+   String teamIDStr = request.getParameter("gymnastTeam");
+   int teamID = Integer.parseInt(teamIDStr);
    Part filePart = request.getPart("gymnastPic");
 
    logger.log(Level.INFO, "gymnastName: {0}", gymnastName);
@@ -40,7 +42,7 @@ public class AddGymnastServlet extends HttpServlet {
    logger.log(Level.INFO, "filePart: {0}", filePart);
 
    // Validate parameters
-   if (gymnastName == null || gymnastICStr == null || gymnastCategory == null || gymnastSchool == null || filePart == null) {
+   if (gymnastName == null || gymnastICStr == null || gymnastCategory == null || gymnastSchool == null || filePart == null || teamIDStr == null) {
     throw new IllegalArgumentException("Missing required form parameters.");
    }
 
@@ -97,7 +99,7 @@ public class AddGymnastServlet extends HttpServlet {
    // Add gymnast to the database
    Gymnast gymnast = new Gymnast();
    try {
-    gymnast.addGymnast(gymnastName, gymnastIC, newFileName, gymnastSchool, gymnastCategory);
+    gymnast.addGymnast(gymnastName, gymnastIC, newFileName, gymnastSchool, gymnastCategory,teamID);
     msg = "1";  // Success
     logger.log(Level.INFO, "Gymnast added successfully.");
    } catch (SQLException ex) {
