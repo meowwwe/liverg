@@ -17,7 +17,7 @@ public class UpdateTeamServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        // Retrieve parameters from the request
         int oldCoachIC = Integer.parseInt(request.getParameter("oldCoachIC"));
         int updateCoachIC = Integer.parseInt(request.getParameter("updateCoachIC"));
         int updateFisioIC = Integer.parseInt(request.getParameter("updateFisioIC"));
@@ -44,6 +44,8 @@ public class UpdateTeamServlet extends HttpServlet {
             rs = pstm.executeQuery();
             rs.next();
             int count = rs.getInt(1);
+            rs.close();
+            pstm.close();
 
             if (count == 0) {
                 // Insert a placeholder for the new coachIC if it doesn't exist
@@ -51,32 +53,30 @@ public class UpdateTeamServlet extends HttpServlet {
                 pstm = con.prepareStatement(insertCoachQuery);
                 pstm.setInt(1, updateCoachIC);
                 pstm.executeUpdate();
+                pstm.close();
             }
 
-            // Update the team details
-            String queryTeam = "UPDATE TEAM SET teamName = ? WHERE coachIC = ?";
+            // Update the team details with the new coachIC first
+            String queryTeam = "UPDATE TEAM SET teamName = ?, coachIC = ? WHERE coachIC = ?";
             pstm = con.prepareStatement(queryTeam);
             pstm.setString(1, updateTeamName);
-            pstm.setInt(2, oldCoachIC);
+            pstm.setInt(2, updateCoachIC);
+            pstm.setInt(3, oldCoachIC);
             int rowsAffectedTeam = pstm.executeUpdate();
+            pstm.close();
 
-            // Update the coach and fisiotherapist details if coachIC is being updated
-            int rowsAffectedCoach = 0;
-            if (updateCoachIC != oldCoachIC || !updateCoachName.equals("") || !updateCoachPOD.equals("") || !updateFisioName.equals("") || !updateFisioPOD.equals("")) {
-                String queryCoach = "UPDATE COACH SET coachIC = ?, fisioIC = ?, coachName = ?, coachPOD = ?, fisioName = ?, fisioPOD = ? WHERE coachIC = ?";
-                pstm = con.prepareStatement(queryCoach);
-                pstm.setInt(1, updateCoachIC);
-                pstm.setInt(2, updateFisioIC);
-                pstm.setString(3, updateCoachName);
-                pstm.setString(4, updateCoachPOD);
-                pstm.setString(5, updateFisioName);
-                pstm.setString(6, updateFisioPOD);
-                pstm.setInt(7, oldCoachIC);
-                rowsAffectedCoach = pstm.executeUpdate();
-            } else {
-                // If coachIC is not being updated and no coach-related fields are changed, set rowsAffectedCoach to 1
-                rowsAffectedCoach = 1;
-            }
+            // Update the coach and fisiotherapist details
+            String queryCoach = "UPDATE COACH SET coachIC = ?, fisioIC = ?, coachName = ?, coachPOD = ?, fisioName = ?, fisioPOD = ? WHERE coachIC = ?";
+            pstm = con.prepareStatement(queryCoach);
+            pstm.setInt(1, updateCoachIC);
+            pstm.setInt(2, updateFisioIC);
+            pstm.setString(3, updateCoachName);
+            pstm.setString(4, updateCoachPOD);
+            pstm.setString(5, updateFisioName);
+            pstm.setString(6, updateFisioPOD);
+            pstm.setInt(7, updateCoachIC);
+            int rowsAffectedCoach = pstm.executeUpdate();
+            pstm.close();
 
             if (rowsAffectedTeam > 0 && rowsAffectedCoach > 0) {
                 // Commit transaction if all operations were successful
