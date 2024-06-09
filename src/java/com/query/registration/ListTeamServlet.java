@@ -37,8 +37,8 @@ public class ListTeamServlet extends HttpServlet {
             JSONArray jsonArray = new JSONArray();
             while (rs.next()) {
                 JSONObject obj = new JSONObject();
-                obj.put("coachIC", rs.getInt("coachIC"));
-                obj.put("fisioIC", rs.getInt("fisioIC"));
+                obj.put("coachIC", rs.getString("coachIC"));
+                obj.put("fisioIC", rs.getString("fisioIC"));
                 obj.put("coachName", rs.getString("coachName"));
                 obj.put("coachPOD", rs.getString("coachPOD"));
                 obj.put("fisioName", rs.getString("fisioName"));

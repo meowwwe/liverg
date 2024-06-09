@@ -296,32 +296,32 @@
          </div>
         </div>
        </div>
+      </section>
+     </div>
+     <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+       <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a
+         href="" target="_blank"></a> Gymnastic Scoring System</span>
+      </div>
+     </footer>
+    </div>
+   </div>
+  </div>
 
-       <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a href="" target="_blank"></a> Gymnastic Scoring System. All rights reserved.</span>
-         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-        </div>
-       </footer>
+  <!--   Core JS Files   -->
+  <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
+  <script src="assets/js/core/popper.min.js"></script>
+  <script src="assets/js/core/bootstrap.min.js"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="assets/off-canvas.js" type="text/javascript"></script>
+  <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
+  <script src="assets/template.js" type="text/javascript"></script>
+  <script src="assets/settings.js" type="text/javascript"></script>
+  <script src="assets/todolist.js" type="text/javascript"></script>
 
 
-       </body>
-       </html>
-
-       <!--   Core JS Files   -->
-       <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
-       <script src="assets/js/core/popper.min.js"></script>
-       <script src="assets/js/core/bootstrap.min.js"></script>
-       <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-       <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
-       <script src="assets/off-canvas.js" type="text/javascript"></script>
-       <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
-       <script src="assets/template.js" type="text/javascript"></script>
-       <script src="assets/settings.js" type="text/javascript"></script>
-       <script src="assets/todolist.js" type="text/javascript"></script>
-
-
-       <script>
+  <script>
                     function fetchHeadJudgeData() {
                      $.ajax({
                       type: 'GET',
@@ -404,170 +404,173 @@
                     $(document).ready(function () {
                      fetchHeadJudgeData();
                     });
-       </script>
+  </script>
 
 
-       <script>
-        var msg = null;
-        function addHeadjudge() {
-         var name = $("#name").val().trim();
-         var username = $("#username").val().trim();
-         var password = $("#password").val().trim();
-         var confirmPassword = $("#confirmPassword").val().trim();
+  <script>
+   var msg = null;
+   function addHeadjudge() {
+    var name = $("#name").val().trim();
+    var username = $("#username").val().trim();
+    var password = $("#password").val().trim();
+    var confirmPassword = $("#confirmPassword").val().trim();
 
-         // Check if any field is empty
-         if (!name || !username || !password || !confirmPassword) {
-          alert("Please fill in all fields.");
-          return;
-         }
+    // Check if any field is empty
+    if (!name || !username || !password || !confirmPassword) {
+     alert("Please fill in all fields.");
+     return;
+    }
 
-         // Check if passwords match
-         if (password !== confirmPassword) {
-          alert("Passwords do not match.");
-          return;
-         }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+     alert("Passwords do not match.");
+     return;
+    }
 
-         var data = $("#ajaxAddHeadjudge").serialize();
+    var data = $("#ajaxAddHeadjudge").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../AddHeadJudgeServlet',
-          data: data,
-          dataType: 'JSON',
+    $.ajax({
+     type: 'POST',
+     url: '../AddHeadJudgeServlet',
+     data: data,
+     dataType: 'JSON',
 
-          success: function (data) {
-           msg = data[0].msg
+     success: function (data) {
+      msg = data[0].msg
 
-           if (msg == 1) {
-            alert('Submit Inserted');
-            $('#ajaxAddHeadjudge')[0].reset();
-            $("#closeModal").trigger('click');
-            fetchHeadJudgeData();
+      if (msg == 1) {
+       alert('Submit Inserted');
+       $('#ajaxAddHeadjudge')[0].reset();
+       $("#closeModal").trigger('click');
+       fetchHeadJudgeData();
 
-           } else {
-            alert('Data Not Inserted');
-           }
-          }
-         })
-        }
-       </script>
+      } else {
+       alert('Data Not Inserted');
+      }
+     }
+    })
+   }
+  </script>
 
-       <script>
-        // Function to handle deletion after confirmation
-        function deleteHeadJudge(headjudgeID) {
-         console.log("Deleting HeadJudge ID:", headjudgeID);
-         // Show confirmation modal
-         $('#confirmationModal').modal('show');
-         $('#confirmDeleteBtn').click(function () {
-          $.ajax({
-           type: 'POST',
-           url: '../DeleteHeadJudgeServlet',
-           data: {headjudgeID: headjudgeID},
-           success: function (response) {
-            console.log("HeadJudge deleted successfully");
-            fetchHeadJudgeData();
-           },
-           error: function (xhr, status, error) {
-            // Handle error
-            console.error("Error deleting headjudge:", error);
-           }
-          });
+  <script>
+   // Function to handle deletion after confirmation
+   function deleteHeadJudge(headjudgeID) {
+    console.log("Deleting HeadJudge ID:", headjudgeID);
+    // Show confirmation modal
+    $('#confirmationModal').modal('show');
+    $('#confirmDeleteBtn').click(function () {
+     $.ajax({
+      type: 'POST',
+      url: '../DeleteHeadJudgeServlet',
+      data: {headjudgeID: headjudgeID},
+      success: function (response) {
+       console.log("HeadJudge deleted successfully");
+       fetchHeadJudgeData();
+      },
+      error: function (xhr, status, error) {
+       // Handle error
+       console.error("Error deleting headjudge:", error);
+      }
+     });
 
-          $('#confirmationModal').modal('hide');
-         });
-        }
-       </script>
+     $('#confirmationModal').modal('hide');
+    });
+   }
+  </script>
 
-       <script>
-        function validateAndUpdateHeadjudge() {
-         var password = $("#updateHeadjudgePassword").val().trim();
-         var confirmPassword = $("#updateConfirmPassword").val().trim();
+  <script>
+   function validateAndUpdateHeadjudge() {
+    var password = $("#updateHeadjudgePassword").val().trim();
+    var confirmPassword = $("#updateConfirmPassword").val().trim();
 
-         // Check if passwords match
-         if (password !== confirmPassword) {
-          alert("Passwords do not match.");
-          return;
-         } else {
-          updateHeadjudge();
-         }
-        }
-        function updateHeadjudge() {
-         var formData = $("#ajaxUpdateHeadjudge").serialize();
+    // Check if passwords match
+    if (password !== confirmPassword) {
+     alert("Passwords do not match.");
+     return;
+    } else {
+     updateHeadjudge();
+    }
+   }
+   function updateHeadjudge() {
+    var formData = $("#ajaxUpdateHeadjudge").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../UpdateHeadJudgeServlet',
-          data: formData,
-          dataType: 'JSON',
-          success: function (response) {
-           if (response.success) {
-            alert('HeadJudge information updated successfully');
-            $("#closeModalUpdate").trigger('click');
-            fetchHeadJudgeData();
-           } else {
-            alert('Failed to update headjudge information. Please try again.');
-           }
-          },
-          error: function (xhr, status, error) {
-           console.error("Error updating headjudge information:", error);
-           alert('An error occurred while updating headjudge information. Please try again later.');
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'POST',
+     url: '../UpdateHeadJudgeServlet',
+     data: formData,
+     dataType: 'JSON',
+     success: function (response) {
+      if (response.success) {
+       alert('HeadJudge information updated successfully');
+       $("#closeModalUpdate").trigger('click');
+       fetchHeadJudgeData();
+      } else {
+       alert('Failed to update headjudge information. Please try again.');
+      }
+     },
+     error: function (xhr, status, error) {
+      console.error("Error updating headjudge information:", error);
+      alert('An error occurred while updating headjudge information. Please try again later.');
+     }
+    });
+   }
+  </script>
 
-       <script>
-        function displayHeadjudge(headjudgeID) {
+  <script>
+   function displayHeadjudge(headjudgeID) {
 
-         $.ajax({
-          type: 'GET',
-          url: '../DisplayHeadJudgeServlet',
-          data: {headjudgeID: headjudgeID},
-          dataType: 'JSON',
-          success: function (head) {
-           $('#updateName').val(head.headName);
-           $('#updateHeadjudgeName').val(head.headUsername);
-           $('#updateHeadjudgePassword').val(head.headPassword);
-           $('#updateConfirmPassword').val(head.headPassword);
-           $('#updateheadjudgeID').val(head.headjudgeID);
-           $('#updateHeadjudgeModal').modal('show');
-          },
-          error: function (xhr, status, error) {
-           console.error("Error retrieving headjudge information:", error);
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'GET',
+     url: '../DisplayHeadJudgeServlet',
+     data: {headjudgeID: headjudgeID},
+     dataType: 'JSON',
+     success: function (head) {
+      $('#updateName').val(head.headName);
+      $('#updateHeadjudgeName').val(head.headUsername);
+      $('#updateHeadjudgePassword').val(head.headPassword);
+      $('#updateConfirmPassword').val(head.headPassword);
+      $('#updateheadjudgeID').val(head.headjudgeID);
+      $('#updateHeadjudgeModal').modal('show');
+     },
+     error: function (xhr, status, error) {
+      console.error("Error retrieving headjudge information:", error);
+     }
+    });
+   }
+  </script>
 
-       <script>
-        $(document).ready(function () {
-         function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
-          var passwordField1 = document.getElementById(passwordFieldId1);
-          var passwordField2 = document.getElementById(passwordFieldId2);
-          var toggleIcon = document.getElementById(toggleIconId);
+  <script>
+   $(document).ready(function () {
+    function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
+     var passwordField1 = document.getElementById(passwordFieldId1);
+     var passwordField2 = document.getElementById(passwordFieldId2);
+     var toggleIcon = document.getElementById(toggleIconId);
 
-          if (passwordField1 && passwordField2 && toggleIcon) {
-           if (passwordField1.type === "password") {
-            passwordField1.type = "text";
-            passwordField2.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-           } else {
-            passwordField1.type = "password";
-            passwordField2.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-           }
-          } else {
-           console.error('One or more elements not found:', {
-            passwordField1,
-            passwordField2,
-            toggleIcon
-           });
-          }
-         }
+     if (passwordField1 && passwordField2 && toggleIcon) {
+      if (passwordField1.type === "password") {
+       passwordField1.type = "text";
+       passwordField2.type = "text";
+       toggleIcon.classList.remove("bi-eye");
+       toggleIcon.classList.add("bi-eye-slash");
+      } else {
+       passwordField1.type = "password";
+       passwordField2.type = "password";
+       toggleIcon.classList.remove("bi-eye-slash");
+       toggleIcon.classList.add("bi-eye");
+      }
+     } else {
+      console.error('One or more elements not found:', {
+       passwordField1,
+       passwordField2,
+       toggleIcon
+      });
+     }
+    }
 
-         // Attach the function to the global scope
-         window.togglePasswordVisibility = togglePasswordVisibility;
-        });
-       </script>
+    // Attach the function to the global scope
+    window.togglePasswordVisibility = togglePasswordVisibility;
+   });
+  </script>
+
+ </body>
+</html>

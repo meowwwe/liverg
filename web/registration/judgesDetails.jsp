@@ -2,6 +2,30 @@
 <%@ page import="jakarta.servlet.http.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.connection.DBConnect" %>
+<%@ page import="com.registration.bean.Team" %>
+
+<%
+    Connection con = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    List<Team> teams = new ArrayList<>(); // Assuming you have a Team class
+
+    try {
+        DBConnect db = new DBConnect();
+        con = db.getConnection();
+        stmt = con.createStatement();
+        
+        // Fetching data from TEAM table
+        rs = stmt.executeQuery("SELECT * FROM TEAM");
+        while (rs.next()) {
+            Team team = new Team();
+            team.setTeamID(rs.getInt("teamID"));
+            team.setTeamName(rs.getString("teamName"));
+            teams.add(team);
+        }
+        rs.close(); // Close the ResultSet before reusing the Statement
+%> 
 
 <!DOCTYPE html>
 <html lang="en">
@@ -167,6 +191,7 @@
                 <th scope="col">Judge Name</th>
                 <th scope="col">Judge Identity Card</th>
                 <th scope="col">Judge Place Of Duty</th>
+                <th scope="col">Team</th>
                 <th scope="col">Action</th>
                </tr>
               </thead>
@@ -213,6 +238,15 @@
                     <label class="form-label">Judge Place Of Duty</label>
                     <input type="text" name="judgePOD" id="judgePOD" class="form-control">
                    </div>
+                   <div class="mb-3">
+                    <label class="form-label">Judge Team</label>
+                    <select name="judgeTeam" id="judgeTeam" class="form-control" style="color: black">
+                     <option value="" hidden>Select a Team</option>
+                     <% for (Team team : teams) { %>
+                     <option value="<%= team.getTeamID() %>"><%= team.getTeamName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
 
                    <button type="button" onclick="addJudge()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
                   </form>
@@ -248,6 +282,15 @@
                     <input type="text" name="updateJudgePOD" id="updateJudgePOD" class="form-control">
                    </div>
                    <div class="mb-3">
+                    <label class="form-label">Judge Team</label>
+                    <select name="updateJudgeTeam" id="updateJudgeTeam" class="form-control" style="color: black">
+                     <option value="" hidden>Select a Team</option>
+                     <% for (Team team : teams) { %>
+                     <option value="<%= team.getTeamID() %>"><%= team.getTeamName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
+                   <div class="mb-3">
                     <input type="text" hidden name="updateJudgeID" id="updateJudgeID" class="form-control">
                    </div>
                    <button type="button" onclick="updateJudge()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
@@ -268,32 +311,50 @@
          </div>
         </div>
        </div>
-
-       <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a href="" target="_blank"></a> Gymnastic Scoring System. All rights reserved.</span>
-         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-        </div>
-       </footer>
-
-
-       </body>
-       </html>
-
-       <!--   Core JS Files   -->
-       <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
-       <script src="assets/js/core/popper.min.js"></script>
-       <script src="assets/js/core/bootstrap.min.js"></script>
-       <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-       <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
-       <script src="assets/off-canvas.js" type="text/javascript"></script>
-       <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
-       <script src="assets/template.js" type="text/javascript"></script>
-       <script src="assets/settings.js" type="text/javascript"></script>
-       <script src="assets/todolist.js" type="text/javascript"></script>
+      </section>
+     </div>
+     <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+       <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a
+         href="" target="_blank"></a> Gymnastic Scoring System</span>
+      </div>
+     </footer>
+    </div>
+   </div>
+  </div>
 
 
-       <script>
+  <%
+    } catch (SQLException e) {
+    e.printStackTrace();
+    } finally {
+    // Close resources
+    try {
+    if (rs != null) rs.close();
+    if (stmt != null) stmt.close();
+    if (con != null) con.close();
+    } catch (SQLException ex) {
+    ex.printStackTrace();
+    }
+    }
+  %>
+
+
+
+  <!--   Core JS Files   -->
+  <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
+  <script src="assets/js/core/popper.min.js"></script>
+  <script src="assets/js/core/bootstrap.min.js"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="assets/off-canvas.js" type="text/javascript"></script>
+  <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
+  <script src="assets/template.js" type="text/javascript"></script>
+  <script src="assets/settings.js" type="text/javascript"></script>
+  <script src="assets/todolist.js" type="text/javascript"></script>
+
+
+  <script>
                     function fetchJudgeData() {
                      $.ajax({
                       type: 'GET',
@@ -314,6 +375,7 @@
                         var judgeNameCell = $('<td>').text(judge.judgeName);
                         var judgeICCell = $('<td>').text(judge.judgeNoIc);
                         var judgePODCell = $('<td>').text(judge.judgePOD);
+                        var judgeTeamCell = $('<td>').text(judge.teamName);
 
                         // Create edit and delete buttons
                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
@@ -341,7 +403,7 @@
                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
                         // Append cells to the row
-                        row.append(rowNumberCell, judgeNameCell, judgeICCell, judgePODCell, actionCell);
+                        row.append(rowNumberCell, judgeNameCell, judgeICCell, judgePODCell, judgeTeamCell, actionCell);
 
                         // Append row to the table body
                         $('#judgeTableBody').append(row);
@@ -357,154 +419,156 @@
                     $(document).ready(function () {
                      fetchJudgeData();
                     });
-       </script>
+  </script>
 
 
-       <script>
-        var msg = null;
-        function addJudge() {
-         var name = $("#judgeName").val().trim();
-         var username = $("#judgeIC").val().trim();
-         var password = $("#judgePOD").val().trim();
+  <script>
+   var msg = null;
+   function addJudge() {
+    var name = $("#judgeName").val().trim();
+    var username = $("#judgeIC").val().trim();
+    var password = $("#judgePOD").val().trim();
 
-         // Check if any field is empty
-         if (!judgeName || !judgeIC || !judgePOD) {
-          alert("Please fill in all fields.");
-          return;
-         }
+    // Check if any field is empty
+    if (!judgeName || !judgeIC || !judgePOD) {
+     alert("Please fill in all fields.");
+     return;
+    }
 
-         var data = $("#ajaxAddJudge").serialize();
+    var data = $("#ajaxAddJudge").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../AddJudgeServlet',
-          data: data,
-          dataType: 'JSON',
+    $.ajax({
+     type: 'POST',
+     url: '../AddJudgeServlet',
+     data: data,
+     dataType: 'JSON',
 
-          success: function (data) {
-           msg = data[0].msg
+     success: function (data) {
+      msg = data[0].msg
 
-           if (msg == 1) {
-            alert('Submit Inserted');
-            $('#ajaxAddJudge')[0].reset();
-            $("#closeModal").trigger('click');
-            fetchJudgeData();
+      if (msg == 1) {
+       alert('Submit Inserted');
+       $('#ajaxAddJudge')[0].reset();
+       $("#closeModal").trigger('click');
+       fetchJudgeData();
 
-           } else {
-            alert('Data Not Inserted');
-           }
-          }
-         })
-        }
-       </script>
+      } else {
+       alert('Data Not Inserted');
+      }
+     }
+    })
+   }
+  </script>
 
-       <script>
-        // Function to handle deletion after confirmation
-        function deleteJudge(judgeID) {
-         console.log("Deleting Judge ID:", judgeID);
-         // Show confirmation modal
-         $('#confirmationModal').modal('show');
-         $('#confirmDeleteBtn').click(function () {
-          $.ajax({
-           type: 'POST',
-           url: '../DeleteJudgeServlet',
-           data: {judgeID: judgeID},
-           success: function (response) {
-            console.log("Judge deleted successfully");
-            fetchJudgeData();
-           },
-           error: function (xhr, status, error) {
-            // Handle error
-            console.error("Error deleting Judge:", error);
-           }
-          });
+  <script>
+   // Function to handle deletion after confirmation
+   function deleteJudge(judgeID) {
+    console.log("Deleting Judge ID:", judgeID);
+    // Show confirmation modal
+    $('#confirmationModal').modal('show');
+    $('#confirmDeleteBtn').click(function () {
+     $.ajax({
+      type: 'POST',
+      url: '../DeleteJudgeServlet',
+      data: {judgeID: judgeID},
+      success: function (response) {
+       console.log("Judge deleted successfully");
+       fetchJudgeData();
+      },
+      error: function (xhr, status, error) {
+       // Handle error
+       console.error("Error deleting Judge:", error);
+      }
+     });
 
-          $('#confirmationModal').modal('hide');
-         });
-        }
-       </script>
+     $('#confirmationModal').modal('hide');
+    });
+   }
+  </script>
 
-       <script>
-        function updateJudge() {
-         var formData = $("#ajaxUpdateJudge").serialize();
+  <script>
+   function updateJudge() {
+    var formData = $("#ajaxUpdateJudge").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../UpdateJudgeServlet',
-          data: formData,
-          dataType: 'JSON',
-          success: function (response) {
-           if (response.success) {
-            alert('Judge information updated successfully');
-            $("#closeModalUpdate").trigger('click');
-            fetchJudgeData();
-           } else {
-            alert('Failed to update judge information. Please try again.');
-           }
-          },
-          error: function (xhr, status, error) {
-           console.error("Error updating judge information:", error);
-           alert('An error occurred while updating judge information. Please try again later.');
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'POST',
+     url: '../UpdateJudgeServlet',
+     data: formData,
+     dataType: 'JSON',
+     success: function (response) {
+      if (response.success) {
+       alert('Judge information updated successfully');
+       $("#closeModalUpdate").trigger('click');
+       fetchJudgeData();
+      } else {
+       alert('Failed to update judge information. Please try again.');
+      }
+     },
+     error: function (xhr, status, error) {
+      console.error("Error updating judge information:", error);
+      alert('An error occurred while updating judge information. Please try again later.');
+     }
+    });
+   }
+  </script>
 
-       <script>
-        function displayJudge(judgeID) {
+  <script>
+   function displayJudge(judgeID) {
 
-         $.ajax({
-          type: 'GET',
-          url: '../DisplayJudgeServlet',
-          data: {judgeID: judgeID},
-          dataType: 'JSON',
-          success: function (judge) {
-           $('#updateJudgeName').val(judge.judgeName);
-           $('#updateJudgeIC').val(judge.judgeNoIc);
-           $('#updateJudgePOD').val(judge.judgePOD);
-           $('#updateJudgeID').val(judge.judgeID);
-           $('#updateJudgeModal').modal('show');
-          },
-          error: function (xhr, status, error) {
-           console.error("Error retrieving judge information:", error);
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'GET',
+     url: '../DisplayJudgeServlet',
+     data: {judgeID: judgeID},
+     dataType: 'JSON',
+     success: function (judge) {
+      $('#updateJudgeName').val(judge.judgeName);
+      $('#updateJudgeIC').val(judge.judgeNoIc);
+      $('#updateJudgePOD').val(judge.judgePOD);
+      $('#updateJudgeID').val(judge.judgeID);
+      $('#updateJudgeModal').modal('show');
+     },
+     error: function (xhr, status, error) {
+      console.error("Error retrieving judge information:", error);
+     }
+    });
+   }
+  </script>
 
-       <script>
-        $(document).ready(function () {
-         function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
-          var passwordField1 = document.getElementById(passwordFieldId1);
-          var passwordField2 = document.getElementById(passwordFieldId2);
-          var toggleIcon = document.getElementById(toggleIconId);
+  <script>
+   $(document).ready(function () {
+    function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
+     var passwordField1 = document.getElementById(passwordFieldId1);
+     var passwordField2 = document.getElementById(passwordFieldId2);
+     var toggleIcon = document.getElementById(toggleIconId);
 
-          if (passwordField1 && passwordField2 && toggleIcon) {
-           if (passwordField1.type === "password") {
-            passwordField1.type = "text";
-            passwordField2.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-           } else {
-            passwordField1.type = "password";
-            passwordField2.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-           }
-          } else {
-           console.error('One or more elements not found:', {
-            passwordField1,
-            passwordField2,
-            toggleIcon
-           });
-          }
-         }
+     if (passwordField1 && passwordField2 && toggleIcon) {
+      if (passwordField1.type === "password") {
+       passwordField1.type = "text";
+       passwordField2.type = "text";
+       toggleIcon.classList.remove("bi-eye");
+       toggleIcon.classList.add("bi-eye-slash");
+      } else {
+       passwordField1.type = "password";
+       passwordField2.type = "password";
+       toggleIcon.classList.remove("bi-eye-slash");
+       toggleIcon.classList.add("bi-eye");
+      }
+     } else {
+      console.error('One or more elements not found:', {
+       passwordField1,
+       passwordField2,
+       toggleIcon
+      });
+     }
+    }
 
-         // Attach the function to the global scope
-         window.togglePasswordVisibility = togglePasswordVisibility;
-        });
-       </script>
+    // Attach the function to the global scope
+    window.togglePasswordVisibility = togglePasswordVisibility;
+   });
+  </script>
 
+ </body>
+</html>
 
 
 

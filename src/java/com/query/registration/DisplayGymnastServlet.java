@@ -28,7 +28,7 @@ public class DisplayGymnastServlet extends HttpServlet {
 
   try {
    // Prepare query to select clerk information
-   String query = "SELECT * FROM GYMNAST G JOIN TEAM T ON G.TEAMID = T.TEAMID WHERE gymnastID = ?";
+   String query = "SELECT * FROM GYMNAST G JOIN GYMNAST_APP GA ON G.GYMNASTID = GA.GYMNASTID JOIN TEAM T ON G.TEAMID = T.TEAMID JOIN APPARATUS A ON GA.APPARATUSID = A.APPARATUSID WHERE G.GYMNASTID = ?";
    pstm = con.prepareStatement(query);
    pstm.setInt(1, gymnastID);
    rs = pstm.executeQuery();
@@ -41,6 +41,7 @@ public class DisplayGymnastServlet extends HttpServlet {
     String gymnastSchool = rs.getString("gymnastSchool");
     String gymnastCategory = rs.getString("gymnastCategory");
     String gymnastICPic = rs.getString("gymnastICPic");
+    int apparatusID = rs.getInt("apparatusID");
     int teamID = rs.getInt("teamID");
 
     JSONObject obj = new JSONObject();
@@ -51,6 +52,7 @@ public class DisplayGymnastServlet extends HttpServlet {
     obj.put("gymnastCategory", gymnastCategory);
     obj.put("gymnastICPic", gymnastICPic);
     obj.put("teamID", teamID);
+    obj.put("apparatusID", apparatusID);
 
     response.setContentType("application/json");
 

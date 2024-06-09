@@ -18,9 +18,10 @@ public class UpdateJudgeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
         int judgeID = Integer.parseInt(request.getParameter("updateJudgeID"));
-        int updateJudgeIC = Integer.parseInt(request.getParameter("updateJudgeIC"));
+        String updateJudgeIC = request.getParameter("updateJudgeIC");
         String updateJudgeName = request.getParameter("updateJudgeName");
         String updateJudgePOD = request.getParameter("updateJudgePOD");
+        String updateJudgeTeam = request.getParameter("updateJudgeTeam");
 
         // Database Connection
         DBConnect db = new DBConnect();
@@ -29,12 +30,13 @@ public class UpdateJudgeServlet extends HttpServlet {
 
         try {
             
-            String query = "UPDATE JUDGE SET judgeName = ?, judgeNoIc = ?, judgePOD = ? WHERE judgeID = ?";
+            String query = "UPDATE JUDGE SET judgeName = ?, judgeNoIc = ?, judgePOD = ?, teamID = ? WHERE judgeID = ?";
             pstm = con.prepareStatement(query);
             pstm.setString(1, updateJudgeName);
-            pstm.setInt(2, updateJudgeIC);
+            pstm.setString(2, updateJudgeIC);
             pstm.setString(3, updateJudgePOD);
-            pstm.setInt(4, judgeID);
+            pstm.setString(4, updateJudgeTeam);
+            pstm.setInt(5, judgeID);
             int rowsAffected = pstm.executeUpdate();
 
             // Send JSON response indicating success or failure

@@ -274,14 +274,32 @@
             msg = data[0].msg;
 
             if (msg == 1) {
-             alert('STAFF');
+//             alert('STAFF');
              window.location.href = "registration/dashboard.jsp";
             } else if (msg == 2) {
-             alert('CLERK');
+//             alert('CLERK');
             } else if (msg == 3) {
-             alert('HEADJUDGE');
+             window.location.href = "Score";
+//             alert('HEADJUDGE');
             } else {
-             alert('Username/Password Incorrect');
+             const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: false,
+              heightAuto: true,
+              timerProgressBar: false,
+              iconColor: 'red',
+              customClass: 'swal-wide',
+              didOpen: (toast) => {
+               toast.onmouseenter = Swal.stopTimer;
+               toast.onmouseleave = Swal.resumeTimer;
+              }
+             });
+             Toast.fire({
+              icon: 'error',
+              html: '<b>Invalid Credential !</b><br> Incorrect Username/Password'
+             });
             }
            }
           });

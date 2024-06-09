@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.registration.bean;
 
 import com.connection.DBConnect;
@@ -9,29 +5,35 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
- * @author Meow
+ * Gymnast bean class.
  */
 public class Gymnast {
 
- //Database Connection
+ // Database Connection
  DBConnect db = new DBConnect();
  Connection con = db.getConnection();
- //PreparedStatement
+ // PreparedStatement
  PreparedStatement pstm;
- //ResultQuery
+ // ResultQuery
  ResultSet rs;
  String userRole = "";
 
- int gymnastID, gymnastIC, clerkID, teamID;
- String gymnastICPic, gymnastName, gymnastSchool, gymnastCategory;
+ int gymnastID, clerkID, teamID;
+ String gymnastIC, gymnastICPic, gymnastName, gymnastSchool, gymnastCategory;
 
- public Gymnast() {
+ public Gymnast(){}
+ public Gymnast(int gymnastID,String gymnastName) {
+  this.gymnastID = gymnastID;
+  this.gymnastName = gymnastName;
  }
+ 
+ 
 
- public Gymnast(int gymnastID, int gymnastIC, String gymnastICPic, String gymnastName, String gymnastSchool, String gymnastCategory, int clerkID, int teamID) {
+ public Gymnast(int gymnastID, String gymnastIC, String gymnastICPic, String gymnastName, String gymnastSchool, String gymnastCategory, int clerkID, int teamID) {
   this.gymnastID = gymnastID;
   this.gymnastIC = gymnastIC;
   this.gymnastICPic = gymnastICPic;
@@ -42,6 +44,17 @@ public class Gymnast {
   this.teamID = teamID;
  }
 
+  public Gymnast(int gymnastID,String gymnastName,String gymnastIC, String gymnastSchool, String gymnastCategory) {
+  this.gymnastID = gymnastID;
+  this.gymnastIC = gymnastIC;
+  this.gymnastICPic = gymnastICPic;
+  this.gymnastName = gymnastName;
+  this.gymnastSchool = gymnastSchool;
+  this.gymnastCategory = gymnastCategory;
+  this.clerkID = clerkID;
+  this.teamID = teamID;
+ }
+  
  public int getGymnastID() {
   return gymnastID;
  }
@@ -50,11 +63,11 @@ public class Gymnast {
   this.gymnastID = gymnastID;
  }
 
- public int getGymnastIC() {
+ public String getGymnastIC() {
   return gymnastIC;
  }
 
- public void setGymnastIC(int gymnastIC) {
+ public void setGymnastIC(String gymnastIC) {
   this.gymnastIC = gymnastIC;
  }
 
@@ -106,17 +119,104 @@ public class Gymnast {
   this.gymnastCategory = gymnastCategory;
  }
 
- public void addGymnast(String gymnastName, int gymnastIC, String gymnastICPic, String gymnastSchool, String gymnastCategory, int teamID) throws SQLException {
-
-  String sql = "INSERT INTO GYMNAST(gymnastName,gymnastIC,gymnastICPic,gymnastSchool,gymnastCategory,teamID) VALUES (?,?,?,?,?,?)";
-  pstm = con.prepareStatement(sql);
+ public int addGymnast(String gymnastName, String gymnastIC, String gymnastICPic, String gymnastSchool, String gymnastCategory, int teamID) throws SQLException {
+  String sql = "INSERT INTO GYMNAST(gymnastName, gymnastIC, gymnastICPic, gymnastSchool, gymnastCategory, teamID) VALUES (?, ?, ?, ?, ?, ?)";
+  pstm = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
   pstm.setString(1, gymnastName);
-  pstm.setInt(2, gymnastIC);
+  pstm.setString(2, gymnastIC);
   pstm.setString(3, gymnastICPic);
   pstm.setString(4, gymnastSchool);
   pstm.setString(5, gymnastCategory);
   pstm.setInt(6, teamID);
   pstm.executeUpdate();
+
+  // Retrieve the generated gymnastID
+  ResultSet rs = pstm.getGeneratedKeys();
+  if (rs.next()) {
+   this.gymnastID = rs.getInt(1);
+  }
+  return this.gymnastID;
  }
 
+ public void addGymnastApp(int gymnastID, int apparatusID) throws SQLException {
+  String sql = "INSERT INTO GYMNAST_APP(gymnastID, apparatusID) VALUES (?, ?)";
+  pstm = con.prepareStatement(sql);
+  pstm.setInt(1, gymnastID);
+  pstm.setInt(2, apparatusID);
+  pstm.executeUpdate();
+ }
+ 
+  public void addComposite(int gymnastID, int teamID, int apparatusID) throws SQLException {
+  String sql = "INSERT INTO COMPOSITE(gymnastID, teamID, apparatusID) VALUES (?, ?, ?)";
+  pstm = con.prepareStatement(sql);
+  pstm.setInt(1, gymnastID);
+  pstm.setInt(2, teamID);
+  pstm.setInt(3, apparatusID);
+  pstm.executeUpdate();
+ }
+  
+  
+  public List<Gymnast> getAllDataGymnast() {
+     String sql = "SELECT * FROM GYMNAST ORDER BY gymnastCategory";
+        List<Gymnast> gymnast = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int gymnastID = rs.getInt("gymnastID");
+                String gymnastName = rs.getString("gymnastName");
+                String gymnastIC = rs.getString("gymnastIC");
+                String gymnastSchool = rs.getString("gymnastSchool");
+                String gymnastCategory = rs.getString("gymnastCategory");
+                gymnast.add(new Gymnast(gymnastID, gymnastName, gymnastIC, gymnastSchool, gymnastCategory));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return gymnast;
+    }
+  
+  public List<Gymnast> getDataGymnastID(String gymnastName) {
+   
+    String sql = "SELECT * FROM GYMNAST WHERE gymnastName = ?";
+        List<Gymnast> gymnast = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, gymnastName);
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+
+                gymnast.add(new Gymnast(rs.getInt("gymnastID"), gymnastName));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return gymnast;
+    }
+  
+  public boolean checkApparatusDuplicate(int apparatusID, int gymnastID) {
+   
+   String sql = "SELECT * FROM COMPOSITE WHERE apparatusID = ? AND gymnastID = ?";
+        boolean isDuplicate = false;
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, apparatusID);
+            pst.setInt(2, gymnastID);
+           
+            ResultSet rs =  pst.executeQuery();
+            
+            isDuplicate = rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isDuplicate;
+    }
 }

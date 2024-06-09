@@ -299,281 +299,283 @@
         </div>
        </div>
 
-       <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a href="" target="_blank"></a> Gymnastic Scoring System. All rights reserved.</span>
-         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-        </div>
-       </footer>
+      </section>
+     </div>
+     <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+       <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a
+         href="" target="_blank"></a> Gymnastic Scoring System</span>
+      </div>
+     </footer>
+    </div>
+   </div>
+  </div>
 
 
-       </body>
-       </html>
 
-       <!--   Core JS Files   -->
-       <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
-       <script src="assets/js/core/popper.min.js"></script>
-       <script src="assets/js/core/bootstrap.min.js"></script>
-       <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-       <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
-       <script src="assets/off-canvas.js" type="text/javascript"></script>
-       <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
-       <script src="assets/template.js" type="text/javascript"></script>
-       <script src="assets/settings.js" type="text/javascript"></script>
-       <script src="assets/todolist.js" type="text/javascript"></script>
+  <!--   Core JS Files   -->
+  <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
+  <script src="assets/js/core/popper.min.js"></script>
+  <script src="assets/js/core/bootstrap.min.js"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="assets/off-canvas.js" type="text/javascript"></script>
+  <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
+  <script src="assets/template.js" type="text/javascript"></script>
+  <script src="assets/settings.js" type="text/javascript"></script>
+  <script src="assets/todolist.js" type="text/javascript"></script>
 
 
-       <script>
-                    function fetchClerksData() {
-                     $.ajax({
-                      type: 'GET',
-                      url: '../ListClerksServlet',
-                      dataType: 'json',
-                      success: function (data) {
-                       // Clear existing table content
-                       $('#clerksTableBody').empty();
+  <script>
+                      function fetchClerksData() {
+                       $.ajax({
+                        type: 'GET',
+                        url: '../ListClerksServlet',
+                        dataType: 'json',
+                        success: function (data) {
+                         // Clear existing table content
+                         $('#clerksTableBody').empty();
 
-                       var rowIndex = 1;
-                       // Iterate over received data and generate HTML for each clerk
-                       $.each(data, function (index, clerk) {
-                        // Create table row for clerk data
-                        var row = $('<tr>');
-                        // Create table cells for clerk ID, username, and password
-                        //var clerkIDCell = $('<td>').text(clerk.clerkID);
-                        var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
-                        var clerkNameCell = $('<td>').text(clerk.clerkName);
-                        var clerkUsernameCell = $('<td>').text(clerk.clerkUsername);
-                        //var clerkPasswordCell = $('<td>').text(clerk.clerkPassword).addClass('align-middle text-center text-sm');
+                         var rowIndex = 1;
+                         // Iterate over received data and generate HTML for each clerk
+                         $.each(data, function (index, clerk) {
+                          // Create table row for clerk data
+                          var row = $('<tr>');
+                          // Create table cells for clerk ID, username, and password
+                          //var clerkIDCell = $('<td>').text(clerk.clerkID);
+                          var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
+                          var clerkNameCell = $('<td>').text(clerk.clerkName);
+                          var clerkUsernameCell = $('<td>').text(clerk.clerkUsername);
+                          //var clerkPasswordCell = $('<td>').text(clerk.clerkPassword).addClass('align-middle text-center text-sm');
 
-                        // Create password cell with hidden password
-                        var passwordSpan = $('<span>').text(clerk.clerkPassword).hide().css('margin-right', '10px');
-                        ;
+                          // Create password cell with hidden password
+                          var passwordSpan = $('<span>').text(clerk.clerkPassword).hide().css('margin-right', '10px');
+                          ;
 
-                        var showPasswordButton = $('<button>')
-                                .attr('class', 'btn bg-gradient-dark')
-                                .html('<i class="bi bi-eye"></i>')
-                                .click(function () {
-                                 if (passwordSpan.is(':visible')) {
-                                  passwordSpan.hide();
-                                  $(this).html('<i class="bi bi-eye"></i>');
-                                 } else {
-                                  passwordSpan.show();
-                                  $(this).html('<i class="bi bi-eye-slash"></i>');
-                                 }
-                                });
-                        var clerkPasswordCell = $('<td>').addClass('align-middle text-center text-sm')
-                                .append(passwordSpan, showPasswordButton);
+                          var showPasswordButton = $('<button>')
+                                  .attr('class', 'btn bg-gradient-dark')
+                                  .html('<i class="bi bi-eye"></i>')
+                                  .click(function () {
+                                   if (passwordSpan.is(':visible')) {
+                                    passwordSpan.hide();
+                                    $(this).html('<i class="bi bi-eye"></i>');
+                                   } else {
+                                    passwordSpan.show();
+                                    $(this).html('<i class="bi bi-eye-slash"></i>');
+                                   }
+                                  });
+                          var clerkPasswordCell = $('<td>').addClass('align-middle text-center text-sm')
+                                  .append(passwordSpan, showPasswordButton);
 
-                        // Create edit and delete buttons
-                        var editButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#updateClerkModal')
-                                .css('margin-right', '5px');
+                          // Create edit and delete buttons
+                          var editButton = $('<button>').addClass('btn bg-gradient-dark')
+                                  .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
+                                  .attr('data-bs-toggle', 'modal')
+                                  .attr('data-bs-target', '#updateClerkModal')
+                                  .css('margin-right', '5px');
 
-                        var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-trash2-fill"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#confirmationModal');
+                          var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
+                                  .html('<i class="bi bi-trash2-fill"></i>')
+                                  .attr('data-bs-toggle', 'modal')
+                                  .attr('data-bs-target', '#confirmationModal');
 
-                        // Add click event handlers to buttons
-                        editButton.click(function () {
-                         console.log("Updating Clerk ID:", clerk.clerkID);
-                         displayClerk(clerk.clerkID); //Pass Parameter
-                        });
+                          // Add click event handlers to buttons
+                          editButton.click(function () {
+                           console.log("Updating Clerk ID:", clerk.clerkID);
+                           displayClerk(clerk.clerkID); //Pass Parameter
+                          });
 
-                        deleteButton.click(function () {
-                         deleteClerk(clerk.clerkID); // Implement deleteClerk function
-                        });
+                          deleteButton.click(function () {
+                           deleteClerk(clerk.clerkID); // Implement deleteClerk function
+                          });
 
-                        // Append buttons to a cell
-                        var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
+                          // Append buttons to a cell
+                          var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
-                        // Append cells to the row
-                        row.append(rowNumberCell, clerkNameCell, clerkUsernameCell, clerkPasswordCell, actionCell);
+                          // Append cells to the row
+                          row.append(rowNumberCell, clerkNameCell, clerkUsernameCell, clerkPasswordCell, actionCell);
 
-                        // Append row to the table body
-                        $('#clerksTableBody').append(row);
+                          // Append row to the table body
+                          $('#clerksTableBody').append(row);
 
-                        rowIndex++;
+                          rowIndex++;
+                         });
+                        },
+                        error: function (xhr, status, error) {
+                         console.error("Error occurred during AJAX request:", error);
+                        }
                        });
-                      },
-                      error: function (xhr, status, error) {
-                       console.error("Error occurred during AJAX request:", error);
                       }
-                     });
-                    }
-                    $(document).ready(function () {
-                     fetchClerksData();
-                    });
-       </script>
+                      $(document).ready(function () {
+                       fetchClerksData();
+                      });
+  </script>
 
 
-       <script>
-        var msg = null;
-        function addClerk() {
-         var name = $("#name").val().trim();
-         var username = $("#username").val().trim();
-         var password = $("#password").val().trim();
-         var confirmPassword = $("#confirmPassword").val().trim();
+  <script>
+   var msg = null;
+   function addClerk() {
+    var name = $("#name").val().trim();
+    var username = $("#username").val().trim();
+    var password = $("#password").val().trim();
+    var confirmPassword = $("#confirmPassword").val().trim();
 
-         // Check if any field is empty
-         if (!name || !username || !password || !confirmPassword) {
-          alert("Please fill in all fields.");
-          return;
-         }
+    // Check if any field is empty
+    if (!name || !username || !password || !confirmPassword) {
+     alert("Please fill in all fields.");
+     return;
+    }
 
-         // Check if passwords match
-         if (password !== confirmPassword) {
-          alert("Passwords do not match.");
-          return;
-         }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+     alert("Passwords do not match.");
+     return;
+    }
 
-         var data = $("#ajaxAddClerk").serialize();
+    var data = $("#ajaxAddClerk").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../AddClerkServlet',
-          data: data,
-          dataType: 'JSON',
+    $.ajax({
+     type: 'POST',
+     url: '../AddClerkServlet',
+     data: data,
+     dataType: 'JSON',
 
-          success: function (data) {
-           msg = data[0].msg
+     success: function (data) {
+      msg = data[0].msg
 
-           if (msg == 1) {
-            alert('Submit Inserted');
-            $('#ajaxAddClerk')[0].reset();
-            $("#closeModal").trigger('click');
-            fetchClerksData();
+      if (msg == 1) {
+       alert('Submit Inserted');
+       $('#ajaxAddClerk')[0].reset();
+       $("#closeModal").trigger('click');
+       fetchClerksData();
 
-           } else {
-            alert('Data Not Inserted');
-           }
-          }
-         })
-        }
-       </script>
+      } else {
+       alert('Data Not Inserted');
+      }
+     }
+    })
+   }
+  </script>
 
-       <script>
-        // Function to handle deletion after confirmation
-        function deleteClerk(clerkID) {
-         console.log("Deleting Clerk ID:", clerkID);
-         // Show confirmation modal
-         $('#confirmationModal').modal('show');
-         $('#confirmDeleteBtn').click(function () {
-          $.ajax({
-           type: 'POST',
-           url: '../DeleteClerkServlet',
-           data: {clerkID: clerkID},
-           success: function (response) {
-            console.log("Clerk deleted successfully");
-            fetchClerksData();
-           },
-           error: function (xhr, status, error) {
-            // Handle error
-            console.error("Error deleting clerk:", error);
-           }
-          });
+  <script>
+   // Function to handle deletion after confirmation
+   function deleteClerk(clerkID) {
+    console.log("Deleting Clerk ID:", clerkID);
+    // Show confirmation modal
+    $('#confirmationModal').modal('show');
+    $('#confirmDeleteBtn').click(function () {
+     $.ajax({
+      type: 'POST',
+      url: '../DeleteClerkServlet',
+      data: {clerkID: clerkID},
+      success: function (response) {
+       console.log("Clerk deleted successfully");
+       fetchClerksData();
+      },
+      error: function (xhr, status, error) {
+       // Handle error
+       console.error("Error deleting clerk:", error);
+      }
+     });
 
-          $('#confirmationModal').modal('hide');
-         });
-        }
-       </script>
+     $('#confirmationModal').modal('hide');
+    });
+   }
+  </script>
 
-       <script>
-        function validateAndUpdateClerk() {
-         var password = $("#updateClerkPassword").val().trim();
-         var confirmPassword = $("#updateConfirmPassword").val().trim();
+  <script>
+   function validateAndUpdateClerk() {
+    var password = $("#updateClerkPassword").val().trim();
+    var confirmPassword = $("#updateConfirmPassword").val().trim();
 
-         // Check if passwords match
-         if (password !== confirmPassword) {
-          alert("Passwords do not match.");
-          return;
-         } else {
-          updateClerk();
-         }
-        }
-        function updateClerk() {
-         var formData = $("#ajaxUpdateClerk").serialize();
+    // Check if passwords match
+    if (password !== confirmPassword) {
+     alert("Passwords do not match.");
+     return;
+    } else {
+     updateClerk();
+    }
+   }
+   function updateClerk() {
+    var formData = $("#ajaxUpdateClerk").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../UpdateClerkServlet',
-          data: formData,
-          dataType: 'JSON',
-          success: function (response) {
-           if (response.success) {
-            alert('Clerk information updated successfully');
-            $("#closeModalUpdate").trigger('click');
-            fetchClerksData();
-           } else {
-            alert('Failed to update clerk information. Please try again.');
-           }
-          },
-          error: function (xhr, status, error) {
-           console.error("Error updating clerk information:", error);
-           alert('An error occurred while updating clerk information. Please try again later.');
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'POST',
+     url: '../UpdateClerkServlet',
+     data: formData,
+     dataType: 'JSON',
+     success: function (response) {
+      if (response.success) {
+       alert('Clerk information updated successfully');
+       $("#closeModalUpdate").trigger('click');
+       fetchClerksData();
+      } else {
+       alert('Failed to update clerk information. Please try again.');
+      }
+     },
+     error: function (xhr, status, error) {
+      console.error("Error updating clerk information:", error);
+      alert('An error occurred while updating clerk information. Please try again later.');
+     }
+    });
+   }
+  </script>
 
-       <script>
-        function displayClerk(clerkID) {
+  <script>
+   function displayClerk(clerkID) {
 
-         $.ajax({
-          type: 'GET',
-          url: '../DisplayClerkServlet',
-          data: {clerkID: clerkID},
-          dataType: 'JSON',
-          success: function (clerk) {
-           $('#updateName').val(clerk.clerkName);
-           $('#updateClerkName').val(clerk.clerkUsername);
-           $('#updateClerkPassword').val(clerk.clerkPassword);
-           $('#updateConfirmPassword').val(clerk.clerkPassword);
-           $('#updateClerkID').val(clerk.clerkID);
-           $('#updateClerkModal').modal('show');
-          },
-          error: function (xhr, status, error) {
-           console.error("Error retrieving clerk information:", error);
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'GET',
+     url: '../DisplayClerkServlet',
+     data: {clerkID: clerkID},
+     dataType: 'JSON',
+     success: function (clerk) {
+      $('#updateName').val(clerk.clerkName);
+      $('#updateClerkName').val(clerk.clerkUsername);
+      $('#updateClerkPassword').val(clerk.clerkPassword);
+      $('#updateConfirmPassword').val(clerk.clerkPassword);
+      $('#updateClerkID').val(clerk.clerkID);
+      $('#updateClerkModal').modal('show');
+     },
+     error: function (xhr, status, error) {
+      console.error("Error retrieving clerk information:", error);
+     }
+    });
+   }
+  </script>
 
-       <script>
-        $(document).ready(function () {
-         function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
-          var passwordField1 = document.getElementById(passwordFieldId1);
-          var passwordField2 = document.getElementById(passwordFieldId2);
-          var toggleIcon = document.getElementById(toggleIconId);
+  <script>
+   $(document).ready(function () {
+    function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
+     var passwordField1 = document.getElementById(passwordFieldId1);
+     var passwordField2 = document.getElementById(passwordFieldId2);
+     var toggleIcon = document.getElementById(toggleIconId);
 
-          if (passwordField1 && passwordField2 && toggleIcon) {
-           if (passwordField1.type === "password") {
-            passwordField1.type = "text";
-            passwordField2.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-           } else {
-            passwordField1.type = "password";
-            passwordField2.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-           }
-          } else {
-           console.error('One or more elements not found:', {
-            passwordField1,
-            passwordField2,
-            toggleIcon
-           });
-          }
-         }
+     if (passwordField1 && passwordField2 && toggleIcon) {
+      if (passwordField1.type === "password") {
+       passwordField1.type = "text";
+       passwordField2.type = "text";
+       toggleIcon.classList.remove("bi-eye");
+       toggleIcon.classList.add("bi-eye-slash");
+      } else {
+       passwordField1.type = "password";
+       passwordField2.type = "password";
+       toggleIcon.classList.remove("bi-eye-slash");
+       toggleIcon.classList.add("bi-eye");
+      }
+     } else {
+      console.error('One or more elements not found:', {
+       passwordField1,
+       passwordField2,
+       toggleIcon
+      });
+     }
+    }
 
-         // Attach the function to the global scope
-         window.togglePasswordVisibility = togglePasswordVisibility;
-        });
-       </script>
+    // Attach the function to the global scope
+    window.togglePasswordVisibility = togglePasswordVisibility;
+   });
+  </script>
 
-
-
-
+ </body>
+</html>

@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>LiveScoringServlet</servlet-name>
-        <servlet-class>com.servlet.scoring.LiveScoringServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LiveScoringByTeamNameServlet</servlet-name>
-        <servlet-class>com.servlet.scoring.LiveScoringByTeamNameServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LiveScoringByTeamNameAndGymnastNameServlet</servlet-name>
-        <servlet-class>com.servlet.scoring.LiveScoringByTeamNameAndGymnastNameServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.registration.servlet.LoginServlet</servlet-class>
     </servlet>
@@ -120,18 +108,47 @@
         <servlet-name>DeleteTeamServlet</servlet-name>
         <servlet-class>com.query.registration.DeleteTeamServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
+    <!--Servlet Scoring-->
+    <servlet>
         <servlet-name>LiveScoringServlet</servlet-name>
-        <url-pattern>/LiveScoring</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
+        <servlet-class>com.servlet.scoring.LiveScoringServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LiveScoringByTeamNameServlet</servlet-name>
-        <url-pattern>/LiveScoringByTeamName</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
+        <servlet-class>com.servlet.scoring.LiveScoringByTeamNameServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LiveScoringByTeamNameAndGymnastNameServlet</servlet-name>
-        <url-pattern>/LiveScoringByTeamNameAndGymnastName</url-pattern>
-    </servlet-mapping>
+        <servlet-class>com.servlet.scoring.LiveScoringByTeamNameAndGymnastNameServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>KeyInScoreServlet</servlet-name>
+        <servlet-class>com.servlet.scoring.KeyInScoreServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateScoreServlet</servlet-name>
+        <servlet-class>com.servlet.scoring.UpdateScoreServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LiveScoringAdminServlet</servlet-name>
+        <servlet-class>com.servlet.scoring.LiveScoringAdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Gymnast</servlet-name>
+        <servlet-class>com.servlet.registration.GymnastServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TeamServlet</servlet-name>
+        <servlet-class>com.servlet.registration.TeamServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LiveIndividualScoreServlet</servlet-name>
+        <servlet-class>com.servlet.scoring.LiveIndividualScoreServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LiveScoringAdminTableServlet</servlet-name>
+        <servlet-class>com.servlet.scoring.LiveScoringAdminTableServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -161,6 +178,7 @@
         <url-pattern>/UpdateClerkServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
+        <welcome-file>scoring/scoreIndividualTable.jsp</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <servlet-mapping>
@@ -243,7 +261,45 @@
         <servlet-name>DeleteTeamServlet</servlet-name>
         <url-pattern>/DeleteTeamServlet</url-pattern>
     </servlet-mapping>
-    <session-config>
-        <session-timeout>10</session-timeout>
-    </session-config>
+    <!--Servlet Mapping Scoring-->
+    <servlet-mapping>
+        <servlet-name>LiveScoringServlet</servlet-name>
+        <url-pattern>/LiveScoring</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LiveScoringByTeamNameServlet</servlet-name>
+        <url-pattern>/LiveScoringByTeamName</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LiveScoringByTeamNameAndGymnastNameServlet</servlet-name>
+        <url-pattern>/LiveScoringByTeamNameAndGymnastName</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KeyInScoreServlet</servlet-name>
+        <url-pattern>/Score</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateScoreServlet</servlet-name>
+        <url-pattern>/updateScore</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LiveScoringAdminServlet</servlet-name>
+        <url-pattern>/LiveScoringAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Gymnast</servlet-name>
+        <url-pattern>/Gymnast</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TeamServlet</servlet-name>
+        <url-pattern>/Team</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LiveIndividualScoreServlet</servlet-name>
+        <url-pattern>/LiveIndividualScore</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LiveScoringAdminTableServlet</servlet-name>
+        <url-pattern>/LiveScoringAdminTable</url-pattern>
+    </servlet-mapping>
 </web-app>

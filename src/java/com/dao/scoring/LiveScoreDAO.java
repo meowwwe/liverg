@@ -23,54 +23,60 @@ import java.util.List;
  *
  * @author USER
  */
-public class LiveScoreDAO extends QueryLiveScore {
+public class LiveScoreDAO extends QueryLiveScore{
 
     DBConnect db = new DBConnect();
 
     public String getAllLiveScore() {
-        return "\"SELECT g.gymnastName, t.teamName, a.apparatusName, \\n\" +\n"
-                + "\"  scoreD + scoreA + scoreE - technicalDeduction AS totalScore,  -- Calculate total score\\n\" +\n"
-                + "\"  scoreD, scoreA, scoreE, technicalDeduction  -- Individual scores and deduction\\n\" +\n"
-                + "\"FROM GYMNAST g  -- Assuming gymnast name is in the GYMNAST table\\n\" +\n"
-                + "\"INNER JOIN TEAM t ON g.teamID = t.teamID  -- Join gymnast with their team\\n\" +\n"
-                + "\"INNER JOIN GYMNAST_APP ga ON g.gymnastID = ga.gymnastID  -- Connect gymnasts with their apparatuses\\n\" +\n"
-                + "\"INNER JOIN APPARATUS a ON ga.apparatusID = a.apparatusID  -- Identify the apparatus\\n\" +\n"
-                + "\"INNER JOIN COMPOSITE c ON ga.gymnastID = c.gymnastID AND ga.apparatusID = c.apparatusID \\n\" +\n"
-                + "\"  -- Link gymnast-apparatus to COMPOSITE table\\n\" +\n"
-                + "\"INNER JOIN SCORE s ON c.scoreID = s.scoreID  -- Link score details\\n\" +\n"
-                + "\"GROUP BY g.gymnastName, t.teamName, a.apparatusName  -- Include teamName in GROUP BY\\n\" +\n"
-                + "\"ORDER BY g.gymnastName, t.teamName, a.apparatusName;\";";
+        return "SELECT *, g.gymnastName AS gymnast_name\n" +
+"FROM composite c\n" +
+"JOIN apparatus a ON c.apparatusID = a.apparatusID\n" +
+"JOIN gymnast g ON c.gymnastID = g.gymnastID\n" +
+"JOIN TEAM t ON c.teamID = t.teamID\n" +
+"JOIN score s ON c.scoreID = s.scoreID\n" +
+"GROUP BY g.gymnastName, c.compositeID\n" +
+"ORDER BY gymnast_name ASC;";
     }
 
-    public String getLiveScoreByTeamName() {
-        return "SELECT g.gymnastName, t.teamName, a.apparatusName, scoreD + scoreA + scoreE - technicalDeduction AS totalScore,\n"
-                + "scoreD, scoreA, scoreE, technicalDeduction FROM GYMNAST g INNER JOIN TEAM t ON g.teamID = t.teamID \n"
-                + "INNER JOIN GYMNAST_APP ga ON g.gymnastID = ga.gymnastID  \n"
-                + "INNER JOIN APPARATUS a ON ga.apparatusID = a.apparatusID  \n"
-                + "INNER JOIN COMPOSITE c ON ga.gymnastID = c.gymnastID AND ga.apparatusID = c.apparatusID\n"
-                + " INNER JOIN SCORE s ON c.scoreID = s.scoreID \n"
-                + " WHERE t.teamName = ?\n"
-                + " ORDER BY g.gymnastName, t.teamName, a.apparatusName;";
+    //gymnastID
+    public String getLiveScoreByGymnastID() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE g.gymnastID = ?;";
+    }
+
+    public String getLiveScoreByTeamID() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE t.teamID = ?";
+    }
+
+    public String getLiveScoreByApparatuSID() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE a.apparatusID = ?";
     }
     
-    
-    public String getAllTeam(){
+      public String getLiveScoreByCategory() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE g.gymnastCategory = ?";
+    }
+
+    public String getLiveScoreByGymnastIDAndTeamID() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE g.gymnastID = ? AND t.teamID";
+    }
+
+    public String getLiveScoreByGymnastIDAndApparatusID() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE g.gymnastID = ? AND a.apparatusID = ?";
+    }
+
+    public String getLiveScoreByTeamIDAndApparatusID() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE t.teamID = ? AND a.apparatusID = ?";
+    }
+
+    public String getAllLiveScoreFilter() {
+        return "SELECT * FROM composite c JOIN apparatus a ON c.apparatusID = a.apparatusID JOIN gymnast g ON c.gymnastID = g.gymnastID JOIN TEAM t ON c.teamID = t.teamID JOIN score s ON c.scoreID = s.scoreID WHERE g.gymnastID = ? AND t.teamID AND a.apparatusID = ? ";
+    }
+
+    public String getAllTeam() {
         return "SELECT * FROM team";
     }
-    
-    public String getAllGymnast(){
-    return "SELECT * FROM gymnast";
-    }
-    
-    public String getLiveScoreByTeamNameAndGymnastName(){
-    return "SELECT g.gymnastName, t.teamName, a.apparatusName, scoreD + scoreA + scoreE - technicalDeduction AS totalScore,\n"
-                + "scoreD, scoreA, scoreE, technicalDeduction FROM GYMNAST g INNER JOIN TEAM t ON g.teamID = t.teamID \n"
-                + "INNER JOIN GYMNAST_APP ga ON g.gymnastID = ga.gymnastID  \n"
-                + "INNER JOIN APPARATUS a ON ga.apparatusID = a.apparatusID  \n"
-                + "INNER JOIN COMPOSITE c ON ga.gymnastID = c.gymnastID AND ga.apparatusID = c.apparatusID\n"
-                + " INNER JOIN SCORE s ON c.scoreID = s.scoreID \n"
-                + " WHERE t.teamName = ? AND g.gymnastName = ? \n"
-                + " ORDER BY g.gymnastName, t.teamName, a.apparatusName;";
+
+    public String getAllGymnast() {
+        return "SELECT * FROM gymnast";
     }
 
     public List<Composite> getAllDataLiveScore() {
@@ -83,61 +89,128 @@ public class LiveScoreDAO extends QueryLiveScore {
 
         try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getAllLiveScore())) {
             ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int gymnastID = rs.getInt("gymnastID");
+                String gymnastName = rs.getString("gymnastName");
+                   String gymnastCategory = rs.getString("gymnastCategory");
+                int teamID = rs.getInt("teamID");
+                String teamName = rs.getString("teamName");
+                int apparatusID = rs.getInt("apparatusID");
+                String apparatusName = rs.getString("apparatusName");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+
+                double technicalDeduction = rs.getDouble("technicalDeduction");
+
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
+
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
+
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+
+        return liveScoreData;
+    }
+
+    public List<Composite> getAllDataLiveScoreByGymnastID(int gymnastID) {
+        List<Composite> liveScoreData = new ArrayList<>();
+        List<Score> score = new ArrayList<>();
+        List<Gymnast> gymnast = new ArrayList<>();
+        List<Apparatus> apparatus = new ArrayList<>();
+        List<Team> team = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByGymnastID())) {
+
+            pst.setInt(1, gymnastID);
+            ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
                 int compositeID = rs.getInt("compositeID");
                 String gymnastName = rs.getString("gymnastName");
+                          String gymnastCategory = rs.getString("gymnastCategory");
                 String teamName = rs.getString("teamName");
+                int apparatusID = rs.getInt("apparatusID");
                 String apparatusName = rs.getString("apparatusName");
-                double totalScore = rs.getDouble("totalScore");
-                double scoreD = rs.getDouble("scoreD");
-                double scoreA = rs.getDouble("scoreA");
-                double scoreE = rs.getDouble("scoreE");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                int teamID = rs.getInt("teamID");
                 double technicalDeduction = rs.getDouble("technicalDeduction");
 
-                score.add(new Score(scoreD, scoreA, scoreE, technicalDeduction));
-                gymnast.add(new Gymnast(gymnastName));
-                apparatus.add(new Apparatus(apparatusName));
-                team.add(new Team(teamName));
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
 
-                liveScoreData.add(new Composite(compositeID, totalScore, score, gymnast, apparatus, team));
-
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
             }
         } catch (SQLException e) {
+
             printSQLException(e);
         }
 
         return liveScoreData;
     }
 
-    public List<Composite> getAllDataLiveScoreByName(String teamName) {
+    public List<Composite> getAllDataLiveScoreByTeamID(int teamID) {
         List<Composite> liveScoreData = new ArrayList<>();
         List<Score> score = new ArrayList<>();
         List<Gymnast> gymnast = new ArrayList<>();
         List<Apparatus> apparatus = new ArrayList<>();
         List<Team> team = new ArrayList<>();
 
-        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByTeamName())) {
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByTeamID())) {
 
-            pst.setString(1, teamName);
+            pst.setInt(1, teamID);
             ResultSet rs = pst.executeQuery();
-            
-            while(rs.next()){
-                     int compositeID = rs.getInt("compositeID");
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int gymnastID = rs.getInt("gymnastID");
+                int apparatusID = rs.getInt("apparatusID");
                 String gymnastName = rs.getString("gymnastName");
+                String gymnastCategory = rs.getString("gymnastCategory");
                 String apparatusName = rs.getString("apparatusName");
-                double totalScore = rs.getDouble("totalScore");
-                double scoreD = rs.getDouble("scoreD");
-                double scoreA = rs.getDouble("scoreA");
-                double scoreE = rs.getDouble("scoreE");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                String teamName = rs.getString("teamName");
                 double technicalDeduction = rs.getDouble("technicalDeduction");
 
-                score.add(new Score(scoreD, scoreA, scoreE, technicalDeduction));
-                gymnast.add(new Gymnast(gymnastName));
-                apparatus.add(new Apparatus(apparatusName));
-                team.add(new Team(teamName));
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
 
-                liveScoreData.add(new Composite(compositeID, totalScore, score, gymnast, apparatus, team));
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
             }
         } catch (SQLException e) {
 
@@ -146,35 +219,45 @@ public class LiveScoreDAO extends QueryLiveScore {
 
         return liveScoreData;
     }
-    
-       public List<Composite> getAllDataLiveScoreByTeamAndGymnast(String teamName,String gymnastName) {
+
+    public List<Composite> getAllDataLiveScoreByApparatusID(int apparatusID) {
         List<Composite> liveScoreData = new ArrayList<>();
         List<Score> score = new ArrayList<>();
         List<Gymnast> gymnast = new ArrayList<>();
         List<Apparatus> apparatus = new ArrayList<>();
         List<Team> team = new ArrayList<>();
 
-        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByTeamName())) {
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByApparatuSID())) {
 
-            pst.setString(1, teamName);
-            pst.setString(2, gymnastName);
+            pst.setInt(1, apparatusID);
             ResultSet rs = pst.executeQuery();
-            
-            while(rs.next()){
-                     int compositeID = rs.getInt("compositeID");
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int gymnastID = rs.getInt("gymnastID");
+                String gymnastName = rs.getString("gymnastName");
+                  String gymnastCategory = rs.getString("gymnastCategory");
                 String apparatusName = rs.getString("apparatusName");
-                double totalScore = rs.getDouble("totalScore");
-                double scoreD = rs.getDouble("scoreD");
-                double scoreA = rs.getDouble("scoreA");
-                double scoreE = rs.getDouble("scoreE");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                int teamID = rs.getInt("teamID");
+                String teamName = rs.getString("teamName");
                 double technicalDeduction = rs.getDouble("technicalDeduction");
 
-                score.add(new Score(scoreD, scoreA, scoreE, technicalDeduction));
-                gymnast.add(new Gymnast(gymnastName));
-                apparatus.add(new Apparatus(apparatusName));
-                team.add(new Team(teamName));
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
 
-                liveScoreData.add(new Composite(compositeID, totalScore, score, gymnast, apparatus, team));
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
             }
         } catch (SQLException e) {
 
@@ -184,47 +267,261 @@ public class LiveScoreDAO extends QueryLiveScore {
         return liveScoreData;
     }
     
-      public List <Gymnast> listAllGymnast(){
-          List <Gymnast> gyms = new ArrayList<>();
-          
-          try(Connection con = db.getConnection();
-                  PreparedStatement pst = con.prepareStatement(getAllGymnast())){
-              ResultSet rs = pst.executeQuery();
-              
-              while(rs.next()){
-                  String name = rs.getString("gymnastName");
-                  
-                  gyms.add( new Gymnast(name));
-              }
-              
-              
-          }catch(SQLException e){
-              printSQLException(e);
-          }
-          return gyms;
-      }
-      
-          public List <Team> listAllTeam(){
-          List <Team> team = new ArrayList<>();
-          
-          try(Connection con = db.getConnection();
-                  PreparedStatement pst = con.prepareStatement(getAllGymnast())){
-              ResultSet rs = pst.executeQuery();
-              
-              while(rs.next()){
-                  String name = rs.getString("teamName");
-                  
-                  team.add( new Team(name));
-              }
-              
-              
-          }catch(SQLException e){
-              printSQLException(e);
-          }
-          return team;
-      }
-          
-          
+        public List<Composite> getAllDataLiveScoreByCategoryName(String categoryName) {
+        List<Composite> liveScoreData = new ArrayList<>();
+        List<Score> score = new ArrayList<>();
+        List<Gymnast> gymnast = new ArrayList<>();
+        List<Apparatus> apparatus = new ArrayList<>();
+        List<Team> team = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByCategory())) {
+
+            pst.setString(1, categoryName);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int gymnastID = rs.getInt("gymnastID");
+                String gymnastName = rs.getString("gymnastName");
+                  String gymnastCategory = rs.getString("gymnastCategory");
+                int apparatusID =  rs.getInt("apparatusID");
+                String apparatusName = rs.getString("apparatusName");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                int teamID = rs.getInt("teamID");
+                String teamName = rs.getString("teamName");
+                double technicalDeduction = rs.getDouble("technicalDeduction");
+
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
+
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
+            }
+        } catch (SQLException e) {
+
+            printSQLException(e);
+        }
+
+        return liveScoreData;
+    }
+
+    public List<Composite> getAllDataLiveScoreByGymnastIDAndTeamID(int gymnastID, int teamID) {
+        List<Composite> liveScoreData = new ArrayList<>();
+        List<Score> score = new ArrayList<>();
+        List<Gymnast> gymnast = new ArrayList<>();
+        List<Apparatus> apparatus = new ArrayList<>();
+        List<Team> team = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByGymnastIDAndTeamID())) {
+
+            pst.setInt(1, gymnastID);
+            pst.setInt(2, teamID);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int apparatusID = rs.getInt("apparatusID");
+                String gymnastName = rs.getString("gymnastName");
+                  String gymnastCategory = rs.getString("gymnastCategory");
+                String apparatusName = rs.getString("apparatusName");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                String teamName = rs.getString("teamName");
+                double technicalDeduction = rs.getDouble("technicalDeduction");
+
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
+
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
+            }
+        } catch (SQLException e) {
+
+            printSQLException(e);
+        }
+
+        return liveScoreData;
+    }
+
+    public List<Composite> getAllDataLiveScoreByGymnastIDAndApparatusID(int gymnastID, int apparatusID) {
+        List<Composite> liveScoreData = new ArrayList<>();
+        List<Score> score = new ArrayList<>();
+        List<Gymnast> gymnast = new ArrayList<>();
+        List<Apparatus> apparatus = new ArrayList<>();
+        List<Team> team = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByGymnastIDAndApparatusID())) {
+
+            pst.setInt(1, gymnastID);
+            pst.setInt(2, apparatusID);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int teamID = rs.getInt("teamID");
+                String gymnastName = rs.getString("gymnastName");
+                 String gymnastCategory = rs.getString("gymnastCategory");
+                String apparatusName = rs.getString("apparatusName");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                String teamName = rs.getString("teamName");
+                double technicalDeduction = rs.getDouble("technicalDeduction");
+
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
+
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
+            }
+        } catch (SQLException e) {
+
+            printSQLException(e);
+        }
+
+        return liveScoreData;
+    }
+
+    public List<Composite> getLiveScoreByTeamIDAndApparatusID(int teamID, int apparatusID) {
+        List<Composite> liveScoreData = new ArrayList<>();
+        List<Score> score = new ArrayList<>();
+        List<Gymnast> gymnast = new ArrayList<>();
+        List<Apparatus> apparatus = new ArrayList<>();
+        List<Team> team = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getLiveScoreByTeamIDAndApparatusID())) {
+
+            pst.setInt(1, teamID);
+            pst.setInt(2, apparatusID);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                int gymnastID = rs.getInt("gymnastID");
+                String gymnastName = rs.getString("gymnastName");
+                  String gymnastCategory = rs.getString("gymnastCategory");
+                String apparatusName = rs.getString("apparatusName");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                String teamName = rs.getString("teamName");
+                double technicalDeduction = rs.getDouble("technicalDeduction");
+
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
+
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
+            }
+        } catch (SQLException e) {
+
+            printSQLException(e);
+        }
+
+        return liveScoreData;
+    }
+    
+       public List<Composite> getAllLiveScoreFilter(int gymnastID,int teamID, int apparatusID) {
+        List<Composite> liveScoreData = new ArrayList<>();
+        List<Score> score = new ArrayList<>();
+        List<Gymnast> gymnast = new ArrayList<>();
+        List<Apparatus> apparatus = new ArrayList<>();
+        List<Team> team = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getAllLiveScoreFilter())) {
+
+            pst.setInt(1, gymnastID);
+            pst.setInt(2, teamID);
+            pst.setInt(3, apparatusID);
+            
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int compositeID = rs.getInt("compositeID");
+                String gymnastName = rs.getString("gymnastName");
+                  String gymnastCategory = rs.getString("gymnastCategory");
+                String apparatusName = rs.getString("apparatusName");
+                double scoreD1 = rs.getDouble("scoreD1");
+                double scoreD2 = rs.getDouble("scoreD2");
+                double scoreD3 = rs.getDouble("scoreD3");
+                double scoreD4 = rs.getDouble("scoreD4");
+                double scoreA1 = rs.getDouble("scoreA1");
+                double scoreA2 = rs.getDouble("scoreA2");
+                double scoreA3 = rs.getDouble("scoreA3");
+                double scoreE1 = rs.getDouble("scoreE1");
+                double scoreE2 = rs.getDouble("scoreE2");
+                double scoreE3 = rs.getDouble("scoreE3");
+                String teamName = rs.getString("teamName");
+                double technicalDeduction = rs.getDouble("technicalDeduction");
+
+                score.add(new Score(scoreD1, scoreD2, scoreD3, scoreD4, scoreA1, scoreA2, scoreA3, scoreE1, scoreE2, scoreE3, technicalDeduction, gymnastID));
+                gymnast.add(new Gymnast(gymnastID, gymnastName,gymnastCategory));
+                apparatus.add(new Apparatus(apparatusID, apparatusName));
+                team.add(new Team(teamID, teamName));
+
+                liveScoreData.add(new Composite(compositeID, score, gymnast, apparatus, team));
+            }
+        } catch (SQLException e) {
+
+            printSQLException(e);
+        }
+
+        return liveScoreData;
+    }
+    
+
+    public List<Gymnast> listAllGymnast() {
+        List<Gymnast> gyms = new ArrayList<>();
+
+        try (Connection con = db.getConnection(); PreparedStatement pst = con.prepareStatement(getAllGymnast())) {
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("gymnastName");
+
+                gyms.add(new Gymnast(name));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return gyms;
+    }
 
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {

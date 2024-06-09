@@ -166,12 +166,12 @@
               <thead class="thead-light">
                <tr>
                 <th scope="col">#</th>
-                <th scope="col">Coach Name</th>
-                <th scope="col">Coach Identity Card</th>
-                <th scope="col">Coach Place Of Duty</th>
-                <th scope="col">Fisio Name</th>
-                <th scope="col">Fisio Identity Card</th>
-                <th scope="col">Fisio Place Of Duty</th>
+                <th scope="col">Coach Details</th>
+<!--                <th scope="col">Coach Identity Card</th>
+                <th scope="col">Coach Place Of Duty</th>-->
+                <th scope="col">Fisio Details</th>
+<!--                <th scope="col">Fisio Identity Card</th>
+                <th scope="col">Fisio Place Of Duty</th>-->
                 <th scope="col">Team Name</th>
                 <th scope="col">Action</th>
                </tr>
@@ -231,7 +231,7 @@
                    </div>
 
                    <div class="mb-3">
-                    <label class="form-label">Fisio POD</label>
+                    <label class="form-label">Fisio Place Of Duty</label>
                     <input type="text" class="form-control" name="fisioPOD" id="fisioPOD">
                    </div>
 
@@ -271,12 +271,12 @@
                     <label class="form-label">Coach Identity Card</label>
                     <input type="text" class="form-control" name="updateCoachIC" id="updateCoachIC">
                    </div>
-                   
+
                    <div class="mb-3">
                     <!--<label class="form-label">Old Coach Identity Card</label>-->
                     <input hidden type="text" class="form-control" name="oldCoachIC" id="oldCoachIC">
                    </div>
-                   
+
                    <div class="mb-3">
                     <label class="form-label">Coach Place Of Duty</label>
                     <input type="text" class="form-control" name="updateCoachPOD" id="updateCoachPOD">
@@ -292,7 +292,7 @@
                    </div>
 
                    <div class="mb-3">
-                    <label class="form-label">Fisio POD</label>
+                    <label class="form-label">Fisio Place Of Duty</label>
                     <input type="text" class="form-control" name="updateFisioPOD" id="updateFisioPOD">
                    </div>
 
@@ -319,32 +319,34 @@
          </div>
         </div>
        </div>
-
-       <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a href="" target="_blank"></a> Gymnastic Scoring System. All rights reserved.</span>
-         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-        </div>
-       </footer>
-
-
-       </body>
-       </html>
-
-       <!--   Core JS Files   -->
-       <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
-       <script src="assets/js/core/popper.min.js"></script>
-       <script src="assets/js/core/bootstrap.min.js"></script>
-       <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-       <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
-       <script src="assets/off-canvas.js" type="text/javascript"></script>
-       <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
-       <script src="assets/template.js" type="text/javascript"></script>
-       <script src="assets/settings.js" type="text/javascript"></script>
-       <script src="assets/todolist.js" type="text/javascript"></script>
+      </section>
+     </div>
+     <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+       <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a
+         href="" target="_blank"></a> Gymnastic Scoring System</span>
+      </div>
+     </footer>
+    </div>
+   </div>
+  </div>
 
 
-       <script>
+
+  <!--   Core JS Files   -->
+  <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
+  <script src="assets/js/core/popper.min.js"></script>
+  <script src="assets/js/core/bootstrap.min.js"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="assets/off-canvas.js" type="text/javascript"></script>
+  <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
+  <script src="assets/template.js" type="text/javascript"></script>
+  <script src="assets/settings.js" type="text/javascript"></script>
+  <script src="assets/todolist.js" type="text/javascript"></script>
+
+
+  <script>
                     function fetchTeamData() {
                      $.ajax({
                       type: 'GET',
@@ -362,13 +364,27 @@
                         // Create table cells for Team ID, username, and password
                         //var teamIDCell = $('<td>').text(team.coachIC);
                         var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
-                        var teamCoachNameCell = $('<td>').text(team.coachName);
-                        var teamICCell = $('<td>').text(team.coachIC);
-                        var teamPODCell = $('<td>').text(team.coachPOD);
-                        var teamFisioNameCell = $('<td>').text(team.fisioName);
-                        var teamFisioICCell = $('<td>').text(team.fisioIC);
-                        var teamFisioPODCell = $('<td>').text(team.fisioPOD);
+//                        var teamCoachNameCell = $('<td>').text(team.coachName);
+//                        var teamICCell = $('<td>').text(team.coachIC);
+//                        var teamPODCell = $('<td>').text(team.coachPOD);
+//                        var teamFisioNameCell = $('<td>').text(team.fisioName);
+//                        var teamFisioICCell = $('<td>').text(team.fisioIC);
+//                        var teamFisioPODCell = $('<td>').text(team.fisioPOD);
                         var teamNameCell = $('<td>').text(team.teamName);
+
+                        var coachNameICPOD = $('<td>').html(
+                                '<p class="font-weight-bold mb-0">' + team.coachName + '</p>' +
+                                '<p class="text-secondary mb-0">' + team.coachIC + '</p>' +
+                                '<p class="text-secondary mb-0">' + team.coachPOD + '</p>'
+                                );
+                        
+                        var fisioNameICPOD = $('<td>').html(
+                                '<p class="font-weight-bold mb-0">' + team.fisioName + '</p>' +
+                                '<p class="text-secondary mb-0">' + team.fisioIC + '</p>' +
+                                '<p class="text-secondary mb-0">' + team.fisioPOD + '</p>'
+                                );
+
+
 
                         // Create edit and delete buttons
                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
@@ -396,7 +412,7 @@
                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
                         // Append cells to the row
-                        row.append(rowNumberCell, teamCoachNameCell, teamICCell, teamPODCell, teamFisioNameCell, teamFisioICCell, teamFisioPODCell, teamNameCell, actionCell);
+                        row.append(rowNumberCell, coachNameICPOD, fisioNameICPOD, teamNameCell, actionCell);
 
                         // Append row to the table body
                         $('#teamTableBody').append(row);
@@ -412,131 +428,133 @@
                     $(document).ready(function () {
                      fetchTeamData();
                     });
-       </script>
+  </script>
 
 
-       <script>
-        var msg = null;
-        function addCoach() {
-         var coachName = $("#coachName").val().trim();
-         var coachIC = $("#coachIC").val().trim();
-         var coachPOD = $("#coachPOD").val().trim();
-         var fisioName = $("#fisioName").val().trim();
-         var fisioIC = $("#fisioIC").val().trim();
-         var teamName = $("#teamName").val().trim();
+  <script>
+   var msg = null;
+   function addCoach() {
+    var coachName = $("#coachName").val().trim();
+    var coachIC = $("#coachIC").val().trim();
+    var coachPOD = $("#coachPOD").val().trim();
+    var fisioName = $("#fisioName").val().trim();
+    var fisioIC = $("#fisioIC").val().trim();
+    var teamName = $("#teamName").val().trim();
 
-         // Check if any field is empty
-         if (!coachName || !coachIC || !coachPOD || !fisioName || !fisioIC || !teamName) {
-          alert("Please fill in all fields.");
-          return;
-         }
+    // Check if any field is empty
+    if (!coachName || !coachIC || !coachPOD || !fisioName || !fisioIC || !teamName) {
+     alert("Please fill in all fields.");
+     return;
+    }
 
-         var data = $("#ajaxAddCoach").serialize();
+    var data = $("#ajaxAddCoach").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../AddTeamServlet',
-          data: data,
-          dataType: 'JSON',
+    $.ajax({
+     type: 'POST',
+     url: '../AddTeamServlet',
+     data: data,
+     dataType: 'JSON',
 
-          success: function (data) {
-           msg = data[0].msg
+     success: function (data) {
+      msg = data[0].msg
 
-           if (msg == 1) {
-            alert('Submit Inserted');
-            $('#ajaxAddCoach')[0].reset();
-            $("#closeModal").trigger('click');
-            fetchTeamData();
+      if (msg == 1) {
+       alert('Submit Inserted');
+       $('#ajaxAddCoach')[0].reset();
+       $("#closeModal").trigger('click');
+       fetchTeamData();
 
-           } else {
-            alert('Data Not Inserted');
-           }
-          }
-         })
-        }
-       </script>
+      } else {
+       alert('Data Not Inserted');
+      }
+     }
+    })
+   }
+  </script>
 
-       <script>
-        // Function to handle deletion after confirmation
-        function deleteTeam(coachIC) {
-         console.log("Deleting Team ID:", coachIC);
-         // Show confirmation modal
-         $('#confirmationModal').modal('show');
-         $('#confirmDeleteBtn').click(function () {
-          $.ajax({
-           type: 'POST',
-           url: '../DeleteTeamServlet',
-           data: {coachIC: coachIC},
-           success: function (response) {
-            console.log("Team deleted successfully");
-            fetchTeamData();
-           },
-           error: function (xhr, status, error) {
-            // Handle error
-            console.error("Error deleting Team", error);
-           }
-          });
+  <script>
+   // Function to handle deletion after confirmation
+   function deleteTeam(coachIC) {
+    console.log("Deleting Team ID:", coachIC);
+    // Show confirmation modal
+    $('#confirmationModal').modal('show');
+    $('#confirmDeleteBtn').click(function () {
+     $.ajax({
+      type: 'POST',
+      url: '../DeleteTeamServlet',
+      data: {coachIC: coachIC},
+      success: function (response) {
+       console.log("Team deleted successfully");
+       fetchTeamData();
+      },
+      error: function (xhr, status, error) {
+       // Handle error
+       console.error("Error deleting Team", error);
+      }
+     });
 
-          $('#confirmationModal').modal('hide');
-         });
-        }
-       </script>
+     $('#confirmationModal').modal('hide');
+    });
+   }
+  </script>
 
-       <script>
-        function updateTeam() {
-         var formData = $("#ajaxUpdateTeam").serialize();
+  <script>
+   function updateTeam() {
+    var formData = $("#ajaxUpdateTeam").serialize();
 
-         $.ajax({
-          type: 'POST',
-          url: '../UpdateTeamServlet',
-          data: formData,
-          dataType: 'JSON',
-          success: function (response) {
-           if (response.success) {
-            alert('Team information updated successfully');
-            $("#closeModalUpdate").trigger('click');
-            fetchTeamData();
-           } else {
-            alert('Failed to update Team information. Please try again.');
-           }
-          },
-          error: function (xhr, status, error) {
-           console.error("Error updating Team information:", error);
-           alert('An error occurred while updating Team information. Please try again later.');
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'POST',
+     url: '../UpdateTeamServlet',
+     data: formData,
+     dataType: 'JSON',
+     success: function (response) {
+      if (response.success) {
+       alert('Team information updated successfully');
+       $("#closeModalUpdate").trigger('click');
+       fetchTeamData();
+      } else {
+       alert('Failed to update Team information. Please try again.');
+      }
+     },
+     error: function (xhr, status, error) {
+      console.error("Error updating Team information:", error);
+      alert('An error occurred while updating Team information. Please try again later.');
+     }
+    });
+   }
+  </script>
 
-       <script>
-        function displayTeam(coachIC) {
+  <script>
+   function displayTeam(coachIC) {
 
-         $.ajax({
-          type: 'GET',
-          url: '../DisplayTeamServlet',
-          data: {coachIC: coachIC},
-          dataType: 'JSON',
-          success: function (coach) {
-           $('#updateCoachName').val(coach.coachName);
-           $('#updateCoachIC').val(coach.coachIC);
-           $('#updateCoachPOD').val(coach.coachPOD);
-           $('#updateFisioName').val(coach.fisioName);
-           $('#updateFisioIC').val(coach.fisioIC);
-           $('#updateFisioPOD').val(coach.fisioPOD);
-           $('#updateTeamName').val(coach.teamName);
-           
-           
-           $('#oldCoachIC').val(coach.coachIC);
-           
-           $('#updateTeamModal').modal('show');
-          },
-          error: function (xhr, status, error) {
-           console.error("Error retrieving clerk information:", error);
-          }
-         });
-        }
-       </script>
+    $.ajax({
+     type: 'GET',
+     url: '../DisplayTeamServlet',
+     data: {coachIC: coachIC},
+     dataType: 'JSON',
+     success: function (coach) {
+      $('#updateCoachName').val(coach.coachName);
+      $('#updateCoachIC').val(coach.coachIC);
+      $('#updateCoachPOD').val(coach.coachPOD);
+      $('#updateFisioName').val(coach.fisioName);
+      $('#updateFisioIC').val(coach.fisioIC);
+      $('#updateFisioPOD').val(coach.fisioPOD);
+      $('#updateTeamName').val(coach.teamName);
 
+
+      $('#oldCoachIC').val(coach.coachIC);
+
+      $('#updateTeamModal').modal('show');
+     },
+     error: function (xhr, status, error) {
+      console.error("Error retrieving clerk information:", error);
+     }
+    });
+   }
+  </script>
+
+ </body>
+</html>
 
 
 

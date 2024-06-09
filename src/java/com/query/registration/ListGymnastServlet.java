@@ -30,7 +30,7 @@ public class ListGymnastServlet extends HttpServlet {
 
         try {
             // Prepare and execute query to fetch data
-            pstm = con.prepareStatement("SELECT * FROM GYMNAST G JOIN TEAM T ON G.TEAMID = T.TEAMID");
+            pstm = con.prepareStatement("SELECT G.GYMNASTID,GYMNASTIC,GYMNASTICPIC,GYMNASTNAME,GYMNASTSCHOOL,GYMNASTCATEGORY,TEAMNAME,APPARATUSNAME FROM GYMNAST G JOIN GYMNAST_APP GA ON G.GYMNASTID = GA.GYMNASTID JOIN TEAM T ON G.TEAMID = T.TEAMID JOIN APPARATUS A ON GA.APPARATUSID = A.APPARATUSID");
             rs = pstm.executeQuery();
 
             // Convert ResultSet to JSON
@@ -38,12 +38,13 @@ public class ListGymnastServlet extends HttpServlet {
             while (rs.next()) {
                 JSONObject obj = new JSONObject();
                 obj.put("gymnastID", rs.getInt("gymnastID"));
-                obj.put("gymnastIC", rs.getInt("gymnastIC"));
+                obj.put("gymnastIC", rs.getString("gymnastIC"));
                 obj.put("gymnastICPic", rs.getString("gymnastICPic"));
                 obj.put("gymnastName", rs.getString("gymnastName"));
                 obj.put("gymnastSchool", rs.getString("gymnastSchool"));
                 obj.put("gymnastCategory", rs.getString("gymnastCategory"));
                 obj.put("teamName", rs.getString("teamName"));
+                obj.put("apparatusName", rs.getString("apparatusName"));
                 jsonArray.add(obj);
             }
 

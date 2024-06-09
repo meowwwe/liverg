@@ -23,13 +23,13 @@ public class Team {
  String userRole = "";
 
  //Variable Declaration
- int teamID, coachIC;
- String teamName;
+ int teamID;
+ String teamName, coachIC;
 
  public Team() {
  }
 
- public Team(int teamID, int coachIC, String teamName) {
+ public Team(int teamID, String coachIC, String teamName) {
   this.teamID = teamID;
   this.coachIC = coachIC;
   this.teamName = teamName;
@@ -39,7 +39,7 @@ public class Team {
   return teamID;
  }
 
- public int getCoachIC() {
+ public String getCoachIC() {
   return coachIC;
  }
 
@@ -51,7 +51,7 @@ public class Team {
   this.teamID = teamID;
  }
 
- public void setCoachIC(int coachIC) {
+ public void setCoachIC(String coachIC) {
   this.coachIC = coachIC;
  }
 
@@ -59,12 +59,12 @@ public class Team {
   this.teamName = teamName;
  }
 
- public void addTeam(int coachIC, String teamName) throws SQLException {
+ public void addTeam(String coachIC, String teamName) throws SQLException {
 
   String sql = "INSERT INTO TEAM(teamName,coachIC) VALUES (?,?)";
   pstm = con.prepareStatement(sql);
   pstm.setString(1, teamName);
-  pstm.setInt(2, coachIC);
+  pstm.setString(2, coachIC);
   pstm.executeUpdate();
  }
 }

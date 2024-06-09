@@ -2,13 +2,15 @@ package com.registration.servlet;
 
 import com.registration.bean.Gymnast;
 import java.io.*;
-import java.util.logging.*;
 import java.nio.file.Paths;
+import java.util.logging.*;
 import jakarta.servlet.http.*;
 import org.json.simple.*;
 import jakarta.servlet.ServletException;
 import java.sql.SQLException;
 import jakarta.servlet.annotation.MultipartConfig;
+import java.util.ArrayList;
+import java.util.List;
 
 @MultipartConfig
 public class AddGymnastServlet extends HttpServlet {
@@ -28,37 +30,36 @@ public class AddGymnastServlet extends HttpServlet {
   try {
    // Retrieve and log parameters
    String gymnastName = request.getParameter("gymnastName");
-   String gymnastICStr = request.getParameter("gymnastIC");
+   String gymnastIC = request.getParameter("gymnastIC");
    String gymnastCategory = request.getParameter("gymnastCategory");
    String gymnastSchool = request.getParameter("gymnastSchool");
    String teamIDStr = request.getParameter("gymnastTeam");
    int teamID = Integer.parseInt(teamIDStr);
-   Part filePart = request.getPart("gymnastPic");
+
+   // Retrieve selected apparatus IDs
+   String selectedValuesStr = request.getParameter("#select2");
 
    logger.log(Level.INFO, "gymnastName: {0}", gymnastName);
-   logger.log(Level.INFO, "gymnastICStr: {0}", gymnastICStr);
+   logger.log(Level.INFO, "gymnastIC: {0}", gymnastIC);
    logger.log(Level.INFO, "gymnastCategory: {0}", gymnastCategory);
    logger.log(Level.INFO, "gymnastSchool: {0}", gymnastSchool);
-   logger.log(Level.INFO, "filePart: {0}", filePart);
+   logger.log(Level.INFO, "selectedValuesStr: {0}", selectedValuesStr);
 
    // Validate parameters
-   if (gymnastName == null || gymnastICStr == null || gymnastCategory == null || gymnastSchool == null || filePart == null || teamIDStr == null) {
+   if (gymnastName == null || gymnastIC == null || gymnastCategory == null || gymnastSchool == null || teamIDStr == null || selectedValuesStr == null) {
     throw new IllegalArgumentException("Missing required form parameters.");
+   }
+
+   // Process the file upload
+   Part filePart = request.getPart("gymnastPic");
+   if (filePart == null) {
+    throw new IllegalArgumentException("File upload is required.");
    }
 
    // Check if file is an image
    String contentType = filePart.getContentType();
    if (contentType == null || !contentType.startsWith("image")) {
     throw new IllegalArgumentException("Only image files are allowed.");
-   }
-
-   // Convert gymnastICStr to integer
-   int gymnastIC;
-   try {
-    gymnastIC = Integer.parseInt(gymnastICStr);
-    logger.log(Level.INFO, "Converted gymnastIC: {0}", gymnastIC);
-   } catch (NumberFormatException e) {
-    throw new IllegalArgumentException("Invalid gymnast IC format.", e);
    }
 
    // Process the file upload
@@ -87,7 +88,6 @@ public class AddGymnastServlet extends HttpServlet {
 
    // Upload file
    try (FileOutputStream fos = new FileOutputStream(uploadPath); InputStream is = filePart.getInputStream()) {
-
     byte[] buffer = new byte[1024];
     int bytesRead;
     while ((bytesRead = is.read(buffer)) != -1) {
@@ -99,22 +99,44 @@ public class AddGymnastServlet extends HttpServlet {
    // Add gymnast to the database
    Gymnast gymnast = new Gymnast();
    try {
-    gymnast.addGymnast(gymnastName, gymnastIC, newFileName, gymnastSchool, gymnastCategory,teamID);
-    msg = "1";  // Success
-    logger.log(Level.INFO, "Gymnast added successfully.");
+    int gymnastID = gymnast.addGymnast(gymnastName, gymnastIC, newFileName, gymnastSchool, gymnastCategory, teamID);
+    logger.log(Level.INFO, "Retrieved gymnastID: {0}", gymnastID);
+
+    // Store the selected apparatus IDs for the current gymnast
+    if (selectedValuesStr != null && !selectedValuesStr.isEmpty()) {
+     // Split the concatenated string into individual integer values
+     String[] selectedApparatusIDs = selectedValuesStr.split(",");
+     // Store the selected apparatus IDs for the current gymnast
+     for (String idStr : selectedApparatusIDs) {
+      try {
+       // Parse each ID string to an integer
+       int apparatusID = Integer.parseInt(idStr.trim()); // trim to remove leading/trailing whitespaces
+       // Store the parsed integer ID
+       gymnast.addGymnastApp(gymnastID, apparatusID);
+       gymnast.addComposite(gymnastID, teamID, apparatusID);
+      } catch (NumberFormatException e) {
+       // Handle the case where a string cannot be parsed to an integer
+       // Log a warning or provide appropriate error handling
+       logger.log(Level.WARNING, "Invalid apparatus ID: {0}", idStr);
+      }
+     }
+    }
+
+    msg = "1"; // Success
+    logger.log(Level.INFO, "Gymnast added successfully with ID: {0}", gymnastID);
    } catch (SQLException ex) {
-    msg = "2";  // Database error
+    msg = "2"; // Database error
     logger.log(Level.SEVERE, "Database error", ex);
    }
 
   } catch (IllegalArgumentException e) {
-   msg = "3";  // Invalid or missing parameters
+   msg = "3"; // Invalid or missing parameters
    logger.log(Level.WARNING, "Invalid or missing parameters", e);
   } catch (IOException e) {
-   msg = "4";  // File upload error
+   msg = "4"; // File upload error
    logger.log(Level.SEVERE, "File upload error", e);
   } catch (Exception e) {
-   msg = "5";  // Other error
+   msg = "5"; // Other error
    logger.log(Level.SEVERE, "An unexpected error occurred", e);
   }
 

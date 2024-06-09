@@ -4,26 +4,37 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="com.connection.DBConnect" %>
 <%@ page import="com.registration.bean.Team" %>
-
+<%@ page import="com.registration.bean.Apparatus" %>
 
 <%
     Connection con = null;
     Statement stmt = null;
     ResultSet rs = null;
     List<Team> teams = new ArrayList<>(); // Assuming you have a Team class
+    List<Apparatus> apparatusList = new ArrayList<>(); // Assuming you have an Apparatus class
 
     try {
         DBConnect db = new DBConnect();
         con = db.getConnection();
         stmt = con.createStatement();
+        
+        // Fetching data from TEAM table
         rs = stmt.executeQuery("SELECT * FROM TEAM");
-
-        // Fetch data from ResultSet and store it in the teams list
         while (rs.next()) {
             Team team = new Team();
             team.setTeamID(rs.getInt("teamID"));
             team.setTeamName(rs.getString("teamName"));
             teams.add(team);
+        }
+        rs.close(); // Close the ResultSet before reusing the Statement
+        
+        // Fetching data from APPARATUS table
+        rs = stmt.executeQuery("SELECT * FROM APPARATUS");
+        while (rs.next()) {
+            Apparatus apparatus = new Apparatus();
+            apparatus.setApparatusID(rs.getInt("apparatusID"));
+            apparatus.setApparatusName(rs.getString("apparatusName"));
+            apparatusList.add(apparatus);
         }
 %> 
 
@@ -57,6 +68,9 @@
   <link href="assets/css/nucleo-svg.css" rel="stylesheet" type="text/css"/>
   <!-- CSS Files -->
   <link href="assets/css/soft-ui-dashboard.css" rel="stylesheet" type="text/css"/>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 
   <style>
    .card {
@@ -103,6 +117,21 @@
     max-height: 100%; /* Ensure the image doesn't exceed the container height */
     display: block; /* Ensure the image is displayed as a block element */
     margin: auto; /* Center the image horizontally */
+   }
+
+   .choices__list--multiple .choices__item {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 3.75px;
+    margin-bottom: 3.75px;
+    background-color: #344767;
+    border: 1px solid #00a5bb;
+    color: #fff;
+    word-break: break-all;
    }
   </style>
 
@@ -203,12 +232,13 @@
               <thead class="thead-light">
                <tr>
                 <th scope="col">#</th>
-                <th scope="col">Gymnast Name</th>
-                <th scope="col">Gymnast Identity Card</th>
-                <th scope="col">Gymnast School</th>
-                <th scope="col">Gymnast Category</th>
-                <th scope="col">Gymnast Team</th>
-                <th scope="col">Action</th>
+                <th scope="col"> Name</th>
+                <th scope="col"> Identity Card</th>
+                <th scope="col"> School</th>
+                <th scope="col"> Category</th>
+                <th scope="col"> Apparatus</th>
+                <th scope="col"> Gymnast Team</th>
+                <th scope="col"> Action</th>
                </tr>
               </thead>
 
@@ -263,11 +293,30 @@
                     <label class="form-label">Gymnast Category</label>
                     <select name="gymnastCategory" id="gymnastCategory" class="form-control" style="color: black">
                      <option value="" hidden>Select a Category</option>
-                     <option value="Pre-Junior">Pre-Junior</option>
-                     <option value="Junior">Junior</option>
-                     <option value="Senior">Senior</option>
+                     <option value="U12">U12</option>
+                     <option value="U9">U9</option>
                     </select>
                    </div>
+                   <div class="mb-3">
+                    <label class="form-label">Gymnast Apparatus</label>
+                    <select name="gymnastApparatusID" id="gymnastApparatusID" class="form-control" style="color: black">
+                     <option value="" hidden>Select an Apparatus</option>
+                     <% for (Apparatus apparatus : apparatusList) { %>
+                     <option value="<%= apparatus.getApparatusID() %>"><%= apparatus.getApparatusName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
+
+                   <div class="mb-3">
+                    <label class="form-label">Gymnast Apparatus</label>
+                    <select name="select2" id="select2" class="form-control" style="color: black" multiple>
+                     <option value="" hidden>Select an Apparatus</option>
+                     <% for (Apparatus apparatus : apparatusList) { %>
+                     <option value="<%= apparatus.getApparatusID() %>"><%= apparatus.getApparatusName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
+
                    <div class="mb-3">
                     <label class="form-label">Gymnast Team</label>
                     <select name="gymnastTeam" id="gymnastTeam" class="form-control" style="color: black">
@@ -278,6 +327,7 @@
                     </select>
                    </div>
 
+
                    <button type="button" onclick="addGymnast()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
                   </form>
                  </div>
@@ -287,7 +337,6 @@
                 </div>
                </div>
               </div>
-
 
               <!-- Update Gymnast Modal -->
               <div class="modal fade" id="updateGymnastModal" tabindex="-1" aria-hidden="true">
@@ -308,27 +357,31 @@
                     <label class="form-label">Gymnast Identity Card</label>
                     <input type="text" name="updateGymnastIC" id="updateGymnastIC" class="form-control">
                    </div>
-
-
                    <div class="mb-3">
                     <label for="icPic" class="form-label">Please Select Your I/C Picture</label>
                     <input type="file" class="form-control" name="updateGymnastPic" id="updateGymnastPic">
                    </div>
-
                    <div class="mb-3">
                     <label class="form-label">Gymnast School</label>
                     <input type="text" name="updateGymnastSchool" id="updateGymnastSchool" class="form-control">
                    </div>
-
                    <div class="mb-3">
                     <label class="form-label">Gymnast Category</label>
                     <select name="updateGymnastCategory" id="updateGymnastCategory" class="form-control">
-                     <option value="Pre-Junior">Pre-Junior</option>
-                     <option value="Junior">Junior</option>
-                     <option value="Senior">Senior</option>
+
+                     <option value="U12">U12</option>
+                     <option value="U9">U9</option>
                     </select>
                    </div>
-
+                   <div class="mb-3">
+                    <label class="form-label">Gymnast Apparatus</label>
+                    <select name="updateGymnastApparatusID" id="updateGymnastApparatusID" class="form-control" style="color: black">
+                     <option value="" hidden>Select an Apparatus</option>
+                     <% for (Apparatus apparatus : apparatusList) { %>
+                     <option value="<%= apparatus.getApparatusID() %>"><%= apparatus.getApparatusName() %></option>
+                     <% } %>
+                    </select>
+                   </div>
                    <div class="mb-3">
                     <label class="form-label">Gymnast Team</label>
                     <select name="updateGymnastTeam" id="updateGymnastTeam" class="form-control" style="color: black">
@@ -341,7 +394,6 @@
                    <div class="mb-3">
                     <input type="text" hidden name="updateGymnastID" id="updateGymnastID" class="form-control">
                    </div>
-
                    <button type="button" onclick="updateGymnast()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
                   </form>
                  </div>
@@ -352,20 +404,6 @@
                </div>
               </div>
 
-              <%
-                 } catch (SQLException e) {
-                     e.printStackTrace();
-                 } finally {
-                     // Close resources
-                     try {
-                         if (rs != null) rs.close();
-                         if (stmt != null) stmt.close();
-                         if (con != null) con.close();
-                     } catch (SQLException ex) {
-                         ex.printStackTrace();
-                     }
-                 }
-              %>
 
               <!-- Modal Display Image Identity -->
               <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
@@ -399,32 +437,49 @@
          </div>
         </div>
        </div>
+      </section>
+     </div>
+     <footer class="footer">
+      <div class="d-sm-flex justify-content-center justify-content-sm-between">
+       <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a
+         href="" target="_blank"></a> Gymnastic Scoring System</span>
+      </div>
+     </footer>
+    </div>
+   </div>
+  </div>
+  <%
+      } catch (SQLException e) {
+      e.printStackTrace();
+      } finally {
+      // Close resources
+      try {
+      if (rs != null) rs.close();
+      if (stmt != null) stmt.close();
+      if (con != null) con.close();
+      } catch (SQLException ex) {
+      ex.printStackTrace();
+      }
+      }
+  %>
 
-       <footer class="footer">
-        <div class="d-sm-flex justify-content-center justify-content-sm-between">
-         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2024<a href="" target="_blank"></a> Gymnastic Scoring System. All rights reserved.</span>
-         <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-        </div>
-       </footer>
+ </body>
+</html>
+
+<!--   Core JS Files   -->
+<script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
+<script src="assets/js/core/popper.min.js"></script>
+<script src="assets/js/core/bootstrap.min.js"></script>
+<script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
+<script src="assets/off-canvas.js" type="text/javascript"></script>
+<script src="assets/hoverable-collapse.js" type="text/javascript"></script>
+<script src="assets/template.js" type="text/javascript"></script>
+<script src="assets/settings.js" type="text/javascript"></script>
+<script src="assets/todolist.js" type="text/javascript"></script>
 
 
-       </body>
-       </html>
-
-       <!--   Core JS Files   -->
-       <script src="vendors/js/vendor.bundle.base.js" type="text/javascript"></script>
-       <script src="assets/js/core/popper.min.js"></script>
-       <script src="assets/js/core/bootstrap.min.js"></script>
-       <script src="assets/js/plugins/perfect-scrollbar.min.js"></script>
-       <script src="assets/js/plugins/smooth-scrollbar.min.js"></script>
-       <script src="assets/off-canvas.js" type="text/javascript"></script>
-       <script src="assets/hoverable-collapse.js" type="text/javascript"></script>
-       <script src="assets/template.js" type="text/javascript"></script>
-       <script src="assets/settings.js" type="text/javascript"></script>
-       <script src="assets/todolist.js" type="text/javascript"></script>
-
-
-       <script>
+<script>
                     function fetchGymnastData() {
                      $.ajax({
                       type: 'GET',
@@ -446,6 +501,7 @@
                         var gymnastICCell = $('<td>').text(gymnast.gymnastIC);
                         var gymnastSchoolCell = $('<td>').text(gymnast.gymnastSchool);
                         var gymnastCategoryCell = $('<td>').text(gymnast.gymnastCategory);
+                        var gymnastApparatusCell = $('<td>').text(gymnast.apparatusName);
                         var gymnastTeamCell = $('<td>').text(gymnast.teamName);
 
                         // Create edit and delete buttons
@@ -491,7 +547,7 @@
                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
                         // Append cells to the row
-                        row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastTeamCell, actionCell);
+                        row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastApparatusCell, gymnastTeamCell, actionCell);
 
                         // Append row to the table body
                         $('#gymnastTableBody').append(row);
@@ -507,178 +563,205 @@
                     $(document).ready(function () {
                      fetchGymnastData();
                     });
-       </script>
+</script>
 
-       <script>
-        function addGymnast() {
-         var formData = new FormData($('#ajaxAddGymnast')[0]);
+<script>
+ $(document).ready(function () {
+  var selectElement = document.getElementById('select2');
+  var multipleCancelButton = new Choices('#select2', {
+   removeItemButton: true,
+   maxItemCount: 4,
+   searchResultLimit: 4,
+   renderChoiceLimit: 4,
+   itemSelectText: 'Can Select More Than One',
+  });
 
-         $.ajax({
-          type: 'POST',
-          url: '../AddGymnastServlet',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function (data) {
-           try {
-            var response = JSON.parse(data);
-            var msg = response[0].msg;
+ });
+</script>
 
-            if (msg == 1) {
-             alert('Submit Inserted');
-             $('#ajaxAddGymnast')[0].reset();
-             $("#closeModal").trigger('click');
-             fetchGymnastData();  // Assuming this function is defined elsewhere
-            } else {
-             alert('Data Not Inserted, error code: ' + msg);
-            }
-           } catch (e) {
-            console.error('Error parsing JSON response:', e);
-            alert('Error parsing JSON response.');
-           }
-          },
-          error: function (xhr, status, error) {
-           console.error('AJAX error:', status, error);
-           alert('An error occurred while processing your request.');
-          }
-         });
-        }
-       </script>
+<script>
+ var selectedValues; // Define selectedValues outside the event handler
 
-       <script>
-        // Function to handle deletion after confirmation
-        function deleteGymnast(gymnastID) {
-         console.log("Deleting Gymnast ID:", gymnastID);
-         // Show confirmation modal
-         $('#confirmationModal').modal('show');
-         $('#confirmDeleteBtn').click(function () {
-          $.ajax({
-           type: 'POST',
-           url: '../DeleteGymnastServlet',
-           data: {gymnastID: gymnastID},
-           success: function (response) {
-            console.log("Gymnast deleted successfully");
-            fetchGymnastData();
-           },
-           error: function (xhr, status, error) {
-            // Handle error
-            console.error("Error deleting Gymnast", error);
-           }
-          });
+ // Listen for change event on select element
+ $('#select2').change(function () {
+  selectedValues = $(this).val(); // Update selectedValues
+  console.log("Selected Values:", selectedValues);
+ });
+</script>
 
-          $('#confirmationModal').modal('hide');
-         });
-        }
-       </script>
+<script>
+ function addGymnast() {
 
-       <script>
-        function updateGymnast() {
-         var formData = new FormData($('#ajaxUpdateGymnast')[0]);
+  var formData = new FormData($('#ajaxAddGymnast')[0]);
+  formData.append('#select2', selectedValues.join(','));
 
-         $.ajax({
-          type: 'POST',
-          url: '../UpdateGymnastServlet',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function (response) {
-           if (response.success) {
-            $('#ajaxUpdateGymnast')[0].reset();
-            alert('Gymnast information updated successfully');
-            $("#closeModalUpdate").trigger('click');
-            fetchGymnastData();
-           } else {
-            alert('Failed to update Gymnast information. Please try again.');
-           }
-          },
-          error: function (xhr, status, error) {
-           console.error("Error updating Gymnast information:", error);
-           alert('An error occurred while updating Gymnast information. Please try again later.');
-          }
-         });
-        }
-       </script>
+  $.ajax({
+   type: 'POST',
+   url: '../AddGymnastServlet',
+   data: formData,
+   processData: false,
+   contentType: false,
+   success: function (data) {
+    try {
+     var response = JSON.parse(data);
+     var msg = response[0].msg;
 
-       <script>
-        function displayGymnast(gymnastID) {
-         $.ajax({
-          type: 'GET',
-          url: '../DisplayGymnastServlet',
-          data: {gymnastID: gymnastID},
-          dataType: 'JSON',
-          success: function (gymnast) {
-           $('#updateGymnastName').val(gymnast.gymnastName);
-           $('#updateGymnastIC').val(gymnast.gymnastIC);
-           $('#updateGymnastSchool').val(gymnast.gymnastSchool);
-           $('#updateGymnastCategory').val(gymnast.gymnastCategory);
-           $('#updateGymnastID').val(gymnast.gymnastID);
-           $('#updateGymnastTeam').val(gymnast.teamID);
+     if (msg == 1) {
+      alert('Submit Inserted');
+      $('#ajaxAddGymnast')[0].reset();
+      $("#closeModal").trigger('click');
+      fetchGymnastData();  // Assuming this function is defined elsewhere
+     } else {
+      alert('Data Not Inserted, error code: ' + msg);
+     }
+    } catch (e) {
+     console.error('Error parsing JSON response:', e);
+     alert('Error parsing JSON response.');
+    }
+   },
+   error: function (xhr, status, error) {
+    console.error('AJAX error:', status, error);
+    alert('An error occurred while processing your request.');
+   }
+  });
+ }
+</script>
 
-           //$('#updateGymnastModal').modal('show');
-          },
-          error: function (xhr, status, error) {
-           console.error("Error retrieving gymnast information:", error);
-          }
-         });
-        }
-       </script>
+<script>
+ // Function to handle deletion after confirmation
+ function deleteGymnast(gymnastID) {
+  console.log("Deleting Gymnast ID:", gymnastID);
+  // Show confirmation modal
+  $('#confirmationModal').modal('show');
+  $('#confirmDeleteBtn').click(function () {
+   $.ajax({
+    type: 'POST',
+    url: '../DeleteGymnastServlet',
+    data: {gymnastID: gymnastID},
+    success: function (response) {
+     console.log("Gymnast deleted successfully");
+     fetchGymnastData();
+    },
+    error: function (xhr, status, error) {
+     // Handle error
+     console.error("Error deleting Gymnast", error);
+    }
+   });
 
-       <script>
-        $(document).ready(function () {
-         function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
-          var passwordField1 = document.getElementById(passwordFieldId1);
-          var passwordField2 = document.getElementById(passwordFieldId2);
-          var toggleIcon = document.getElementById(toggleIconId);
-          if (passwordField1 && passwordField2 && toggleIcon) {
-           if (passwordField1.type === "password") {
-            passwordField1.type = "text";
-            passwordField2.type = "text";
-            toggleIcon.classList.remove("bi-eye");
-            toggleIcon.classList.add("bi-eye-slash");
-           } else {
-            passwordField1.type = "password";
-            passwordField2.type = "password";
-            toggleIcon.classList.remove("bi-eye-slash");
-            toggleIcon.classList.add("bi-eye");
-           }
-          } else {
-           console.error('One or more elements not found:', {
-            passwordField1,
-            passwordField2,
-            toggleIcon
-           });
-          }
-         }
+   $('#confirmationModal').modal('hide');
+  });
+ }
+</script>
 
-         // Attach the function to the global scope
-         window.togglePasswordVisibility = togglePasswordVisibility;
-        });
-       </script>
+<script>
+ function updateGymnast() {
+  var formData = new FormData($('#ajaxUpdateGymnast')[0]);
 
-       <script>
-        function viewImage(gymnastID) {
-         $.ajax({
-          type: 'GET',
-          url: '../DisplayGymnastServlet',
-          data: {gymnastID: gymnastID},
-          dataType: 'JSON',
-          success: function (gymnast) {
-           $('#imageGymnastID').val(gymnast.gymnastID);
-           $('#imageGymnastPIC').val(gymnast.gymnastICPic);
+  $.ajax({
+   type: 'POST',
+   url: '../UpdateGymnastServlet',
+   data: formData,
+   processData: false,
+   contentType: false,
+   success: function (response) {
+    if (response.success) {
+     $('#ajaxUpdateGymnast')[0].reset();
+     alert('Gymnast information updated successfully');
+     $("#closeModalUpdate").trigger('click');
+     fetchGymnastData();
+    } else {
+     alert('Failed to update Gymnast information. Please try again.');
+    }
+   },
+   error: function (xhr, status, error) {
+    console.error("Error updating Gymnast information:", error);
+    alert('An error occurred while updating Gymnast information. Please try again later.');
+   }
+  });
+ }
+</script>
 
-           // Construct the full image URL using the imagePath attribute
-           var imagePath = '/liverg/registration/uploads/' + gymnast.gymnastICPic;
-           console.log("Image Path:", imagePath); // Add this line for debugging
-           var img = $('<img>').attr('src', imagePath);
-           $('#imageContainer').empty().append(img);
+<script>
+ function displayGymnast(gymnastID) {
+  $.ajax({
+   type: 'GET',
+   url: '../DisplayGymnastServlet',
+   data: {gymnastID: gymnastID},
+   dataType: 'JSON',
+   success: function (gymnast) {
+    $('#updateGymnastName').val(gymnast.gymnastName);
+    $('#updateGymnastIC').val(gymnast.gymnastIC);
+    $('#updateGymnastSchool').val(gymnast.gymnastSchool);
+    $('#updateGymnastCategory').val(gymnast.gymnastCategory);
+    $('#updateGymnastApparatusID').val(gymnast.apparatusID);
+    $('#updateGymnastID').val(gymnast.gymnastID);
+    $('#updateGymnastTeam').val(gymnast.teamID);
 
-          },
-          error: function (xhr, status, error) {
-           console.error("Error retrieving gymnast information:", error);
-          }
-         });
-        }
-       </script>
+    //$('#updateGymnastModal').modal('show');
+   },
+   error: function (xhr, status, error) {
+    console.error("Error retrieving gymnast information:", error);
+   }
+  });
+ }
+</script>
+
+<script>
+ $(document).ready(function () {
+  function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
+   var passwordField1 = document.getElementById(passwordFieldId1);
+   var passwordField2 = document.getElementById(passwordFieldId2);
+   var toggleIcon = document.getElementById(toggleIconId);
+   if (passwordField1 && passwordField2 && toggleIcon) {
+    if (passwordField1.type === "password") {
+     passwordField1.type = "text";
+     passwordField2.type = "text";
+     toggleIcon.classList.remove("bi-eye");
+     toggleIcon.classList.add("bi-eye-slash");
+    } else {
+     passwordField1.type = "password";
+     passwordField2.type = "password";
+     toggleIcon.classList.remove("bi-eye-slash");
+     toggleIcon.classList.add("bi-eye");
+    }
+   } else {
+    console.error('One or more elements not found:', {
+     passwordField1,
+     passwordField2,
+     toggleIcon
+    });
+   }
+  }
+
+  // Attach the function to the global scope
+  window.togglePasswordVisibility = togglePasswordVisibility;
+ });
+</script>
+
+<script>
+ function viewImage(gymnastID) {
+  $.ajax({
+   type: 'GET',
+   url: '../DisplayGymnastServlet',
+   data: {gymnastID: gymnastID},
+   dataType: 'JSON',
+   success: function (gymnast) {
+    $('#imageGymnastID').val(gymnast.gymnastID);
+    $('#imageGymnastPIC').val(gymnast.gymnastICPic);
+
+    // Construct the full image URL using the imagePath attribute
+    var imagePath = '/liverg/registration/uploads/' + gymnast.gymnastICPic;
+    console.log("Image Path:", imagePath); // Add this line for debugging
+    var img = $('<img>').attr('src', imagePath);
+    $('#imageContainer').empty().append(img);
+
+   },
+   error: function (xhr, status, error) {
+    console.error("Error retrieving gymnast information:", error);
+   }
+  });
+ }
+</script>
 
 
 

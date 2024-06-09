@@ -30,7 +30,7 @@ public class ListJudgeServlet extends HttpServlet {
 
         try {
             // Prepare and execute query to fetch data
-            pstm = con.prepareStatement("SELECT * FROM JUDGE");
+            pstm = con.prepareStatement("SELECT * FROM JUDGE J JOIN TEAM T ON J.TEAMID = T.TEAMID");
             rs = pstm.executeQuery();
 
             // Convert ResultSet to JSON
@@ -41,6 +41,7 @@ public class ListJudgeServlet extends HttpServlet {
                 obj.put("judgeName", rs.getString("judgeName"));
                 obj.put("judgeNoIc", rs.getString("judgeNoIc"));
                 obj.put("judgePOD", rs.getString("judgePOD"));
+                obj.put("teamName", rs.getString("teamName"));
                 jsonArray.add(obj);
             }
 

@@ -9,12 +9,31 @@ package com.scoring.bean;
  * @author USER
  */
 public class Gymnast {
-    
-    int gymnastID,staffID,teamID;
-    String gymnastIC,gymnastICPic,gymnastName,gymnastCategory;
+
+    int gymnastID, staffID, teamID;
+    String gymnastIC, gymnastICPic, gymnastName,gymnastSchool, gymnastCategory;
 
     public Gymnast(String gymnastName) {
         this.gymnastName = gymnastName;
+    }
+
+    public Gymnast(int gymnastID, String gymnastName) {
+        this.gymnastName = gymnastName;
+        this.gymnastID = gymnastID;
+    }
+
+    public Gymnast(int gymnastID, String gymnastName, String gymnastCategory) {
+        this.gymnastName = gymnastName;
+        this.gymnastID = gymnastID;
+        this.gymnastCategory = gymnastCategory;
+    }
+    
+     public Gymnast(int gymnastID, String gymnastName,String gymnastIC,String gymnastSchool, String gymnastCategory) {
+        this.gymnastName = gymnastName;
+        this.gymnastID = gymnastID;
+        this.gymnastCategory = gymnastCategory;
+        this.gymnastSchool = gymnastSchool;
+        this.gymnastIC = gymnastIC;
     }
 
     public Gymnast(int gymnastID, int staffID, int teamID, String gymnastIC, String gymnastICPic, String gymnastName, String gymnastCategory) {
@@ -27,6 +46,15 @@ public class Gymnast {
         this.gymnastCategory = gymnastCategory;
     }
 
+    public String getGymnastSchool() {
+        return gymnastSchool;
+    }
+
+    public void setGymnastSchool(String gymnastSchool) {
+        this.gymnastSchool = gymnastSchool;
+    }
+
+    
     public int getGymnastID() {
         return gymnastID;
     }
@@ -82,6 +110,5 @@ public class Gymnast {
     public void setGymnastCategory(String gymnastCategory) {
         this.gymnastCategory = gymnastCategory;
     }
-    
-    
+
 }

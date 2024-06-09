@@ -13,20 +13,34 @@ import java.util.List;
 public class Composite {
 
     int compositeID;
-    double finalScore;
     private List<Score> score;
     private List<Gymnast> gymnast;
     private List<Apparatus> Apparatus;
     private List<Team> team;
 
-    public Composite(int compositeID, double finalScore, List<Score> score, List<Gymnast> gymnast, List<Apparatus> Apparatus, List<Team> team) {
+    public Composite(int compositeID, List<Score> score, List<Gymnast> gymnast, List<Apparatus> Apparatus, List<Team> team) {
         this.compositeID = compositeID;
-        this.finalScore = finalScore;
         this.score = score;
         this.gymnast = gymnast;
         this.Apparatus = Apparatus;
         this.team = team;
     }
+    
+    //get gymnast yang takda score
+     public Composite(int compositeID, List<Gymnast> gymnast, List<Apparatus> Apparatus, List<Team> team) {
+        this.compositeID = compositeID;
+        this.gymnast = gymnast;
+        this.Apparatus = Apparatus;
+        this.team = team;
+    }
+    
+    //get score
+//       public Composite(int compositeID, List<Score> score, List<Gymnast> gymnast, List<Apparatus> Apparatus) {
+//        this.compositeID = compositeID;
+//        this.score = score;
+//        this.gymnast = gymnast;
+//        this.Apparatus = Apparatus;
+//    }
 
     public int getCompositeID() {
         return compositeID;
@@ -36,13 +50,7 @@ public class Composite {
         this.compositeID = compositeID;
     }
 
-    public double getFinalScore() {
-        return finalScore;
-    }
 
-    public void setFinalScore(double finalScore) {
-        this.finalScore = finalScore;
-    }
 
     public List<Score> getScore() {
         return score;

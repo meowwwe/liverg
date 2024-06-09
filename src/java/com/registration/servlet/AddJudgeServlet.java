@@ -32,8 +32,9 @@ public class AddJudgeServlet extends HttpServlet {
         JSONArray list = new JSONArray();
 
         String judgeName = request.getParameter("judgeName");
-        String noICStr = request.getParameter("judgeIC");
-        int judgeIC = Integer.parseInt(noICStr);
+        String judgeIC = request.getParameter("judgeIC");
+        String judgeTeamStr = request.getParameter("judgeTeam");
+        int judgeTeam = Integer.parseInt(judgeTeamStr);
         String judgePOD = request.getParameter("judgePOD");
 
         JSONObject obj = new JSONObject();
@@ -43,7 +44,7 @@ public class AddJudgeServlet extends HttpServlet {
         String msg = "";
 
         try {
-            judge.addJudge(judgeName,judgeIC,judgePOD);
+            judge.addJudge(judgeName,judgeIC,judgePOD,judgeTeam);
 
             msg = "1";
             obj.put("msg", msg);

@@ -31,10 +31,8 @@ public class AddTeamServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         JSONArray list = new JSONArray();
 
-        String coachICStr = request.getParameter("coachIC");
-        int coachIC = Integer.parseInt(coachICStr);
-        String fisioICStr = request.getParameter("fisioIC");
-        int fisioIC = Integer.parseInt(fisioICStr);
+        String coachIC = request.getParameter("coachIC");
+        String fisioIC = request.getParameter("fisioIC");
         
         String coachName = request.getParameter("coachName");
         String coachPOD = request.getParameter("coachPOD");

@@ -18,9 +18,9 @@ public class UpdateTeamServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Retrieve parameters from the request
-        int oldCoachIC = Integer.parseInt(request.getParameter("oldCoachIC"));
-        int updateCoachIC = Integer.parseInt(request.getParameter("updateCoachIC"));
-        int updateFisioIC = Integer.parseInt(request.getParameter("updateFisioIC"));
+        String oldCoachIC = request.getParameter("oldCoachIC");
+        String updateCoachIC = request.getParameter("updateCoachIC");
+        String updateFisioIC = request.getParameter("updateFisioIC");
 
         String updateCoachName = request.getParameter("updateCoachName");
         String updateCoachPOD = request.getParameter("updateCoachPOD");
@@ -40,7 +40,7 @@ public class UpdateTeamServlet extends HttpServlet {
             // Check if the new coachIC exists
             String checkCoachQuery = "SELECT COUNT(*) FROM COACH WHERE coachIC = ?";
             pstm = con.prepareStatement(checkCoachQuery);
-            pstm.setInt(1, updateCoachIC);
+            pstm.setString(1, updateCoachIC);
             rs = pstm.executeQuery();
             rs.next();
             int count = rs.getInt(1);
@@ -51,7 +51,7 @@ public class UpdateTeamServlet extends HttpServlet {
                 // Insert a placeholder for the new coachIC if it doesn't exist
                 String insertCoachQuery = "INSERT INTO COACH (coachIC) VALUES (?)";
                 pstm = con.prepareStatement(insertCoachQuery);
-                pstm.setInt(1, updateCoachIC);
+                pstm.setString(1, updateCoachIC);
                 pstm.executeUpdate();
                 pstm.close();
             }
@@ -60,28 +60,28 @@ public class UpdateTeamServlet extends HttpServlet {
             String queryTeam = "UPDATE TEAM SET teamName = ?, coachIC = ? WHERE coachIC = ?";
             pstm = con.prepareStatement(queryTeam);
             pstm.setString(1, updateTeamName);
-            pstm.setInt(2, updateCoachIC);
-            pstm.setInt(3, oldCoachIC);
+            pstm.setString(2, updateCoachIC);
+            pstm.setString(3, oldCoachIC);
             int rowsAffectedTeam = pstm.executeUpdate();
             pstm.close();
 
             // Update the coach and fisiotherapist details
             String queryCoach = "UPDATE COACH SET coachIC = ?, fisioIC = ?, coachName = ?, coachPOD = ?, fisioName = ?, fisioPOD = ? WHERE coachIC = ?";
             pstm = con.prepareStatement(queryCoach);
-            pstm.setInt(1, updateCoachIC);
-            pstm.setInt(2, updateFisioIC);
+            pstm.setString(1, updateCoachIC);
+            pstm.setString(2, updateFisioIC);
             pstm.setString(3, updateCoachName);
             pstm.setString(4, updateCoachPOD);
             pstm.setString(5, updateFisioName);
             pstm.setString(6, updateFisioPOD);
-            pstm.setInt(7, updateCoachIC);
+            pstm.setString(7, updateCoachIC);
             int rowsAffectedCoach = pstm.executeUpdate();
             pstm.close();
 
             // Check if the old coachIC is still associated with any team
             String checkOldCoachQuery = "SELECT COUNT(*) FROM TEAM WHERE coachIC = ?";
             pstm = con.prepareStatement(checkOldCoachQuery);
-            pstm.setInt(1, oldCoachIC);
+            pstm.setString(1, oldCoachIC);
             rs = pstm.executeQuery();
             rs.next();
             int oldCoachCount = rs.getInt(1);
@@ -92,7 +92,7 @@ public class UpdateTeamServlet extends HttpServlet {
                 // Delete the old coach if not associated with any team
                 String deleteOldCoachQuery = "DELETE FROM COACH WHERE coachIC = ?";
                 pstm = con.prepareStatement(deleteOldCoachQuery);
-                pstm.setInt(1, oldCoachIC);
+                pstm.setString(1, oldCoachIC);
                 pstm.executeUpdate();
                 pstm.close();
             }

@@ -18,7 +18,7 @@ public class DisplayTeamServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Retrieve clerkID from request parameter
-        int coachIC = Integer.parseInt(request.getParameter("coachIC"));
+        String coachIC = request.getParameter("coachIC");
 
         // Database Connection
         DBConnect db = new DBConnect();
@@ -30,13 +30,13 @@ public class DisplayTeamServlet extends HttpServlet {
             // Prepare query to select clerk information
             String query = "SELECT * FROM COACH C JOIN TEAM T ON C.COACHIC = T.COACHIC WHERE C.COACHIC = ?";
             pstm = con.prepareStatement(query);
-            pstm.setInt(1, coachIC);
+            pstm.setString(1, coachIC);
             rs = pstm.executeQuery();
 
             // Check if clerk information was found
             if (rs.next()) {
-                int retrievedCoachIC = rs.getInt("coachIC");
-                int fisioIC = rs.getInt("fisioIC");
+                String retrievedCoachIC = rs.getString("coachIC");
+                String fisioIC = rs.getString("fisioIC");
                 String coachName = rs.getString("coachName");
                 String coachPOD = rs.getString("coachPOD");
                 String fisioName = rs.getString("fisioName");

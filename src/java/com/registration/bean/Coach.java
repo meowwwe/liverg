@@ -22,13 +22,12 @@ public class Coach {
  ResultSet rs;
  String userRole = "";
 
- int coachIC, fisioIC;
- String coachName, coachPOD, fisioName, fisioPOD;
+ String coachName, coachPOD, fisioName, fisioPOD, coachIC, fisioIC;
 
  public Coach() {
  }
 
- public Coach(int coachIC, int fisioIC, String coachName, String coachPOD, String fisioName, String fisioPOD) {
+ public Coach(String coachIC, String fisioIC, String coachName, String coachPOD, String fisioName, String fisioPOD) {
   this.coachIC = coachIC;
   this.fisioIC = fisioIC;
   this.coachName = coachName;
@@ -41,11 +40,11 @@ public class Coach {
   return userRole;
  }
 
- public int getCoachIC() {
+ public String getCoachIC() {
   return coachIC;
  }
 
- public int getFisioIC() {
+ public String getFisioIC() {
   return fisioIC;
  }
 
@@ -69,11 +68,11 @@ public class Coach {
   this.userRole = userRole;
  }
 
- public void setCoachIC(int coachIC) {
+ public void setCoachIC(String coachIC) {
   this.coachIC = coachIC;
  }
 
- public void setFisioIC(int fisioIC) {
+ public void setFisioIC(String fisioIC) {
   this.fisioIC = fisioIC;
  }
 
@@ -93,12 +92,12 @@ public class Coach {
   this.fisioPOD = fisioPOD;
  }
 
- public void addCoach(int coachIC, int fisioIC, String coachName, String coachPOD, String fisioName, String fisioPOD) throws SQLException {
+ public void addCoach(String coachIC, String fisioIC, String coachName, String coachPOD, String fisioName, String fisioPOD) throws SQLException {
 
   String sql = "INSERT INTO COACH(coachIC,fisioIC,coachName,coachPOD,fisioName,fisioPOD) VALUES (?,?,?,?,?,?)";
   pstm = con.prepareStatement(sql);
-  pstm.setInt(1, coachIC);
-  pstm.setInt(2, fisioIC);
+  pstm.setString(1, coachIC);
+  pstm.setString(2, fisioIC);
   pstm.setString(3, coachName);
   pstm.setString(4, coachPOD);
   pstm.setString(5, fisioName);
