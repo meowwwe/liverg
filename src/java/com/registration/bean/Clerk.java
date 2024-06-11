@@ -97,4 +97,18 @@ public class Clerk {
   pstm.setInt(4, userid);
   pstm.executeUpdate();
  }
+
+// DAO
+ public int StoreClerkID(String username, String password) throws SQLException {
+  pstm = con.prepareStatement("SELECT clerkID FROM CLERK WHERE clerkUsername = ? AND clerkPassword = ?");
+  pstm.setString(1, username);
+  pstm.setString(2, password);
+  rs = pstm.executeQuery();
+
+  if (rs.next()) {
+   return rs.getInt("clerkID");
+  } else {
+   return -1;
+  }
+ }
 }

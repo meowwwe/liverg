@@ -154,12 +154,6 @@
     <!-- partial:partials/_sidebar.html -->
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
      <ul class="nav">
-      <!--                        <li class="nav-item">
-                                  <a class="nav-link" href="dashboard.jsp">
-                                      <i class="icon-grid menu-icon"></i>
-                                      <span class="menu-title">Dashboard</span>
-                                  </a>
-                              </li>-->
       <li class="nav-item  active">
        <a class="nav-link bg-primary"  href="Score" aria-expanded="false" aria-controls="ui-basic">
         <i class="icon-layout menu-icon"></i>
@@ -292,7 +286,7 @@
              %>
 
              <option class="bg-white text-dark" value="<%= composite2.getGymnast().get(t).getGymnastCategory()%>"><%= composite2.getGymnast().get(t).getGymnastCategory()%></option>
-             
+
 
              <%
                                              

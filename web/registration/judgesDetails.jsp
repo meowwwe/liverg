@@ -111,7 +111,7 @@
       </li>
       <li class="nav-item nav-profile dropdown">
        <div aria-labelledby="profileDropdown">
-        <a class="dropdown-item">
+        <a href="../LogoutServlet" class="dropdown-item">
          <i class="ti-power-off text-primary"></i>
          Logout
         </a>
@@ -123,24 +123,26 @@
    <!-- partial -->
    <div class="container-fluid page-body-wrapper">
 
-    <%   
+    <%
+        // Get the user's role from the session
         String userRole = (String) session.getAttribute("userRole");
-        Integer staffID = (Integer) session.getAttribute("staffID");
 
-        if (staffID == null) {
-            response.sendRedirect("../LogoutServlet");
-        } else if (userRole != null) {
+        // Include the navbar based on the user's role
+        if (userRole != null) {
             if (userRole.equals("clerk")) {
-                // Clerk Navbar
-    %><jsp:include page="clerkNavbar.jsp" /><%
+    %>
+    <jsp:include page="clerkNavbar.jsp" />
+    <%
             } else if (userRole.equals("staff")) {
-                // Staff Navbar
-    %><jsp:include page="staffNavbar.jsp" /><%
+    %>
+    <jsp:include page="staffNavbar.jsp" />
+    <%
             } else {
-                // Handle other roles if needed
+                // Redirect to LogoutServlet if userRole is not recognized
+                response.sendRedirect("../LogoutServlet");
             }
         } else {
-            // Handle the case where userRole is null
+            // Redirect to LogoutServlet if userRole is null
             response.sendRedirect("../LogoutServlet");
         }
     %>
@@ -352,6 +354,9 @@
   <script src="assets/template.js" type="text/javascript"></script>
   <script src="assets/settings.js" type="text/javascript"></script>
   <script src="assets/todolist.js" type="text/javascript"></script>
+  <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js'></script>
+  <script src="https://cdn.lordicon.com/qjzruarw.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
   <script>
@@ -365,51 +370,57 @@
                        $('#judgeTableBody').empty();
 
                        var rowIndex = 1;
-                       // Iterate over received data and generate HTML for each Judge
-                       $.each(data, function (index, judge) {
-                        // Create table row for judge data
-                        var row = $('<tr>');
-                        // Create table cells for Judge ID, username, and password
-                        //var judgeIDCell = $('<td>').text(judge.judgeID);
-                        var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
-                        var judgeNameCell = $('<td>').text(judge.judgeName);
-                        var judgeICCell = $('<td>').text(judge.judgeNoIc);
-                        var judgePODCell = $('<td>').text(judge.judgePOD);
-                        var judgeTeamCell = $('<td>').text(judge.teamName);
+                       // Check if data is empty
+                       if (data.length === 0) {
+                        // If data is empty, display image and message
+                        $('#judgeTableBody').html('<tr><td colspan="6" class="text-center"><div style="margin: 0 auto;"><img src="sleepingcat.gif" alt="Cat Image" class="centered-image" style="max-width: 400px; max-height: 150px; width: 150px; height: auto;"><p style="font-family: Comic Sans MS, cursive; text-transform: uppercase;">CURRENTLY NO DATA</p></div></td></tr>');
+                       } else {
+                        // Iterate over received data and generate HTML for each Judge
+                        $.each(data, function (index, judge) {
+                         // Create table row for judge data
+                         var row = $('<tr>');
+                         // Create table cells for Judge ID, username, and password
+                         //var judgeIDCell = $('<td>').text(judge.judgeID);
+                         var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
+                         var judgeNameCell = $('<td>').text(judge.judgeName);
+                         var judgeICCell = $('<td>').text(judge.judgeNoIc);
+                         var judgePODCell = $('<td>').text(judge.judgePOD);
+                         var judgeTeamCell = $('<td>').text(judge.teamName);
 
-                        // Create edit and delete buttons
-                        var editButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#updateJudgeModal')
-                                .css('margin-right', '5px');
+                         // Create edit and delete buttons
+                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#updateJudgeModal')
+                                 .css('margin-right', '5px');
 
-                        var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-trash2-fill"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#confirmationModal');
+                         var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-trash2-fill"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#confirmationModal');
 
-                        // Add click event handlers to buttons
-                        editButton.click(function () {
-                         console.log("Updating Judge ID:", judge.judgeID);
-                         displayJudge(judge.judgeID); //Pass Parameter
+                         // Add click event handlers to buttons
+                         editButton.click(function () {
+                          console.log("Updating Judge ID:", judge.judgeID);
+                          displayJudge(judge.judgeID); //Pass Parameter
+                         });
+
+                         deleteButton.click(function () {
+                          deleteJudge(judge.judgeID); // Implement deleteJudge function
+                         });
+
+                         // Append buttons to a cell
+                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
+
+                         // Append cells to the row
+                         row.append(rowNumberCell, judgeNameCell, judgeICCell, judgePODCell, judgeTeamCell, actionCell);
+
+                         // Append row to the table body
+                         $('#judgeTableBody').append(row);
+
+                         rowIndex++;
                         });
-
-                        deleteButton.click(function () {
-                         deleteJudge(judge.judgeID); // Implement deleteJudge function
-                        });
-
-                        // Append buttons to a cell
-                        var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
-
-                        // Append cells to the row
-                        row.append(rowNumberCell, judgeNameCell, judgeICCell, judgePODCell, judgeTeamCell, actionCell);
-
-                        // Append row to the table body
-                        $('#judgeTableBody').append(row);
-
-                        rowIndex++;
-                       });
+                       }
                       },
                       error: function (xhr, status, error) {
                        console.error("Error occurred during AJAX request:", error);
@@ -425,13 +436,37 @@
   <script>
    var msg = null;
    function addJudge() {
-    var name = $("#judgeName").val().trim();
-    var username = $("#judgeIC").val().trim();
-    var password = $("#judgePOD").val().trim();
+    var judgeName = $("#judgeName").val().trim();
+    var judgeIC = $("#judgeIC").val().trim();
+    var judgePOD = $("#judgePOD").val().trim();
+    var judgeTeam = $("#judgeTeam").val().trim();
 
     // Check if any field is empty
-    if (!judgeName || !judgeIC || !judgePOD) {
-     alert("Please fill in all fields.");
+    if (!judgeName || !judgeIC || !judgePOD || !judgeTeam) {
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      customClass: 'swal-wide'
+     });
+
+     let message = '<small style="color:red">';
+     if (!judgeName)
+      message += '<li>Judge Name</li>';
+     if (!judgeIC)
+      message += '<li>Judge Identity Card</li>';
+     if (!judgePOD)
+      message += '<li>Judge Place Of Duty</li>';
+     if (!judgeTeam)
+      message += '<li>Team Name</li></small>';
+
+     Toast.fire({
+      icon: 'warning',
+      title: '<b>Please Fill All Required Fields</b>',
+      html: message
+     });
      return;
     }
 
@@ -447,7 +482,19 @@
       msg = data[0].msg
 
       if (msg == 1) {
-       alert('Submit Inserted');
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>Judge <span style="color: green;"> Added</span> Successfully!</b>'
+       });
        $('#ajaxAddJudge')[0].reset();
        $("#closeModal").trigger('click');
        fetchJudgeData();
@@ -473,6 +520,19 @@
       data: {judgeID: judgeID},
       success: function (response) {
        console.log("Judge deleted successfully");
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>Judge <span style="color: red;"> Deleted</span> Successfully!</b>'
+       });
        fetchJudgeData();
       },
       error: function (xhr, status, error) {
@@ -497,7 +557,19 @@
      dataType: 'JSON',
      success: function (response) {
       if (response.success) {
-       alert('Judge information updated successfully');
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>Judge <span style="color: green;"> Updated</span> Successfully!</b>'
+       });
        $("#closeModalUpdate").trigger('click');
        fetchJudgeData();
       } else {
@@ -524,6 +596,7 @@
       $('#updateJudgeName').val(judge.judgeName);
       $('#updateJudgeIC').val(judge.judgeNoIc);
       $('#updateJudgePOD').val(judge.judgePOD);
+      $('#updateJudgeTeam').val(judge.teamID);
       $('#updateJudgeID').val(judge.judgeID);
       $('#updateJudgeModal').modal('show');
      },
@@ -532,39 +605,6 @@
      }
     });
    }
-  </script>
-
-  <script>
-   $(document).ready(function () {
-    function togglePasswordVisibility(passwordFieldId1, passwordFieldId2, toggleIconId) {
-     var passwordField1 = document.getElementById(passwordFieldId1);
-     var passwordField2 = document.getElementById(passwordFieldId2);
-     var toggleIcon = document.getElementById(toggleIconId);
-
-     if (passwordField1 && passwordField2 && toggleIcon) {
-      if (passwordField1.type === "password") {
-       passwordField1.type = "text";
-       passwordField2.type = "text";
-       toggleIcon.classList.remove("bi-eye");
-       toggleIcon.classList.add("bi-eye-slash");
-      } else {
-       passwordField1.type = "password";
-       passwordField2.type = "password";
-       toggleIcon.classList.remove("bi-eye-slash");
-       toggleIcon.classList.add("bi-eye");
-      }
-     } else {
-      console.error('One or more elements not found:', {
-       passwordField1,
-       passwordField2,
-       toggleIcon
-      });
-     }
-    }
-
-    // Attach the function to the global scope
-    window.togglePasswordVisibility = togglePasswordVisibility;
-   });
   </script>
 
  </body>

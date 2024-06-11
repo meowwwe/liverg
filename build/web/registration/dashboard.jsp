@@ -71,11 +71,7 @@
         rs.close();
 
         // Fetch gymnasts and apparatus details
-        rs = stmt.executeQuery("SELECT G.GYMNASTID, GYMNASTIC, GYMNASTICPIC, GYMNASTNAME, GYMNASTSCHOOL, GYMNASTCATEGORY, TEAMNAME, APPARATUSNAME                                " +
-                               "FROM GYMNAST G " +
-                               "JOIN GYMNAST_APP GA ON G.GYMNASTID = GA.GYMNASTID " +
-                               "JOIN TEAM T ON G.TEAMID = T.TEAMID " +
-                               "JOIN APPARATUS A ON GA.APPARATUSID = A.APPARATUSID ORDER BY G.GYMNASTCATEGORY");
+        rs = stmt.executeQuery("SELECT G.GYMNASTID, G.GYMNASTIC, G.GYMNASTNAME, G.GYMNASTSCHOOL, G.GYMNASTCATEGORY, GROUP_CONCAT(A.APPARATUSNAME ORDER BY A.APPARATUSNAME SEPARATOR ', ') AS APPARATUS_LIST, T.TEAMNAME FROM GYMNAST G JOIN GYMNAST_APP GA ON G.GYMNASTID = GA.GYMNASTID JOIN APPARATUS A ON GA.APPARATUSID = A.APPARATUSID JOIN TEAM T ON G.TEAMID = T.TEAMID GROUP BY G.GYMNASTID, G.GYMNASTNAME");
         while (rs.next()) {
             Gymnast gymnast = new Gymnast();
             gymnast.setGymnastID(rs.getInt("GYMNASTID"));
@@ -86,7 +82,7 @@
             gymnasts.add(gymnast);
 
             Apparatus apparatus = new Apparatus();
-            apparatus.setApparatusName(rs.getString("APPARATUSNAME"));
+            apparatus.setApparatusName(rs.getString("APPARATUS_LIST"));
             apparatusList.add(apparatus);
             
             Team team = new Team();
@@ -424,9 +420,17 @@
     %>
     <jsp:include page="staffNavbar.jsp" />
     <%
+            } else {
+                // Redirect to LogoutServlet if userRole is not recognized
+                response.sendRedirect("../LogoutServlet");
             }
+        } else {
+            // Redirect to LogoutServlet if userRole is null
+            response.sendRedirect("../LogoutServlet");
         }
     %>
+
+
     <!-- partial -->
     <div class="main-panel">
      <div class="content-wrapper">
@@ -436,7 +440,7 @@
        <div class="container-fluid py-1 px-3">
         <div class="container-fluid py-4">
          <div class="row">
-          
+
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
            <div class="card">
             <div class="card-body p-3">
@@ -459,7 +463,7 @@
             </div>
            </div>
           </div>
-                
+
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
            <div class="card">
             <div class="card-body p-3">
@@ -482,8 +486,8 @@
             </div>
            </div>
           </div>
-                
-                          
+
+
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
            <div class="card">
             <div class="card-body p-3">
@@ -506,7 +510,7 @@
             </div>
            </div>
           </div>
-                
+
 
           <div class="col-xl-3 col-sm-6">
            <div class="card">
@@ -535,12 +539,18 @@
           <h6 style="margin-top:20px"><span class="badge bg-gradient-dark">Team Information : <%= teamCount %> Teams</span></h6>
 
           <!-- Team Table -->
-          <div class="col-12" >
+          <div class="col-12">
            <div class="card mb-4">
             <div class="card-header pb-0">
             </div>
             <div class="card-body px-0 pt-0 pb-2">
              <div class="table-responsive p-0">
+              <% if (gymnastsByTeam.isEmpty()) { %>
+              <div class="text-center" style="font-family: 'Comic Sans MS', cursive;">
+               <img src="sleepingcat.gif" alt="Cat Image" style="max-width: 100px;">
+               <p style="text-transform: uppercase;">CURRENTLY NO DATA</p>
+              </div>
+              <% } else { %>
               <table class="table align-items-center mb-0">
                <thead>
                 <tr>
@@ -553,18 +563,19 @@
                </thead>
                <tbody>
                 <% for (Map.Entry<String, List<Gymnast>> entry : gymnastsByTeam.entrySet()) { %>
-                <% int rowCount = 1; %> 
+                <% int rowCount = 1; %>
                 <tr>
                  <td colspan="5" class="text-uppercase">
                   <span class="badge badge badge-md bg-gradient-secondary"><%= entry.getKey() %></span>
                  </td>
                 </tr>
                 <% for (Gymnast gymnast : entry.getValue()) { 
-                    int index = gymnasts.indexOf(gymnast);
-                    Apparatus apparatus = apparatusList.get(index);
+                        int index = gymnasts.indexOf(gymnast);
+                        Apparatus apparatus = apparatusList.get(index);
                 %>
                 <tr>
-                 <td class="text-center"><%= rowCount++ %>.</td> <!-- Empty cell for team name -->
+                 <td class="text-center"><%= rowCount++ %>.</td>
+                 <!-- Empty cell for team name -->
                  <td>
                   <div class="d-flex px-2 py-1">
                    <div class="d-flex flex-column justify-content-center">
@@ -591,6 +602,7 @@
                 <% } %>
                </tbody>
               </table>
+              <% } %>
              </div>
             </div>
            </div>

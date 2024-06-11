@@ -2,6 +2,43 @@
 <%@ page import="jakarta.servlet.http.*" %>
 <%@ page import="java.io.*" %>
 <%@ page import="java.sql.*" %>
+<%@ page import="com.registration.bean.*" %>
+<%@ page import="com.connection.DBConnect" %>
+
+<%
+    Connection con = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    List<Clerk> clerks = new ArrayList<>();
+
+    try {
+        DBConnect db = new DBConnect();
+        con = db.getConnection();
+        stmt = con.createStatement();
+        
+        // Fetch all clerks
+        rs = stmt.executeQuery("SELECT * FROM CLERK LIMIT 1");
+        while (rs.next()) {
+            Clerk clerk = new Clerk();
+            clerk.setClerkID(rs.getInt("clerkID"));
+            clerk.setClerkName(rs.getString("clerkName"));
+            clerks.add(clerk);
+        }
+        rs.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Close resources
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (con != null) con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +124,7 @@
       </li>
       <li class="nav-item nav-profile dropdown">
        <div aria-labelledby="profileDropdown">
-        <a class="dropdown-item">
+        <a href="../LogoutServlet" class="dropdown-item">
          <i class="ti-power-off text-primary"></i>
          Logout
         </a>
@@ -99,27 +136,43 @@
    <!-- partial -->
    <div class="container-fluid page-body-wrapper">
 
-    <%   
+    <%
+        // Get the userRole, staffID, and clerkID from the session
         String userRole = (String) session.getAttribute("userRole");
         Integer staffID = (Integer) session.getAttribute("staffID");
+        Integer clerkID = (Integer) session.getAttribute("clerkID");
 
-        if (staffID == null) {
+        // Check if userRole is null
+        if (userRole == null) {
             response.sendRedirect("../LogoutServlet");
-        } else if (userRole != null) {
-            if (userRole.equals("clerk")) {
-                // Clerk Navbar
-    %><jsp:include page="clerkNavbar.jsp" /><%
-            } else if (userRole.equals("staff")) {
-                // Staff Navbar
-    %><jsp:include page="staffNavbar.jsp" /><%
-            } else {
-                // Handle other roles if needed
-            }
         } else {
-            // Handle the case where userRole is null
-            response.sendRedirect("../LogoutServlet");
+            if ("clerk".equals(userRole)) {
+                // Check if clerkID is null
+                if (clerkID == null) {
+                    response.sendRedirect("../LogoutServlet");
+                } else {
+                    // Include Clerk Navbar
+    %>
+    <jsp:include page="clerkNavbar.jsp" />
+    <%
+                }
+            } else if ("staff".equals(userRole)) {
+                // Check if staffID is null
+                if (staffID == null) {
+                    response.sendRedirect("../LogoutServlet");
+                } else {
+                    // Include Staff Navbar
+    %>
+    <jsp:include page="staffNavbar.jsp" />
+    <%
+                }
+            } else {
+                // Redirect to LogoutServlet if userRole is not recognized
+                response.sendRedirect("../LogoutServlet");
+            }
         }
     %>
+
 
 
     <div class="main-panel">
@@ -132,7 +185,6 @@
          </div>
         </div>
        </div>
-
 
        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -229,8 +281,21 @@
                    </div>
 
                    <div class="mb-3">
-                    <input type="text" name="userid"  class="form-control" value="<%= staffID %>">
+                    <%
+                        if (userRole.equals("staff")) {
+                            for (Clerk clerk : clerks) {
+                    %>
+                    <input type="text" hidden name="userid" class="form-control" value="<%= clerk.getClerkID() %>">
+                    <%
+                            }
+                        } else if (userRole.equals("clerk")) {
+                    %>
+                    <input type="text" hidden name="userid" class="form-control" value="<%= clerkID %>">
+                    <%
+                        }
+                    %>
                    </div>
+
                    <button type="button" onclick="addHeadjudge()" class="btn btn-sm bg-gradient-dark my-4 mb-2">Submit</button>
                   </form>
                  </div>
@@ -319,6 +384,10 @@
   <script src="assets/template.js" type="text/javascript"></script>
   <script src="assets/settings.js" type="text/javascript"></script>
   <script src="assets/todolist.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js'></script>
+  <script src="https://cdn.lordicon.com/qjzruarw.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
   <script>
@@ -332,69 +401,75 @@
                        $('#headTableBody').empty();
 
                        var rowIndex = 1;
-                       // Iterate over received data and generate HTML for each headjudge
-                       $.each(data, function (index, head) {
-                        // Create table row for headjudge data
-                        var row = $('<tr>');
-                        // Create table cells for headjudge ID, username, and password
-                        //var headjudgeIDCell = $('<td>').text(head.headjudgeID);
-                        var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
-                        var headjudgeNameCell = $('<td>').text(head.headName);
-                        var headjudgeUsernameCell = $('<td>').text(head.headUsername);
-                        //var headjudgePasswordCell = $('<td>').text(head.headPassword).addClass('align-middle text-center text-sm');
+                       // Check if data is empty
+                       if (data.length === 0) {
+                        // If data is empty, display image and message
+                        $('#headTableBody').html('<tr><td colspan="5" class="text-center"><div style="margin: 0 auto;"><img src="sleepingcat.gif" alt="Cat Image" class="centered-image" style="max-width: 400px; max-height: 150px; width: 150px; height: auto;"><p style="font-family: Comic Sans MS, cursive; text-transform: uppercase;">CURRENTLY NO DATA</p></div></td></tr>');
+                       } else {
+                        // Iterate over received data and generate HTML for each headjudge
+                        $.each(data, function (index, head) {
+                         // Create table row for headjudge data
+                         var row = $('<tr>');
+                         // Create table cells for headjudge ID, username, and password
+                         //var headjudgeIDCell = $('<td>').text(head.headjudgeID);
+                         var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
+                         var headjudgeNameCell = $('<td>').text(head.headName);
+                         var headjudgeUsernameCell = $('<td>').text(head.headUsername);
+                         //var headjudgePasswordCell = $('<td>').text(head.headPassword).addClass('align-middle text-center text-sm');
 
-                        // Create password cell with hidden password
-                        var passwordSpan = $('<span>').text(head.headPassword).hide().css('margin-right', '10px');
-                        ;
+                         // Create password cell with hidden password
+                         var passwordSpan = $('<span>').text(head.headPassword).hide().css('margin-right', '10px');
+                         ;
 
-                        var showPasswordButton = $('<button>')
-                                .attr('class', 'btn bg-gradient-dark')
-                                .html('<i class="bi bi-eye"></i>')
-                                .click(function () {
-                                 if (passwordSpan.is(':visible')) {
-                                  passwordSpan.hide();
-                                  $(this).html('<i class="bi bi-eye"></i>');
-                                 } else {
-                                  passwordSpan.show();
-                                  $(this).html('<i class="bi bi-eye-slash"></i>');
-                                 }
-                                });
-                        var headjudgePasswordCell = $('<td>').addClass('align-middle text-center text-sm')
-                                .append(passwordSpan, showPasswordButton);
+                         var showPasswordButton = $('<button>')
+                                 .attr('class', 'btn bg-gradient-dark')
+                                 .html('<i class="bi bi-eye"></i>')
+                                 .click(function () {
+                                  if (passwordSpan.is(':visible')) {
+                                   passwordSpan.hide();
+                                   $(this).html('<i class="bi bi-eye"></i>');
+                                  } else {
+                                   passwordSpan.show();
+                                   $(this).html('<i class="bi bi-eye-slash"></i>');
+                                  }
+                                 });
+                         var headjudgePasswordCell = $('<td>').addClass('align-middle text-center text-sm')
+                                 .append(passwordSpan, showPasswordButton);
 
-                        // Create edit and delete buttons
-                        var editButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#updateHeadjudgeModal')
-                                .css('margin-right', '5px');
+                         // Create edit and delete buttons
+                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#updateHeadjudgeModal')
+                                 .css('margin-right', '5px');
 
-                        var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-trash2-fill"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#confirmationModal');
+                         var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-trash2-fill"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#confirmationModal');
 
-                        // Add click event handlers to buttons
-                        editButton.click(function () {
-                         console.log("Updating HeadJudge ID:", head.headjudgeID);
-                         displayHeadjudge(head.headjudgeID); //Pass Parameter
+                         // Add click event handlers to buttons
+                         editButton.click(function () {
+                          console.log("Updating HeadJudge ID:", head.headjudgeID);
+                          displayHeadjudge(head.headjudgeID); //Pass Parameter
+                         });
+
+                         deleteButton.click(function () {
+                          deleteHeadJudge(head.headjudgeID); // Implement deleteHeadJudge function
+                         });
+
+                         // Append buttons to a cell
+                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
+
+                         // Append cells to the row
+                         row.append(rowNumberCell, headjudgeNameCell, headjudgeUsernameCell, headjudgePasswordCell, actionCell);
+
+                         // Append row to the table body
+                         $('#headTableBody').append(row);
+
+                         rowIndex++;
                         });
-
-                        deleteButton.click(function () {
-                         deleteHeadJudge(head.headjudgeID); // Implement deleteHeadJudge function
-                        });
-
-                        // Append buttons to a cell
-                        var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
-
-                        // Append cells to the row
-                        row.append(rowNumberCell, headjudgeNameCell, headjudgeUsernameCell, headjudgePasswordCell, actionCell);
-
-                        // Append row to the table body
-                        $('#headTableBody').append(row);
-
-                        rowIndex++;
-                       });
+                       }
                       },
                       error: function (xhr, status, error) {
                        console.error("Error occurred during AJAX request:", error);
@@ -415,15 +490,50 @@
     var password = $("#password").val().trim();
     var confirmPassword = $("#confirmPassword").val().trim();
 
-    // Check if any field is empty
+
     if (!name || !username || !password || !confirmPassword) {
-     alert("Please fill in all fields.");
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      customClass: 'swal-wide'
+     });
+
+     let message = '<small style="color:red">';
+     if (!name)
+      message += '<li>Head Judge Name</li>';
+     if (!username)
+      message += '<li>Head Judge Username</li>';
+     if (!password)
+      message += '<li>Password</li>';
+     if (!confirmPassword)
+      message += '<li>Confirm Password</li></small>';
+
+     Toast.fire({
+      icon: 'warning',
+      title: '<b>Please Fill All Required Fields</b>',
+      html: message
+     });
      return;
     }
 
     // Check if passwords match
     if (password !== confirmPassword) {
-     alert("Passwords do not match.");
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      customClass: 'swal-wide'
+     });
+
+     Toast.fire({
+      icon: 'warning',
+      title: "<b>Password Does Not Match</b>"
+     });
      return;
     }
 
@@ -439,7 +549,20 @@
       msg = data[0].msg
 
       if (msg == 1) {
-       alert('Submit Inserted');
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        heightAuto: true,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>HeadJudge <span style="color: green;"> Added</span> Successfully!</b>'
+       });
        $('#ajaxAddHeadjudge')[0].reset();
        $("#closeModal").trigger('click');
        fetchHeadJudgeData();
@@ -465,6 +588,20 @@
       data: {headjudgeID: headjudgeID},
       success: function (response) {
        console.log("HeadJudge deleted successfully");
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        heightAuto: true,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<small><b>HeadJudge <span style="color: red;"> Deleted</b></small> Successfully!</b>'
+       });
        fetchHeadJudgeData();
       },
       error: function (xhr, status, error) {
@@ -484,8 +621,21 @@
     var confirmPassword = $("#updateConfirmPassword").val().trim();
 
     // Check if passwords match
+
     if (password !== confirmPassword) {
-     alert("Passwords do not match.");
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      customClass: 'swal-wide'
+     });
+
+     Toast.fire({
+      icon: 'warning',
+      title: "<b>Password Does Not Match</b>"
+     });
      return;
     } else {
      updateHeadjudge();
@@ -501,7 +651,20 @@
      dataType: 'JSON',
      success: function (response) {
       if (response.success) {
-       alert('HeadJudge information updated successfully');
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        heightAuto: true,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<small><b>HeadJudge <span style="color: green;"> Updated</b></small> Successfully!</b>'
+       });
        $("#closeModalUpdate").trigger('click');
        fetchHeadJudgeData();
       } else {
@@ -569,7 +732,8 @@
 
     // Attach the function to the global scope
     window.togglePasswordVisibility = togglePasswordVisibility;
-   });
+   }
+   );
   </script>
 
  </body>

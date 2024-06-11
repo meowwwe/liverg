@@ -7,27 +7,21 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="clerkDetails.jsp">
-                <i class="fas fa-user menu-icon"></i>
-                <span class="menu-title">Clerk</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="headDetails.jsp">
                 <i class="fas fa-book menu-icon"></i>
                 <span class="menu-title">Head Jury</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="teamDetails.jsp">
-                <i class="fas fa-users menu-icon"></i>
-                <span class="menu-title">Team</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link" href="judgesDetails.jsp">
                 <i class="fas fa-gavel menu-icon"></i>
                 <span class="menu-title">Judge</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="teamDetails.jsp">
+                <i class="fas fa-users menu-icon"></i>
+                <span class="menu-title">Team</span>
             </a>
         </li>
         <li class="nav-item">

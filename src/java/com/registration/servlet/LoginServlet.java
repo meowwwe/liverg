@@ -47,6 +47,8 @@ public class LoginServlet extends HttpServlet {
 
         try {
             int staffID = staff.StoreStaffID(username, password);
+            int clerkID = clerk.StoreClerkID(username, password);
+            int headjudgeID = headjudge.StoreHeadID(username, password);
 
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
@@ -61,9 +63,13 @@ public class LoginServlet extends HttpServlet {
             } else if (clerk.clerkLogin(username, password)) {
                 msg = "2";
                 userRole = "clerk";
+                session.setAttribute("clerkID", clerkID);
+                obj.put("clerkID", clerkID);
             } else if (headjudge.headjudgeLogin(username, password)) {
                 msg = "3";
                 userRole = "headjudge";
+                session.setAttribute("headjudgeID", headjudgeID);
+                obj.put("headjudgeID", headjudgeID);
             } else {
                 userRole = "";
             }

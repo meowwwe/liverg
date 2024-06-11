@@ -27,7 +27,7 @@
         <li class="nav-item">
             <a class="nav-link" href="judgesDetails.jsp">
                 <i class="fas fa-gavel menu-icon"></i>
-                <span class="menu-title">Jury</span>
+                <span class="menu-title">Judge</span>
             </a>
         </li>
         <li class="nav-item">

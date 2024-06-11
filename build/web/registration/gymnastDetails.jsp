@@ -155,7 +155,7 @@
       </li>
       <li class="nav-item nav-profile dropdown">
        <div aria-labelledby="profileDropdown">
-        <a class="dropdown-item">
+        <a href="../LogoutServlet" class="dropdown-item">
          <i class="ti-power-off text-primary"></i>
          Logout
         </a>
@@ -167,24 +167,26 @@
    <!-- partial -->
    <div class="container-fluid page-body-wrapper">
 
-    <%   
+    <%
+        // Get the user's role from the session
         String userRole = (String) session.getAttribute("userRole");
-        Integer staffID = (Integer) session.getAttribute("staffID");
 
-        if (staffID == null) {
-            response.sendRedirect("../LogoutServlet");
-        } else if (userRole != null) {
+        // Include the navbar based on the user's role
+        if (userRole != null) {
             if (userRole.equals("clerk")) {
-                // Clerk Navbar
-    %><jsp:include page="clerkNavbar.jsp" /><%
+    %>
+    <jsp:include page="clerkNavbar.jsp" />
+    <%
             } else if (userRole.equals("staff")) {
-                // Staff Navbar
-    %><jsp:include page="staffNavbar.jsp" /><%
+    %>
+    <jsp:include page="staffNavbar.jsp" />
+    <%
             } else {
-                // Handle other roles if needed
+                // Redirect to LogoutServlet if userRole is not recognized
+                response.sendRedirect("../LogoutServlet");
             }
         } else {
-            // Handle the case where userRole is null
+            // Redirect to LogoutServlet if userRole is null
             response.sendRedirect("../LogoutServlet");
         }
     %>
@@ -282,7 +284,7 @@
                     <input type="text" name="gymnastIC" id="gymnastIC" class="form-control">
                    </div>
                    <div class="mb-3">
-                    <label for="icPic" class="form-label">Please Select Your I/C Pitcure</label>
+                    <label for="icPic" class="form-label">Please Select Your I/C Picture</label>
                     <input type="file" class="form-control" name="gymnastPic" id="gymnastPic">
                    </div>
                    <div class="mb-3">
@@ -297,20 +299,10 @@
                      <option value="U9">U9</option>
                     </select>
                    </div>
-                   <div class="mb-3">
-                    <label class="form-label">Gymnast Apparatus</label>
-                    <select name="gymnastApparatusID" id="gymnastApparatusID" class="form-control" style="color: black">
-                     <option value="" hidden>Select an Apparatus</option>
-                     <% for (Apparatus apparatus : apparatusList) { %>
-                     <option value="<%= apparatus.getApparatusID() %>"><%= apparatus.getApparatusName() %></option>
-                     <% } %>
-                    </select>
-                   </div>
 
                    <div class="mb-3">
                     <label class="form-label">Gymnast Apparatus</label>
                     <select name="select2" id="select2" class="form-control" style="color: black" multiple>
-                     <option value="" hidden>Select an Apparatus</option>
                      <% for (Apparatus apparatus : apparatusList) { %>
                      <option value="<%= apparatus.getApparatusID() %>"><%= apparatus.getApparatusName() %></option>
                      <% } %>
@@ -373,15 +365,20 @@
                      <option value="U9">U9</option>
                     </select>
                    </div>
+
+                   <div id="apparatusValuesContainer"></div>
+
+
                    <div class="mb-3">
                     <label class="form-label">Gymnast Apparatus</label>
-                    <select name="updateGymnastApparatusID" id="updateGymnastApparatusID" class="form-control" style="color: black">
-                     <option value="" hidden>Select an Apparatus</option>
+                    <select name="select3" id="select3" class="form-control" style="color: black" multiple>
                      <% for (Apparatus apparatus : apparatusList) { %>
                      <option value="<%= apparatus.getApparatusID() %>"><%= apparatus.getApparatusName() %></option>
                      <% } %>
                     </select>
                    </div>
+
+
                    <div class="mb-3">
                     <label class="form-label">Gymnast Team</label>
                     <select name="updateGymnastTeam" id="updateGymnastTeam" class="form-control" style="color: black">
@@ -477,6 +474,9 @@
 <script src="assets/template.js" type="text/javascript"></script>
 <script src="assets/settings.js" type="text/javascript"></script>
 <script src="assets/todolist.js" type="text/javascript"></script>
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js'></script>
+<script src="https://cdn.lordicon.com/qjzruarw.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
 <script>
@@ -490,70 +490,76 @@
                        $('#gymnastTableBody').empty();
 
                        var rowIndex = 1;
-                       // Iterate over received data and generate HTML for each Gymnast
-                       $.each(data, function (index, gymnast) {
-                        // Create table row for Gymnast data
-                        var row = $('<tr>');
-                        // Create table cells for Gymnast ID, username, and password
-                        //var gymnastID = $('<td>').text(gymnast.gymnastID);
-                        var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
-                        var gymnastNameCell = $('<td>').text(gymnast.gymnastName);
-                        var gymnastICCell = $('<td>').text(gymnast.gymnastIC);
-                        var gymnastSchoolCell = $('<td>').text(gymnast.gymnastSchool);
-                        var gymnastCategoryCell = $('<td>').text(gymnast.gymnastCategory);
-                        var gymnastApparatusCell = $('<td>').text(gymnast.apparatusName);
-                        var gymnastTeamCell = $('<td>').text(gymnast.teamName);
+                       // Check if data is empty
+                       if (data.length === 0) {
+                        // If data is empty, display image and message
+                        $('#gymnastTableBody').html('<tr><td colspan="8" class="text-center"><div style="margin: 0 auto;"><img src="sleepingcat.gif" alt="Cat Image" class="centered-image" style="max-width: 400px; max-height: 150px; width: 150px; height: auto;"><p style="font-family: Comic Sans MS, cursive; text-transform: uppercase;">CURRENTLY NO DATA</p></div></td></tr>');
+                       } else {
+                        // Iterate over received data and generate HTML for each Gymnast
+                        $.each(data, function (index, gymnast) {
+                         // Create table row for Gymnast data
+                         var row = $('<tr>');
+                         // Create table cells for Gymnast ID, username, and password
+                         //var gymnastID = $('<td>').text(gymnast.gymnastID);
+                         var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
+                         var gymnastNameCell = $('<td>').text(gymnast.gymnastName);
+                         var gymnastICCell = $('<td>').text(gymnast.gymnastIC);
+                         var gymnastSchoolCell = $('<td>').text(gymnast.gymnastSchool);
+                         var gymnastCategoryCell = $('<td>').text(gymnast.gymnastCategory);
+                         var gymnastApparatusCell = $('<td>').text(gymnast.apparatusList);
+                         var gymnastTeamCell = $('<td>').text(gymnast.teamName);
 
-                        // Create edit and delete buttons
-                        var editButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#updateGymnastModal')
-                                .css('margin-right', '5px');
+                         // Create edit and delete buttons
+                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#updateGymnastModal')
+                                 .css('margin-right', '5px');
 
-                        var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-trash2-fill"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#confirmationModal');
+                         var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-trash2-fill"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#confirmationModal');
 
-                        // Create the button element
-                        var viewImageButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#imageModal')
-                                .css('margin-left', '5px')
-                                .text('View');
+                         // Create the button element
+                         var viewImageButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#imageModal')
+                                 .css('margin-left', '5px')
+                                 .text('View');
 
 
 
-                        // Add click event handlers to buttons
-                        editButton.click(function () {
-                         console.log("Updating Gymnast ID:", gymnast.gymnastID);
-                         displayGymnast(gymnast.gymnastID); //Pass Parameter
+                         // Add click event handlers to buttons
+                         editButton.click(function () {
+                          console.log("Updating Gymnast ID:", gymnast.gymnastID);
+                          displayGymnast(gymnast.gymnastID); //Pass Parameter
+                         });
+
+                         viewImageButton.click(function () {
+                          console.log("View Image Gymnast ID:", gymnast.gymnastID);
+                          viewImage(gymnast.gymnastID); //Pass Parameter
+                         });
+
+                         deleteButton.click(function () {
+                          deleteGymnast(gymnast.gymnastID); // Implement deleteGymnast function
+                         });
+
+                         // Append the button to the cell
+                         gymnastICCell.append(viewImageButton);
+
+                         // Append buttons to a cell
+                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
+
+                         // Append cells to the row
+                         row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastApparatusCell, gymnastTeamCell, actionCell);
+
+                         // Append row to the table body
+                         $('#gymnastTableBody').append(row);
+
+                         rowIndex++;
                         });
-
-                        viewImageButton.click(function () {
-                         console.log("View Image Gymnast ID:", gymnast.gymnastID);
-                         viewImage(gymnast.gymnastID); //Pass Parameter
-                        });
-
-                        deleteButton.click(function () {
-                         deleteGymnast(gymnast.gymnastID); // Implement deleteGymnast function
-                        });
-
-                        // Append the button to the cell
-                        gymnastICCell.append(viewImageButton);
-
-                        // Append buttons to a cell
-                        var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
-
-                        // Append cells to the row
-                        row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastApparatusCell, gymnastTeamCell, actionCell);
-
-                        // Append row to the table body
-                        $('#gymnastTableBody').append(row);
-
-                        rowIndex++;
-                       });
+                       }
                       },
                       error: function (xhr, status, error) {
                        console.error("Error occurred during AJAX request:", error);
@@ -570,9 +576,22 @@
   var selectElement = document.getElementById('select2');
   var multipleCancelButton = new Choices('#select2', {
    removeItemButton: true,
-   maxItemCount: 4,
-   searchResultLimit: 4,
-   renderChoiceLimit: 4,
+   maxItemCount: 5,
+   searchResultLimit: 5,
+   renderChoiceLimit: 5,
+   itemSelectText: 'Can Select More Than One',
+  });
+
+ });
+</script>
+<script>
+ $(document).ready(function () {
+  var selectElement = document.getElementById('select3');
+  var multipleCancelButton = new Choices('#select3', {
+   removeItemButton: true,
+   maxItemCount: 5,
+   searchResultLimit: 5,
+   renderChoiceLimit: 5,
    itemSelectText: 'Can Select More Than One',
   });
 
@@ -590,7 +609,68 @@
 </script>
 
 <script>
+ var selectedValues; // Define selectedValues outside the event handler
+
+ // Listen for change event on select element
+ $('#select3').change(function () {
+  selectedValues = $(this).val(); // Update selectedValues
+  console.log("Selected Values:", selectedValues);
+ });
+</script>
+
+<script>
  function addGymnast() {
+  var gymnastName = $("#gymnastName").val().trim();
+  var gymnastIC = $("#gymnastIC").val().trim();
+  var gymnastPic = $("#gymnastPic").val().trim();
+  var gymnastSchool = $("#gymnastSchool").val().trim();
+  var gymnastCategory = $("#gymnastCategory").val().trim();
+  var gymnastTeam = $("#gymnastTeam").val().trim();
+
+  // Retrieve selected values from #select2
+  var selectedValues = $('#select2').val();
+
+  // Check if selectedValues is not empty or undefined
+//  if (selectedValues && selectedValues.length > 0) {
+//
+//  }
+
+  // Check if any of the fields are empty
+  if (!gymnastName || !gymnastIC || !gymnastPic || !gymnastSchool || !gymnastCategory || !gymnastTeam || !(selectedValues && selectedValues.length > 0)) {
+   const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    customClass: 'swal-wide'
+   });
+
+   let message = '<small style="color:red">';
+   if (!gymnastName)
+    message += '<li>Gymnast Name</li>';
+   if (!gymnastIC)
+    message += '<li>Gymnast Identity Card</li>';
+   if (!gymnastPic)
+    message += '<li>Gymnast IC Picture</li>';
+   if (!gymnastSchool)
+    message += '<li>Gymnast School</li>';
+   if (!gymnastCategory)
+    message += '<li>Gymnast Category</li>';
+   if (!(selectedValues && selectedValues.length > 0))
+    message += '<li>Apparatus</li>';
+   if (!gymnastTeam)
+    message += '<li>Team Name</li></small>';
+
+   Toast.fire({
+    icon: 'warning',
+    title: '<b>Please Fill All Required Fields</b>',
+    html: message
+   });
+   return;
+  }
+
+
 
   var formData = new FormData($('#ajaxAddGymnast')[0]);
   formData.append('#select2', selectedValues.join(','));
@@ -607,10 +687,37 @@
      var msg = response[0].msg;
 
      if (msg == 1) {
-      alert('Submit Inserted');
+      const Toast = Swal.mixin({
+       toast: true,
+       position: "top-end",
+       showConfirmButton: false,
+       timer: 3000,
+       timerProgressBar: false,
+       iconColor: 'green',
+       customClass: 'swal-wide',
+      });
+      Toast.fire({
+       icon: 'success',
+       title: '<b>Gymnast <span style="color: green;"> Added</span> Successfully!</b>'
+      });
       $('#ajaxAddGymnast')[0].reset();
       $("#closeModal").trigger('click');
       fetchGymnastData();  // Assuming this function is defined elsewhere
+     } else if (msg == 3) {
+      const Toast = Swal.mixin({
+       toast: true,
+       position: "top-end",
+       showConfirmButton: false,
+       timer: 3000,
+       heightAuto: true,
+       timerProgressBar: false,
+       customClass: 'swal-wide',
+      });
+      Toast.fire({
+       icon: 'warning',
+       title: '<b>Only <span style="color: red;"> Image Type</span> Allowed!</b>'
+      });
+
      } else {
       alert('Data Not Inserted, error code: ' + msg);
      }
@@ -627,6 +734,7 @@
  }
 </script>
 
+
 <script>
  // Function to handle deletion after confirmation
  function deleteGymnast(gymnastID) {
@@ -640,6 +748,19 @@
     data: {gymnastID: gymnastID},
     success: function (response) {
      console.log("Gymnast deleted successfully");
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      iconColor: 'green',
+      customClass: 'swal-wide',
+     });
+     Toast.fire({
+      icon: 'success',
+      title: '<b>Gymnast <span style="color: red;"> Deleted</span> Successfully!</b>'
+     });
      fetchGymnastData();
     },
     error: function (xhr, status, error) {
@@ -652,11 +773,17 @@
   });
  }
 </script>
-
 <script>
  function updateGymnast() {
+  // Retrieve selected values from #select3
+  var selectedValues = $('#select3').val();
+  // Create a FormData object
   var formData = new FormData($('#ajaxUpdateGymnast')[0]);
 
+  // Append selectedValues to formData
+  formData.append('select3', selectedValues.join(','));
+
+  // Perform AJAX request with the FormData
   $.ajax({
    type: 'POST',
    url: '../UpdateGymnastServlet',
@@ -664,13 +791,41 @@
    processData: false,
    contentType: false,
    success: function (response) {
+    console.log(response); // Log the response for debugging
     if (response.success) {
-     $('#ajaxUpdateGymnast')[0].reset();
-     alert('Gymnast information updated successfully');
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      iconColor: 'green',
+      customClass: 'swal-wide'
+     });
+     Toast.fire({
+      icon: 'success',
+      title: '<small><b>Gymnast<span style="color: green;"> Updated</span> Successfully!</b></small>'
+     });
      $("#closeModalUpdate").trigger('click');
      fetchGymnastData();
     } else {
-     alert('Failed to update Gymnast information. Please try again.');
+     if (response.msg === 2) {
+      const Toast = Swal.mixin({
+       toast: true,
+       position: "top-end",
+       showConfirmButton: false,
+       timer: 3000,
+       heightAuto: true,
+       timerProgressBar: false,
+       customClass: 'swal-wide'
+      });
+      Toast.fire({
+       icon: 'warning',
+       title: '<b>Only <span style="color: red;"> Image Type</span> Allowed!</b>'
+      });
+     } else {
+      alert('Failed to update Gymnast information. Please try again.');
+     }
     }
    },
    error: function (xhr, status, error) {
@@ -681,8 +836,11 @@
  }
 </script>
 
+
+
 <script>
  function displayGymnast(gymnastID) {
+
   $.ajax({
    type: 'GET',
    url: '../DisplayGymnastServlet',
@@ -693,7 +851,14 @@
     $('#updateGymnastIC').val(gymnast.gymnastIC);
     $('#updateGymnastSchool').val(gymnast.gymnastSchool);
     $('#updateGymnastCategory').val(gymnast.gymnastCategory);
-    $('#updateGymnastApparatusID').val(gymnast.apparatusID);
+
+    // Split the comma-separated apparatus list into an array
+    var apparatusArray = gymnast.apparatusList;
+    console.log("Apparatus List: " + apparatusArray);
+
+    var selectedValues = $('#select3').val();
+    $('#apparatusValuesContainer').html(apparatusArray);
+
     $('#updateGymnastID').val(gymnast.gymnastID);
     $('#updateGymnastTeam').val(gymnast.teamID);
 
@@ -703,8 +868,10 @@
     console.error("Error retrieving gymnast information:", error);
    }
   });
+
  }
 </script>
+
 
 <script>
  $(document).ready(function () {

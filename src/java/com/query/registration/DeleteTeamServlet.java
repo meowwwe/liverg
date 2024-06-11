@@ -16,7 +16,7 @@ public class DeleteTeamServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Get the coach IC from request parameters
-        int coachIC = Integer.parseInt(request.getParameter("coachIC"));
+        String coachIC = request.getParameter("coachIC");
 
         // Database Connection
         DBConnect db = new DBConnect();
@@ -30,13 +30,13 @@ public class DeleteTeamServlet extends HttpServlet {
             // Prepare and execute delete query for the TEAM table
             String queryTeam = "DELETE FROM TEAM WHERE coachIC = ?";
             pstmTeam = con.prepareStatement(queryTeam);
-            pstmTeam.setInt(1, coachIC);
+            pstmTeam.setString(1, coachIC);
             int rowsAffectedTeam = pstmTeam.executeUpdate();
 
             // Prepare and execute delete query for the COACH table
             String queryCoach = "DELETE FROM COACH WHERE coachIC = ?";
             pstmCoach = con.prepareStatement(queryCoach);
-            pstmCoach.setInt(1, coachIC);
+            pstmCoach.setString(1, coachIC);
             int rowsAffectedCoach = pstmCoach.executeUpdate();
 
             // Commit transaction

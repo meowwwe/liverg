@@ -278,9 +278,9 @@
              window.location.href = "registration/dashboard.jsp";
             } else if (msg == 2) {
 //             alert('CLERK');
+             window.location.href = "./registration/dashboard.jsp";
             } else if (msg == 3) {
              window.location.href = "Score";
-//             alert('HEADJUDGE');
             } else {
              const Toast = Swal.mixin({
               toast: true,
@@ -291,14 +291,10 @@
               timerProgressBar: false,
               iconColor: 'red',
               customClass: 'swal-wide',
-              didOpen: (toast) => {
-               toast.onmouseenter = Swal.stopTimer;
-               toast.onmouseleave = Swal.resumeTimer;
-              }
              });
              Toast.fire({
               icon: 'error',
-              html: '<b>Invalid Credential !</b><br> Incorrect Username/Password'
+              html: '<b>Invalid Credential !</b><br> <small>Incorrect Username/Password</small>'
              });
             }
            }

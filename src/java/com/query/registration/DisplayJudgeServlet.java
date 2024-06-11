@@ -28,7 +28,7 @@ public class DisplayJudgeServlet extends HttpServlet {
 
         try {
             // Prepare query to select clerk information
-            String query = "SELECT * FROM JUDGE WHERE judgeID = ?";
+            String query = "SELECT * FROM JUDGE J JOIN TEAM T ON J.TEAMID = T.TEAMID WHERE JUDGEID = ?";
             pstm = con.prepareStatement(query);
             pstm.setInt(1, judgeID);
             rs = pstm.executeQuery();
@@ -39,12 +39,14 @@ public class DisplayJudgeServlet extends HttpServlet {
                 String judgeName = rs.getString("judgeName");
                 String judgeNoIc = rs.getString("judgeNoIc");
                 String judgePOD = rs.getString("judgePOD");
+                String teamID = rs.getString("teamID");
 
                 JSONObject obj = new JSONObject();
                 obj.put("judgeID", retrievedJudgeID);
                 obj.put("judgeName", judgeName);
                 obj.put("judgeNoIc", judgeNoIc);
                 obj.put("judgePOD", judgePOD);
+                obj.put("teamID", teamID);
 
                 response.setContentType("application/json");
 

@@ -17,7 +17,7 @@ public class DisplayGymnastServlet extends HttpServlet {
 
  @Override
  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-  // Retrieve clerkID from request parameter
+  // Retrieve gymnastID from request parameter
   int gymnastID = Integer.parseInt(request.getParameter("gymnastID"));
 
   // Database Connection
@@ -28,31 +28,22 @@ public class DisplayGymnastServlet extends HttpServlet {
 
   try {
    // Prepare query to select clerk information
-   String query = "SELECT * FROM GYMNAST G JOIN GYMNAST_APP GA ON G.GYMNASTID = GA.GYMNASTID JOIN TEAM T ON G.TEAMID = T.TEAMID JOIN APPARATUS A ON GA.APPARATUSID = A.APPARATUSID WHERE G.GYMNASTID = ?";
+   String query = "SELECT G.gymnastID, G.gymnastIC, G.gymnastICPic, G.gymnastName, G.gymnastSchool, G.gymnastCategory, GROUP_CONCAT(A.APPARATUSNAME ORDER BY A.APPARATUSNAME SEPARATOR ', ') AS APPARATUS_LIST, T.teamID FROM GYMNAST G JOIN GYMNAST_APP GA ON G.GYMNASTID = GA.GYMNASTID JOIN APPARATUS A ON GA.APPARATUSID = A.APPARATUSID JOIN TEAM T ON G.teamID = T.TEAMID WHERE G.GYMNASTID = ?";
    pstm = con.prepareStatement(query);
    pstm.setInt(1, gymnastID);
    rs = pstm.executeQuery();
 
    // Check if gymnast information was found
    if (rs.next()) {
-    int retrievedGymnastID = rs.getInt("gymnastID");
-    String gymnastName = rs.getString("gymnastName");
-    String gymnastIC = rs.getString("gymnastIC");
-    String gymnastSchool = rs.getString("gymnastSchool");
-    String gymnastCategory = rs.getString("gymnastCategory");
-    String gymnastICPic = rs.getString("gymnastICPic");
-    int apparatusID = rs.getInt("apparatusID");
-    int teamID = rs.getInt("teamID");
-
     JSONObject obj = new JSONObject();
-    obj.put("gymnastID", retrievedGymnastID);
-    obj.put("gymnastName", gymnastName);
-    obj.put("gymnastIC", gymnastIC);
-    obj.put("gymnastSchool", gymnastSchool);
-    obj.put("gymnastCategory", gymnastCategory);
-    obj.put("gymnastICPic", gymnastICPic);
-    obj.put("teamID", teamID);
-    obj.put("apparatusID", apparatusID);
+    obj.put("gymnastID", rs.getInt("gymnastID"));
+    obj.put("gymnastIC", rs.getString("gymnastIC"));
+    obj.put("gymnastICPic", rs.getString("gymnastICPic"));
+    obj.put("gymnastName", rs.getString("gymnastName"));
+    obj.put("gymnastSchool", rs.getString("gymnastSchool"));
+    obj.put("gymnastCategory", rs.getString("gymnastCategory"));
+    obj.put("apparatusList", rs.getString("APPARATUS_LIST"));
+    obj.put("teamID", rs.getString("teamID"));
 
     response.setContentType("application/json");
 

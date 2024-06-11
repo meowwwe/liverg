@@ -87,7 +87,7 @@
       </li>
       <li class="nav-item nav-profile dropdown">
        <div aria-labelledby="profileDropdown">
-        <a class="dropdown-item">
+        <a href="../LogoutServlet" class="dropdown-item">
          <i class="ti-power-off text-primary"></i>
          Logout
         </a>
@@ -99,27 +99,30 @@
    <!-- partial -->
    <div class="container-fluid page-body-wrapper">
 
-    <%   
+    <%
+        // Get the user's role from the session
         String userRole = (String) session.getAttribute("userRole");
-        Integer staffID = (Integer) session.getAttribute("staffID");
 
-        if (staffID == null) {
-            response.sendRedirect("../LogoutServlet");
-        } else if (userRole != null) {
+        // Include the navbar based on the user's role
+        if (userRole != null) {
             if (userRole.equals("clerk")) {
-                // Clerk Navbar
-    %><jsp:include page="clerkNavbar.jsp" /><%
+    %>
+    <jsp:include page="clerkNavbar.jsp" />
+    <%
             } else if (userRole.equals("staff")) {
-                // Staff Navbar
-    %><jsp:include page="staffNavbar.jsp" /><%
+    %>
+    <jsp:include page="staffNavbar.jsp" />
+    <%
             } else {
-                // Handle other roles if needed
+                // Redirect to LogoutServlet if userRole is not recognized
+                response.sendRedirect("../LogoutServlet");
             }
         } else {
-            // Handle the case where userRole is null
+            // Redirect to LogoutServlet if userRole is null
             response.sendRedirect("../LogoutServlet");
         }
     %>
+
 
 
     <div class="main-panel">
@@ -167,11 +170,11 @@
                <tr>
                 <th scope="col">#</th>
                 <th scope="col">Coach Details</th>
-<!--                <th scope="col">Coach Identity Card</th>
-                <th scope="col">Coach Place Of Duty</th>-->
+                <!--                <th scope="col">Coach Identity Card</th>
+                                <th scope="col">Coach Place Of Duty</th>-->
                 <th scope="col">Fisio Details</th>
-<!--                <th scope="col">Fisio Identity Card</th>
-                <th scope="col">Fisio Place Of Duty</th>-->
+                <!--                <th scope="col">Fisio Identity Card</th>
+                                <th scope="col">Fisio Place Of Duty</th>-->
                 <th scope="col">Team Name</th>
                 <th scope="col">Action</th>
                </tr>
@@ -344,6 +347,10 @@
   <script src="assets/template.js" type="text/javascript"></script>
   <script src="assets/settings.js" type="text/javascript"></script>
   <script src="assets/todolist.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js'></script>
+  <script src="https://cdn.lordicon.com/qjzruarw.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 
   <script>
@@ -357,68 +364,74 @@
                        $('#teamTableBody').empty();
 
                        var rowIndex = 1;
-                       // Iterate over received data and generate HTML for each clerk
-                       $.each(data, function (index, team) {
-                        // Create table row for Team data
-                        var row = $('<tr>');
-                        // Create table cells for Team ID, username, and password
-                        //var teamIDCell = $('<td>').text(team.coachIC);
-                        var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
+                       // Check if data is empty
+                       if (data.length === 0) {
+                        // If data is empty, display image and message
+                        $('#teamTableBody').html('<tr><td colspan="5" class="text-center"><div style="margin: 0 auto;"><img src="sleepingcat.gif" alt="Cat Image" class="centered-image" style="max-width: 400px; max-height: 150px; width: 150px; height: auto;"><p style="font-family: Comic Sans MS, cursive; text-transform: uppercase;">CURRENTLY NO DATA</p></div></td></tr>');
+                       } else {
+                        // Iterate over received data and generate HTML for each clerk
+                        $.each(data, function (index, team) {
+                         // Create table row for Team data
+                         var row = $('<tr>');
+                         // Create table cells for Team ID, username, and password
+                         //var teamIDCell = $('<td>').text(team.coachIC);
+                         var rowNumberCell = $('<td>').text(rowIndex).addClass('align-middle text-center text-sm');
 //                        var teamCoachNameCell = $('<td>').text(team.coachName);
 //                        var teamICCell = $('<td>').text(team.coachIC);
 //                        var teamPODCell = $('<td>').text(team.coachPOD);
 //                        var teamFisioNameCell = $('<td>').text(team.fisioName);
 //                        var teamFisioICCell = $('<td>').text(team.fisioIC);
 //                        var teamFisioPODCell = $('<td>').text(team.fisioPOD);
-                        var teamNameCell = $('<td>').text(team.teamName);
+                         var teamNameCell = $('<td>').text(team.teamName);
 
-                        var coachNameICPOD = $('<td>').html(
-                                '<p class="font-weight-bold mb-0">' + team.coachName + '</p>' +
-                                '<p class="text-secondary mb-0">' + team.coachIC + '</p>' +
-                                '<p class="text-secondary mb-0">' + team.coachPOD + '</p>'
-                                );
-                        
-                        var fisioNameICPOD = $('<td>').html(
-                                '<p class="font-weight-bold mb-0">' + team.fisioName + '</p>' +
-                                '<p class="text-secondary mb-0">' + team.fisioIC + '</p>' +
-                                '<p class="text-secondary mb-0">' + team.fisioPOD + '</p>'
-                                );
+                         var coachNameICPOD = $('<td>').html(
+                                 '<p class="font-weight-bold mb-0">' + team.coachName + '</p>' +
+                                 '<p class="text-secondary mb-0">' + team.coachIC + '</p>' +
+                                 '<p class="text-secondary mb-0">' + team.coachPOD + '</p>'
+                                 );
+
+                         var fisioNameICPOD = $('<td>').html(
+                                 '<p class="font-weight-bold mb-0">' + team.fisioName + '</p>' +
+                                 '<p class="text-secondary mb-0">' + team.fisioIC + '</p>' +
+                                 '<p class="text-secondary mb-0">' + team.fisioPOD + '</p>'
+                                 );
 
 
 
-                        // Create edit and delete buttons
-                        var editButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#updateTeamModal')
-                                .css('margin-right', '5px');
+                         // Create edit and delete buttons
+                         var editButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-file-earmark-check-fill bi-lg"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#updateTeamModal')
+                                 .css('margin-right', '5px');
 
-                        var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
-                                .html('<i class="bi bi-trash2-fill"></i>')
-                                .attr('data-bs-toggle', 'modal')
-                                .attr('data-bs-target', '#confirmationModal');
+                         var deleteButton = $('<button>').addClass('btn bg-gradient-dark')
+                                 .html('<i class="bi bi-trash2-fill"></i>')
+                                 .attr('data-bs-toggle', 'modal')
+                                 .attr('data-bs-target', '#confirmationModal');
 
-                        // Add click event handlers to buttons
-                        editButton.click(function () {
-                         console.log("Updating Team ID:", team.coachIC);
-                         displayTeam(team.coachIC); //Pass Parameter
+                         // Add click event handlers to buttons
+                         editButton.click(function () {
+                          console.log("Updating Team ID:", team.coachIC);
+                          displayTeam(team.coachIC); //Pass Parameter
+                         });
+
+                         deleteButton.click(function () {
+                          deleteTeam(team.coachIC); // Implement DeleteTeam function
+                         });
+
+                         // Append buttons to a cell
+                         var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
+
+                         // Append cells to the row
+                         row.append(rowNumberCell, coachNameICPOD, fisioNameICPOD, teamNameCell, actionCell);
+
+                         // Append row to the table body
+                         $('#teamTableBody').append(row);
+
+                         rowIndex++;
                         });
-
-                        deleteButton.click(function () {
-                         deleteTeam(team.coachIC); // Implement DeleteTeam function
-                        });
-
-                        // Append buttons to a cell
-                        var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
-
-                        // Append cells to the row
-                        row.append(rowNumberCell, coachNameICPOD, fisioNameICPOD, teamNameCell, actionCell);
-
-                        // Append row to the table body
-                        $('#teamTableBody').append(row);
-
-                        rowIndex++;
-                       });
+                       }
                       },
                       error: function (xhr, status, error) {
                        console.error("Error occurred during AJAX request:", error);
@@ -439,11 +452,41 @@
     var coachPOD = $("#coachPOD").val().trim();
     var fisioName = $("#fisioName").val().trim();
     var fisioIC = $("#fisioIC").val().trim();
+    var fisioPOD = $("#fisioPOD").val().trim();
     var teamName = $("#teamName").val().trim();
 
     // Check if any field is empty
-    if (!coachName || !coachIC || !coachPOD || !fisioName || !fisioIC || !teamName) {
-     alert("Please fill in all fields.");
+    if (!coachName || !coachIC || !coachPOD || !fisioName || !fisioIC || !fisioPOD || !teamName) {
+     const Toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: false,
+      customClass: 'swal-wide'
+     });
+
+     let message = '<small style="color:red">';
+     if (!coachName)
+      message += '<li>Coach Name</li>';
+     if (!coachIC)
+      message += '<li>Coach Identity Card</li>';
+     if (!coachPOD)
+      message += '<li>Coach Place Of Duty</li>';
+     if (!fisioName)
+      message += '<li>Fisio Name</li>';
+     if (!fisioIC)
+      message += '<li>Fisio Identity Card</li>';
+     if (!fisioPOD)
+      message += '<li>Fisio Place Of Duty</li>';
+     if (!teamName)
+      message += '<li>Team Name</li></small>';
+
+     Toast.fire({
+      icon: 'warning',
+      title: '<b>Please Fill All Required Fields</b>',
+      html: message
+     });
      return;
     }
 
@@ -459,7 +502,20 @@
       msg = data[0].msg
 
       if (msg == 1) {
-       alert('Submit Inserted');
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        heightAuto: true,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>Team <span style="color: green;"> Added</span> Successfully!</b>'
+       });
        $('#ajaxAddCoach')[0].reset();
        $("#closeModal").trigger('click');
        fetchTeamData();
@@ -485,6 +541,20 @@
       data: {coachIC: coachIC},
       success: function (response) {
        console.log("Team deleted successfully");
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        heightAuto: true,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>Team <span style="color: red;"> Deleted</span> Successfully!</b>'
+       });
        fetchTeamData();
       },
       error: function (xhr, status, error) {
@@ -509,7 +579,20 @@
      dataType: 'JSON',
      success: function (response) {
       if (response.success) {
-       alert('Team information updated successfully');
+       const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        heightAuto: true,
+        timerProgressBar: false,
+        iconColor: 'green',
+        customClass: 'swal-wide',
+       });
+       Toast.fire({
+        icon: 'success',
+        title: '<b>Team <span style="color: green;"> Updated</span> Successfully!</b>'
+       });
        $("#closeModalUpdate").trigger('click');
        fetchTeamData();
       } else {
