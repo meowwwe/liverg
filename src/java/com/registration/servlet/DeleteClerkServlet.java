@@ -1,4 +1,4 @@
-package com.query.registration;
+package com.registration.servlet;
 
 import com.connection.DBConnect;
 import java.io.IOException;
@@ -11,12 +11,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class DeleteHeadJudgeServlet extends HttpServlet {
+public class DeleteClerkServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Get the clerk ID from request parameters
-        int headjudgeID = Integer.parseInt(request.getParameter("headjudgeID"));
+        int clerkID = Integer.parseInt(request.getParameter("clerkID"));
 
         // Database Connection
         DBConnect db = new DBConnect();
@@ -25,17 +25,17 @@ public class DeleteHeadJudgeServlet extends HttpServlet {
 
         try {
             // Prepare and execute delete query
-            String query = "DELETE FROM HEADJUDGE WHERE headjudgeID = ?";
+            String query = "DELETE FROM CLERK WHERE clerkID = ?";
             pstm = con.prepareStatement(query);
-            pstm.setInt(1, headjudgeID);
+            pstm.setInt(1, clerkID);
             int rowsAffected = pstm.executeUpdate();
 
             // Send response indicating success or failure
             PrintWriter out = response.getWriter();
             if (rowsAffected > 0) {
-                out.println("HeadJudge deleted successfully");
+                out.println("Clerk deleted successfully");
             } else {
-                out.println("Failed to delete HeadJudge");
+                out.println("Failed to delete clerk");
             }
         } catch (SQLException e) {
             e.printStackTrace();

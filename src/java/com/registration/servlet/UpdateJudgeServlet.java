@@ -1,4 +1,4 @@
-package com.query.registration;
+package com.registration.servlet;
 
 import com.connection.DBConnect;
 import java.io.IOException;
@@ -12,15 +12,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
-public class UpdateClerkServlet extends HttpServlet {
+public class UpdateJudgeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         
-        int clerkID = Integer.parseInt(request.getParameter("updateClerkID"));
-        String username = request.getParameter("updateClerkName");
-        String password = request.getParameter("updateClerkPassword");
-        String name = request.getParameter("updateName");
+        int judgeID = Integer.parseInt(request.getParameter("updateJudgeID"));
+        String updateJudgeIC = request.getParameter("updateJudgeIC");
+        String updateJudgeName = request.getParameter("updateJudgeName");
+        String updateJudgePOD = request.getParameter("updateJudgePOD");
+        String updateJudgeTeam = request.getParameter("updateJudgeTeam");
 
         // Database Connection
         DBConnect db = new DBConnect();
@@ -29,12 +30,13 @@ public class UpdateClerkServlet extends HttpServlet {
 
         try {
             
-            String query = "UPDATE CLERK SET clerkUsername = ?, clerkPassword = ?, clerkName = ? WHERE clerkID = ?";
+            String query = "UPDATE JUDGE SET judgeName = ?, judgeNoIc = ?, judgePOD = ?, teamID = ? WHERE judgeID = ?";
             pstm = con.prepareStatement(query);
-            pstm.setString(1, username);
-            pstm.setString(2, password);
-            pstm.setString(3, name);
-            pstm.setInt(4, clerkID);
+            pstm.setString(1, updateJudgeName);
+            pstm.setString(2, updateJudgeIC);
+            pstm.setString(3, updateJudgePOD);
+            pstm.setString(4, updateJudgeTeam);
+            pstm.setInt(5, judgeID);
             int rowsAffected = pstm.executeUpdate();
 
             // Send JSON response indicating success or failure

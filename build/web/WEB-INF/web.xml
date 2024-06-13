@@ -18,7 +18,7 @@
     </servlet>
     <servlet>
         <servlet-name>DeleteClerkServlet</servlet-name>
-        <servlet-class>com.query.registration.DeleteClerkServlet</servlet-class>
+        <servlet-class>com.registration.servlet.DeleteClerkServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DisplayClerkServlet</servlet-name>
@@ -26,7 +26,7 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateClerkServlet</servlet-name>
-        <servlet-class>com.query.registration.UpdateClerkServlet</servlet-class>
+        <servlet-class>com.registration.servlet.UpdateClerkServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddHeadJudgeServlet</servlet-name>
@@ -42,11 +42,11 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateHeadJudgeServlet</servlet-name>
-        <servlet-class>com.query.registration.UpdateHeadJudgeServlet</servlet-class>
+        <servlet-class>com.registration.servlet.UpdateHeadJudgeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteHeadJudgeServlet</servlet-name>
-        <servlet-class>com.query.registration.DeleteHeadJudgeServlet</servlet-class>
+        <servlet-class>com.registration.servlet.DeleteHeadJudgeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddJudgeServlet</servlet-name>
@@ -58,7 +58,7 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateJudgeServlet</servlet-name>
-        <servlet-class>com.query.registration.UpdateJudgeServlet</servlet-class>
+        <servlet-class>com.registration.servlet.UpdateJudgeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DisplayJudgeServlet</servlet-name>
@@ -66,7 +66,7 @@
     </servlet>
     <servlet>
         <servlet-name>DeleteJudgeServlet</servlet-name>
-        <servlet-class>com.query.registration.DeleteJudgeServlet</servlet-class>
+        <servlet-class>com.registration.servlet.DeleteJudgeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddGymnastServlet</servlet-name>
@@ -82,11 +82,11 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateGymnastServlet</servlet-name>
-        <servlet-class>com.query.registration.UpdateGymnastServlet</servlet-class>
+        <servlet-class>com.registration.servlet.UpdateGymnastServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteGymnastServlet</servlet-name>
-        <servlet-class>com.query.registration.DeleteGymnastServlet</servlet-class>
+        <servlet-class>com.registration.servlet.DeleteGymnastServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddTeamServlet</servlet-name>
@@ -102,11 +102,11 @@
     </servlet>
     <servlet>
         <servlet-name>UpdateTeamServlet</servlet-name>
-        <servlet-class>com.query.registration.UpdateTeamServlet</servlet-class>
+        <servlet-class>com.registration.servlet.UpdateTeamServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteTeamServlet</servlet-name>
-        <servlet-class>com.query.registration.DeleteTeamServlet</servlet-class>
+        <servlet-class>com.registration.servlet.DeleteTeamServlet</servlet-class>
     </servlet>
     <!--Servlet Scoring-->
     <servlet>

@@ -1,4 +1,4 @@
-package com.query.registration;
+package com.registration.servlet;
 
 import com.connection.DBConnect;
 import jakarta.servlet.ServletException;
