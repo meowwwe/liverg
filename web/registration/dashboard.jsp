@@ -380,9 +380,9 @@
    <!-- partial:../../partials/_navbar.html -->
    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/sport16.jpg"
+     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/gymnastLogo.png"
                                                            class="mr-1" alt="logo" /></a>
-     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/gym.jpg" alt="logo" /></a>
+     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/miniLogo.png" alt="logo" /></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -566,7 +566,7 @@
                 <% int rowCount = 1; %>
                 <tr>
                  <td colspan="5" class="text-uppercase">
-                  <span class="badge badge badge-md bg-gradient-secondary"><%= entry.getKey() %></span>
+                  <span class="badge bg-gradient-dark"><%= entry.getKey() %></span>
                  </td>
                 </tr>
                 <% for (Gymnast gymnast : entry.getValue()) { 

@@ -73,67 +73,93 @@
   <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 
   <style>
-   .card {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-top: -30px;
-   }
-   .table th, .table td {
-    vertical-align: middle;
-    text-align: center;
-   }
-   .table thead th {
-    background-color: #343a40;
-    color: #fff;
-   }
-   .table tbody tr:hover {
-    background-color: #f1f1f1;
-   }
-   .container-fluid {
-    padding: 20px;
-    background-color: #f8f9fa;
-    padding-top: 0;
-    margin-top: 70px; /* Adjust the top margin to create space */
-   }
-   .card-header h6 {
-    font-size: 1.25rem;
-    font-weight: bold;
-   }
-   .modal-body {
-    text-align: left; /* Align text to the left inside modal */
-   }
-   .page-body-wrapper {
-    padding-top: 0px; /* Adjust padding to match the top margin of container-fluid */
-   }
-   /* Style for the image container */
-   #imageContainer {
-    max-width: 100%; /* Limit the width to fit the modal */
-    max-height: 100%; /* Limit the height to 400 pixels */
-    overflow: hidden;
-   }
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: -30px;
+        }
 
-   /* Style for the image itself */
-   #imageContainer img {
-    max-width: 100%; /* Ensure the image doesn't exceed the container width */
-    max-height: 100%; /* Ensure the image doesn't exceed the container height */
-    display: block; /* Ensure the image is displayed as a block element */
-    margin: auto; /* Center the image horizontally */
-   }
+        .table th,
+        .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
 
-   .choices__list--multiple .choices__item {
-    display: inline-block;
-    vertical-align: middle;
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 12px;
-    font-weight: 500;
-    margin-right: 3.75px;
-    margin-bottom: 3.75px;
-    background-color: #344767;
-    border: 1px solid #00a5bb;
-    color: #fff;
-    word-break: break-all;
-   }
-  </style>
+        .table thead th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .container-fluid {
+            padding: 20px;
+            background-color: #f8f9fa;
+            padding-top: 0;
+            margin-top: 0px;
+        }
+
+        .card-header h6 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            text-align: left;
+        }
+
+        .page-body-wrapper {
+            padding-top: 0px;
+        }
+
+        .page-header {
+            margin-top: 80px !important; /* Create space between the header and the image */
+        }
+
+        .sidebar {
+            padding-top: 70px; /* Add padding to avoid overlap with fixed header */
+        }
+
+        .toast.bg-success {
+            background-color: #28a745;
+        }
+
+        .toast.bg-danger {
+            background-color: #dc3545;
+        }
+
+        .toast .toast-header {
+            border-bottom: none;
+        }
+
+        .toast .toast-body {
+            color: #ffffff;
+        }
+
+        .toast .btn-close {
+            filter: invert(100%);
+        }
+
+        .toast-container {
+            z-index: 9999;
+        }
+
+        .toast {
+            margin-bottom: 1rem;
+        }
+        
+         #apparatusValuesContainer .badge {
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    
+    /* #apparatusValuesContainer p {
+      color: black;
+      font-weight: bold;
+    } */
+        
+    </style>
 
  </head>
 
@@ -142,8 +168,9 @@
    <!-- partial:../../partials/_navbar.html -->
    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/sport16.jpg" class="mr-1" alt="logo"/></a>
-     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/gym.jpg" alt="logo"/></a>
+     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/gymnastLogo.png"
+                                                           class="mr-1" alt="logo" /></a>
+     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/miniLogo.png" alt="logo" /></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -366,9 +393,9 @@
                     </select>
                    </div>
 
-                   <div id="apparatusValuesContainer"></div>
-
-
+                      <div id="apparatusValuesContainer"></div> 
+                  
+                   
                    <div class="mb-3">
                     <label class="form-label">Gymnast Apparatus</label>
                     <select name="select3" id="select3" class="form-control" style="color: black" multiple>
@@ -839,38 +866,42 @@
 
 
 <script>
- function displayGymnast(gymnastID) {
+    function displayGymnast(gymnastID) {
+      $.ajax({
+        type: 'GET',
+        url: '../DisplayGymnastServlet',
+        data: { gymnastID: gymnastID },
+        dataType: 'JSON',
+        success: function (gymnast) {
+          $('#updateGymnastName').val(gymnast.gymnastName);
+          $('#updateGymnastIC').val(gymnast.gymnastIC);
+          $('#updateGymnastSchool').val(gymnast.gymnastSchool);
+          $('#updateGymnastCategory').val(gymnast.gymnastCategory);
 
-  $.ajax({
-   type: 'GET',
-   url: '../DisplayGymnastServlet',
-   data: {gymnastID: gymnastID},
-   dataType: 'JSON',
-   success: function (gymnast) {
-    $('#updateGymnastName').val(gymnast.gymnastName);
-    $('#updateGymnastIC').val(gymnast.gymnastIC);
-    $('#updateGymnastSchool').val(gymnast.gymnastSchool);
-    $('#updateGymnastCategory').val(gymnast.gymnastCategory);
+          // Split the comma-separated apparatus list into an array
+          var apparatusArray = gymnast.apparatusList.split(',');
+          console.log("Apparatus List: " + apparatusArray);
 
-    // Split the comma-separated apparatus list into an array
-    var apparatusArray = gymnast.apparatusList;
-    console.log("Apparatus List: " + apparatusArray);
+          var apparatusHtml = '<p style="font-family: Arial, sans-serif;">Current Apparatus:</p>';
+apparatusArray.forEach(function(apparatus) {
+  apparatusHtml += '<span class="badge badge-secondary" style="background-color: pink; color: white; margin-right: 5px;">' + apparatus.trim() + '</span>';
+});
 
-    var selectedValues = $('#select3').val();
-    $('#apparatusValuesContainer').html(apparatusArray);
 
-    $('#updateGymnastID').val(gymnast.gymnastID);
-    $('#updateGymnastTeam').val(gymnast.teamID);
+          $('#apparatusValuesContainer').html(apparatusHtml);
 
-    //$('#updateGymnastModal').modal('show');
-   },
-   error: function (xhr, status, error) {
-    console.error("Error retrieving gymnast information:", error);
-   }
-  });
+          $('#updateGymnastID').val(gymnast.gymnastID);
+          $('#updateGymnastTeam').val(gymnast.teamID);
 
- }
-</script>
+          $('#updateGymnastModal').modal('show');
+        },
+        error: function (xhr, status, error) {
+          console.error("Error retrieving gymnast information:", error);
+        }
+      });
+    }
+  </script>
+
 
 
 <script>

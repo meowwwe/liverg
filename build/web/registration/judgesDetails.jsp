@@ -57,40 +57,83 @@
   <!-- CSS Files -->
   <link href="assets/css/soft-ui-dashboard.css" rel="stylesheet" type="text/css"/>
 
-  <style>
-   .card {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin-top: -30px;
-   }
-   .table th, .table td {
-    vertical-align: middle;
-    text-align: center;
-   }
-   .table thead th {
-    background-color: #343a40;
-    color: #fff;
-   }
-   .table tbody tr:hover {
-    background-color: #f1f1f1;
-   }
-   .container-fluid {
-    padding: 20px;
-    background-color: #f8f9fa;
-    padding-top: 0;
-    margin-top: 70px; /* Adjust the top margin to create space */
-   }
-   .card-header h6 {
-    font-size: 1.25rem;
-    font-weight: bold;
-   }
-   .modal-body {
-    text-align: left; /* Align text to the left inside modal */
-   }
-   .page-body-wrapper {
-    padding-top: 0px; /* Adjust padding to match the top margin of container-fluid */
-   }
-  </style>
+   <style>
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: -30px;
+        }
 
+        .table th,
+        .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table thead th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .container-fluid {
+            padding: 20px;
+            background-color: #f8f9fa;
+            padding-top: 0;
+            margin-top: 0px;
+        }
+
+        .card-header h6 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            text-align: left;
+        }
+
+        .page-body-wrapper {
+            padding-top: 0px;
+        }
+
+        .page-header {
+            margin-top: 80px !important; /* Create space between the header and the image */
+        }
+
+        .sidebar {
+            padding-top: 70px; /* Add padding to avoid overlap with fixed header */
+        }
+
+        .toast.bg-success {
+            background-color: #28a745;
+        }
+
+        .toast.bg-danger {
+            background-color: #dc3545;
+        }
+
+        .toast .toast-header {
+            border-bottom: none;
+        }
+
+        .toast .toast-body {
+            color: #ffffff;
+        }
+
+        .toast .btn-close {
+            filter: invert(100%);
+        }
+
+        .toast-container {
+            z-index: 9999;
+        }
+
+        .toast {
+            margin-bottom: 1rem;
+        }
+    </style>
  </head>
 
  <body>
@@ -98,8 +141,9 @@
    <!-- partial:../../partials/_navbar.html -->
    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/sport16.jpg" class="mr-1" alt="logo"/></a>
-     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/gym.jpg" alt="logo"/></a>
+     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/gymnastLogo.png"
+                                                           class="mr-1" alt="logo" /></a>
+     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/miniLogo.png" alt="logo" /></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

@@ -257,47 +257,60 @@
 <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js'></script>
 <script src="https://cdn.lordicon.com/qjzruarw.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+  
 <script>
-         var msg = null;
-
-         function login() {
-          var data = $("#ajaxLogin").serialize();
-
-          $.ajax({
-           type: 'POST',
-           url: 'LoginServlet',
-           data: data,
-           dataType: 'JSON',
-
-           success: function (data) {
-            msg = data[0].msg;
-
-            if (msg == 1) {
-//             alert('STAFF');
-             window.location.href = "registration/dashboard.jsp";
-            } else if (msg == 2) {
-//             alert('CLERK');
-             window.location.href = "./registration/dashboard.jsp";
-            } else if (msg == 3) {
-             window.location.href = "Score";
-            } else {
-             const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: false,
-              heightAuto: true,
-              timerProgressBar: false,
-              iconColor: 'red',
-              customClass: 'swal-wide',
-             });
-             Toast.fire({
-              icon: 'error',
-              html: '<b>Invalid Credential !</b><br> <small>Incorrect Username/Password</small>'
-             });
-            }
-           }
-          });
-         }
+    function login() {
+      var data = $("#ajaxLogin").serialize();
+      $.ajax({
+        type: 'POST',
+        url: 'LoginServlet',
+        data: data,
+        dataType: 'JSON',
+        success: function(data) {
+          var msg = data[0].msg;
+          if (msg == 1) {
+            Swal.fire({
+              icon: "success",
+              title: "STAFF",
+              text: "Staff Detected",
+              timer: 1500,
+              timerProgressBar: true,
+              showConfirmButton: false
+            }).then(() => {
+              window.location.href = "registration/dashboard.jsp";
+            });
+          } else if (msg == 2) {
+            Swal.fire({
+              icon: "success",
+              title: "CLERK",
+              text: "Clerk Detected",
+              timer: 1500,
+              timerProgressBar: true,
+              showConfirmButton: false
+              }).then(() => {
+              window.location.href = "registration/dashboard.jsp";
+            });
+          } else if (msg == 3) {
+            Swal.fire({
+              icon: "success",
+              title: "HEADJUDGE",
+              text: "Head Judge Detected",
+              timer: 1500,
+              timerProgressBar: true,
+              showConfirmButton: false
+               }).then(() => {
+              window.location.href = "Score";
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Username/Password Incorrect",
+            });
+          }
+        }
+      });
+    }
 </script>
