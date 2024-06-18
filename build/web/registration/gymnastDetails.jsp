@@ -159,7 +159,30 @@
       font-weight: bold;
     } */
         
-    </style>
+     .sidebar-toggle-btn {
+            display: none; /* Initially hide the toggle button */
+        }
+   
+   
+    @media (max-width: 1000.98px) {
+        .sidebar-toggle-btn {
+                display: block; /* Show the toggle button */
+            }
+            .sidebar-offcanvas {
+                -webkit-transform: translateX(-100%);
+                transform: translateX(-100%);
+                position: fixed;
+                padding-top: 8px; /* Height of navbar */
+                left: 0px;
+            }
+            .sidebar-offcanvas.show {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+            
+        }
+
+  </style>
 
  </head>
 
@@ -178,17 +201,24 @@
      </button>
 
      <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item dropdown">
-      </li>
-      <li class="nav-item nav-profile dropdown">
-       <div aria-labelledby="profileDropdown">
-        <a href="../LogoutServlet" class="dropdown-item">
-         <i class="ti-power-off text-primary"></i>
-         Logout
-        </a>
-       </div>
-      </li>
-     </ul>
+        <li class="nav-item dropdown">
+            <!-- Dropdown menu content -->
+        </li>
+        <li class="nav-item nav-profile dropdown">
+            <div aria-labelledby="profileDropdown">
+                <a href="../LogoutServlet" class="dropdown-item">
+                    <i class="ti-power-off text-primary"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <!-- Sidebar Toggle Button (Font Awesome Icon) -->
+            <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
+                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+            </button>
+        </li>
+    </ul>
     </div>
    </nav>
    <!-- partial -->
@@ -961,6 +991,14 @@ apparatusArray.forEach(function(apparatus) {
  }
 </script>
 
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.sidebar-toggle-btn').on('click', function() {
+        $('.sidebar-offcanvas').toggleClass('show');
+    });
+});
+</script>
 
 
 

@@ -114,7 +114,7 @@
 
  <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <link href="vendors/feather/feather.css" rel="stylesheet" type="text/css" />
@@ -140,7 +140,7 @@
   <link href="assets/css/soft-ui-dashboard.css" rel="stylesheet" type="text/css" />
 
   <style>
-   .sidebar {
+      .sidebar {
     overflow-y: hidden;
    }
 
@@ -148,35 +148,28 @@
    .sidenav {
     overflow-y: auto;
     transition: width 0.3s ease;
-    width: 72px;
-    /* Initial width */
-    background-color: #fff;
-    /* Sidebar background color */
-    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.1);
-    /* Sidebar shadow */
+    width: 72px; /* Initial width */
+    background-color: #fff; /* Sidebar background color */
+    box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.1); /* Sidebar shadow */
    }
 
    .navbar-toggler {
     border: none;
     background: transparent;
     cursor: pointer;
-    transition: transform 0.3s ease;
-    /* Smooth transition for the button */
+    transition: transform 0.3s ease; /* Smooth transition for the button */
    }
 
    .navbar-toggler:hover {
-    transform: scale(1.1);
-    /* Scale up the button on hover */
+    transform: scale(1.1); /* Scale up the button on hover */
    }
 
    .sidenav:hover {
-    width: 250px;
-    /* Expanded width on hover */
+    width: 250px; /* Expanded width on hover */
    }
 
    .sidenav-header {
-    padding: 15px;
-    /* Padding for the header */
+    padding: 15px; /* Padding for the header */
    }
 
    .navbar-brand {
@@ -198,12 +191,9 @@
 
    /* Icon styles */
    .icon-shape {
-    width: 40px;
-    /* Icon container width */
-    height: 40px;
-    /* Icon container height */
-    border-radius: 50%;
-    /* Make icon container circular */
+    width: 40px; /* Icon container width */
+    height: 40px; /* Icon container height */
+    border-radius: 50%; /* Make icon container circular */
     transition: all 0.3s ease;
    }
 
@@ -215,168 +205,51 @@
 
    /* Active link styles */
    .nav-link.active {
-    background-color: #f8f9fe;
-    /* Active link background color */
-    color: #5e72e4;
-    /* Active link text color */
-    font-weight: 600;
-    /* Bold font weight for active link */
+    background-color: #f8f9fe; /* Active link background color */
+    color: #5e72e4; /* Active link text color */
+    font-weight: 600; /* Bold font weight for active link */
    }
 
    .nav-link.active .icon-shape {
-    background-color: #f8f9fe;
-    /* Active icon background color */
-    color: #5e72e4;
-    /* Active icon color */
+    background-color: #f8f9fe; /* Active icon background color */
+    color: #5e72e4; /* Active icon color */
    }
 
-   .ag-format-container {
-    width: 1142px;
-    margin: 0 auto;
-   }
+   /* Responsive sidebar off-canvas */
+   
 
-   .ag-courses_box {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: flex-start;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    padding: 50px 0;
-   }
-
-   .ag-courses_item {
-    -ms-flex-preferred-size: calc(33.33333% - 30px);
-    flex-basis: calc(33.33333% - 30px);
-    margin: 0 15px 30px;
-    overflow: hidden;
-    border-radius: 28px;
-   }
-
-   .ag-courses-item_link {
-    display: block;
-    padding: 30px 20px;
-    background-color: #121212;
-    overflow: hidden;
-    position: relative;
-   }
-
-   .ag-courses-item_link:hover,
-   .ag-courses-item_link:hover .ag-courses-item_date {
-    text-decoration: none;
-    color: #fff;
-   }
-
-   .ag-courses-item_link:hover .ag-courses-item_bg {
-    -webkit-transform: scale(10);
-    -ms-transform: scale(10);
-    transform: scale(10);
-   }
-
-   .ag-courses-item_title {
-    min-height: 87px;
-    margin: 0 0 25px;
-    overflow: hidden;
-    font-weight: bold;
-    font-size: 30px;
-    color: #fff;
-    z-index: 2;
-    position: relative;
-   }
-
-   .ag-courses-item_date-box {
-    font-size: 18px;
-    color: #fff;
-    z-index: 2;
-    position: relative;
-   }
-
-   .ag-courses-item_date {
-    font-weight: bold;
-    color: #f9b234;
-    -webkit-transition: color 0.5s ease;
-    -o-transition: color 0.5s ease;
-    transition: color 0.5s ease;
-   }
-
-   .ag-courses-item_bg {
-    height: 128px;
-    width: 128px;
-    background-color: #f9b234;
-    z-index: 1;
-    position: absolute;
-    top: -75px;
-    right: -75px;
-    border-radius: 50%;
-    -webkit-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-   }
-
-   .ag-courses_item:nth-child(2n) .ag-courses-item_bg {
-    background-color: #3ecd5e;
-   }
-
-   .ag-courses_item:nth-child(3n) .ag-courses-item_bg {
-    background-color: #e44002;
-   }
-
-   .ag-courses_item:nth-child(4n) .ag-courses-item_bg {
-    background-color: #952aff;
-   }
-
-   .ag-courses_item:nth-child(5n) .ag-courses-item_bg {
-    background-color: #cd3e94;
-   }
-
-   .ag-courses_item:nth-child(6n) .ag-courses-item_bg {
-    background-color: #4c49ea;
-   }
-
-   @media only screen and (max-width: 979px) {
-    .ag-courses_item {
-     -ms-flex-preferred-size: calc(50% - 30px);
-     flex-basis: calc(50% - 30px);
+        .sidebar-toggle-btn {
+            display: none; /* Initially hide the toggle button */
+        }
+   
+   
+    @media (max-width: 1000.98px) {
+        .sidebar-toggle-btn {
+        display: block; /* Show the toggle button */
     }
+            .sidebar-offcanvas {
+                -webkit-transform: translateX(-100%);
+                transform: translateX(-100%);
+                position: fixed;
+                padding-top: 8px; /* Height of navbar */
+                left: 0px;
+            }
+            .sidebar-offcanvas.show {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+            
+            
+            
+        }
 
-    .ag-courses-item_title {
-     font-size: 24px;
-    }
-   }
-
-   @media only screen and (max-width: 767px) {
-    .ag-format-container {
-     width: 96%;
-    }
-   }
-
-   @media only screen and (max-width: 639px) {
-    .ag-courses_item {
-     -ms-flex-preferred-size: 100%;
-     flex-basis: 100%;
-    }
-
-    .ag-courses-item_title {
-     min-height: 72px;
-     line-height: 1;
-     font-size: 24px;
-    }
-
-    .ag-courses-item_link {
-     padding: 22px 40px;
-    }
-
-    .ag-courses-item_date-box {
-     font-size: 16px;
-    }
-   }
   </style>
  </head>
 
  <body style="overflow: hidden">
+
   <div class="container-scroller">
+    
    <!-- partial:../../partials/_navbar.html -->
    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
@@ -388,19 +261,28 @@
      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
       <span class="icon-menu"></span>
      </button>
+        
 
+        
      <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item dropdown">
-      </li>
-      <li class="nav-item nav-profile dropdown">
-       <div aria-labelledby="profileDropdown">
-        <a href="../LogoutServlet" class="dropdown-item">
-         <i class="ti-power-off text-primary"></i>
-         Logout
-        </a>
-       </div>
-      </li>
-     </ul>
+        <li class="nav-item dropdown">
+            <!-- Dropdown menu content -->
+        </li>
+        <li class="nav-item nav-profile dropdown">
+            <div aria-labelledby="profileDropdown">
+                <a href="../LogoutServlet" class="dropdown-item">
+                    <i class="ti-power-off text-primary"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <!-- Sidebar Toggle Button (Font Awesome Icon) -->
+            <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
+                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+            </button>
+        </li>
+    </ul>
     </div>
    </nav>
 
@@ -634,6 +516,8 @@
   <script src="assets/template.js" type="text/javascript"></script>
   <script src="assets/settings.js" type="text/javascript"></script>
   <script src="assets/todolist.js" type="text/javascript"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
   <script>
    var win = navigator.platform.indexOf('Win') > -1;
    if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -643,6 +527,17 @@
     Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
    }
   </script>
+  
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.sidebar-toggle-btn').on('click', function() {
+        $('.sidebar-offcanvas').toggleClass('show');
+    });
+});
+</script>
+
+  
  </body>
 
 </html>
