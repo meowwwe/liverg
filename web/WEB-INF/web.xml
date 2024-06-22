@@ -149,6 +149,10 @@
         <servlet-name>LiveScoringAdminTableServlet</servlet-name>
         <servlet-class>com.servlet.scoring.LiveScoringAdminTableServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomePageServlet</servlet-name>
+        <servlet-class>com.servlet.scoring.HomePageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -176,6 +180,10 @@
     <servlet-mapping>
         <servlet-name>UpdateClerkServlet</servlet-name>
         <url-pattern>/UpdateClerkServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/Welcome</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>scoring/scoreIndividualTable.jsp</welcome-file>

@@ -164,7 +164,7 @@
         </li>
         <li class="nav-item nav-profile dropdown">
             <div aria-labelledby="profileDropdown">
-                <a href="../LogoutServlet" class="dropdown-item">
+                <a href="LogoutServlet" class="dropdown-item">
                     <i class="ti-power-off text-primary"></i>
                     Logout
                 </a>
