@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-
 .loading *,
 .loading *:before,
 .loading *:after {
@@ -62,107 +61,107 @@ body {
 .asset1 {
   top: 190px;
   left: -83px;
-  animation: floatDown $time ease-in-out infinite;
+  animation: floatDown 3.6s ease-in-out infinite;
 }
 
 .asset2 {
   top: 370px;
   left: 77px;
-  animation: floatUp $time 0.1s ease-in-out infinite;
+  animation: floatUp 3.6s 0.1s ease-in-out infinite;
 }
 
 .asset3 {
   top: 142px;
   left: 117px;
-  animation: floatLeft $time 0.2s ease-in-out infinite;
+  animation: floatLeft 3.6s 0.2s ease-in-out infinite;
 }
 
 .asset4 {
   top: 338px;
   left: 60px;
-  animation: floatUp $time 0.3s ease-in-out infinite;
+  animation: floatUp 3.6s 0.3s ease-in-out infinite;
 }
 
 .asset5 {
   top: 397px;
   left: 409px;
-  animation: floatLeft $time 0.1s ease-in-out infinite;
+  animation: floatLeft 3.6s 0.1s ease-in-out infinite;
 }
 
 .asset6 {
   top: 100px;
   left: 397px;
-  animation: floatUp $time 0.2s ease-in-out infinite;
+  animation: floatUp 3.6s 0.2s ease-in-out infinite;
 }
 
 .asset7 {
   top: -15px;
   left: 291px;
-  animation: floatDown $time 0.3s ease-in-out infinite;
+  animation: floatDown 3.6s 0.3s ease-in-out infinite;
 }
 
 .asset8 {
   top: 112px;
   left: 327px;
-  animation: floatUp $time 0.1s ease-in-out infinite;
+  animation: floatUp 3.6s 0.1s ease-in-out infinite;
 }
 
 .asset9 {
   top: 57px;
   left: 569px;
-  animation: floatRight $time 0.2s ease-in-out infinite;
+  animation: floatRight 3.6s 0.2s ease-in-out infinite;
 }
 
 .asset10 {
   top: 467px;
   left: 525px;
-  animation: floatRight $time 0.3s ease-in-out infinite;
+  animation: floatRight 3.6s 0.3s ease-in-out infinite;
 }
 
 .asset11 {
   top: 397px;
   left: 597px;
-  animation: floatLeft $time 0.1s ease-in-out infinite;
+  animation: floatLeft 3.6s 0.1s ease-in-out infinite;
 }
 
 .asset12 {
   top: 358px;
   left: 554px;
-  animation: floatRight $time 0.2s ease-in-out infinite;
+  animation: floatRight 3.6s 0.2s ease-in-out infinite;
 }
 
 .asset13 {
   top: 356px;
   left: 593px;
-  animation: floatLeft $time 0.3s ease-in-out infinite;
+  animation: floatLeft 3.6s 0.3s ease-in-out infinite;
 }
 
 .asset14 {
   top: 256px;
   left: 853px;
-  animation: floatUp $time 0.1s ease-in-out infinite;
+  animation: floatUp 3.6s 0.1s ease-in-out infinite;
 }
 
 .asset15 {
   top: 145px;
   left: 743px;
-  animation: floatDown $time 0.2s ease-in-out infinite;
+  animation: floatDown 3.6s 0.2s ease-in-out infinite;
 }
 
 .asset16 {
   top: 191px;
   left: 820px;
-  animation: floatDown $time 0.3s ease-in-out infinite;
+  animation: floatDown 3.6s 0.3s ease-in-out infinite;
 }
 .asset17 {
   top: 163px;
   left: 793px;
-  animation: floatUp $time 0.1s ease-in-out infinite;
+  animation: floatUp 3.6s 0.1s ease-in-out infinite;
 }
 .asset18 {
   top: 167px;
   left: 732px;
-  animation: floatLeft $time 0.2s ease-in-out infinite;
+  animation: floatLeft 3.6s 0.2s ease-in-out infinite;
 }
 
 .container {
@@ -176,7 +175,7 @@ body {
   color: white;
   opacity: 90%;
   line-height: 0.82;
-  font-size: 100px;
+  font-size: 125px;
   font-family: "neue-haas-grotesk-display", sans-serif;
   font-weight: 900;
   font-style: normal;
@@ -196,7 +195,7 @@ body {
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d(0, $vertical-dist-up, 0);
+    transform: translate3d(0, -5%, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
@@ -208,7 +207,7 @@ body {
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d(0, $vertical-dist-down, 0);
+    transform: translate3d(0, 5%, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
@@ -220,7 +219,7 @@ body {
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d($horiz-dist-right, 0, 0);
+    transform: translate3d(-5%, 0, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
@@ -232,7 +231,7 @@ body {
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d($horiz-dist-left, 0, 0);
+    transform: translate3d(5%, 0, 0);
   }
   100% {
     transform: translate3d(0, 0, 0);
@@ -269,11 +268,12 @@ body {
   }
 }
 
+
     </style>
     <body>
-        
+       
         <!--<a href="LiveIndividualScore" class='btn btn-lg btn-primary mt-5 text-center  d-flex align-items-center justify-content-center'>View Gymnast Score</a>-->
-<div id="main" class="container loading d-flex align-items-center justify-content-center">
+<div id="main" class="container-fluid loading d-flex align-items-center justify-content-center mx-0 my-0">
   <div class="art-board">
     <!--<div class="asset asset1"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698865081/floating/Asset1.png" alt=""></div>-->
     <div class="asset asset2"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698865081/floating/Asset2.png" alt=""></div>
@@ -283,10 +283,10 @@ body {
     <!--<div class="asset asset7"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset7.png" alt=""></div>-->
     <div class="asset asset8"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset8.png" alt=""></div>
     <div class="asset asset9"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset9.png" alt=""></div>
-    <!--<div class="asset asset10"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698874357/floating/Asset10.png" alt=""></div>-->
-    <!--<div class="asset asset11"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698874658/floating/Asset11.png" alt=""></div>-->
-    <!--<div class="asset asset12"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset12.png" alt=""></div>-->
-    <!--<div class="asset asset13"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset13.png" alt=""></div>-->
+    <div class="asset asset10"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698874357/floating/Asset10.png" alt=""></div>
+    <div class="asset asset11"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698874658/floating/Asset11.png" alt=""></div>
+    <div class="asset asset12"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset12.png" alt=""></div>
+    <div class="asset asset13"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset13.png" alt=""></div>
     <a href="LiveIndividualScore"> <h4 class="title">Welcome To Gymnastic Scoring System</h4> </a>
 
     <div class="asset asset3"><img src="https://res.cloudinary.com/jasuaje/image/upload/v1698870354/floating/Asset18.png" alt=""></div>
@@ -300,7 +300,8 @@ body {
     <!--             <img class="test" src="https://res.cloudinary.com/jasuaje/image/upload/v1698862868/efnmy8h59frls46wceps.png" alt=""> -->
   </div>
 </div>
-        <a href="LiveIndividualScore" style=" font-family: 'neue-haas-grotesk-display', sans-serif;font-weight:700" class="mx-3 btn d-flex align-items-center justify-content-center text-dark shadow p-3 mb-5 bg-body-tertiary rounded">View Score Details</a>
+          <a href="LiveIndividualScore" style=" font-family: 'neue-haas-grotesk-display', sans-serif;font-weight:700" class="mx-5 mt-5 mb-0 btn d-flex align-items-center justify-content-center text-dark shadow p-3 mb-5 bg-body-tertiary rounded">View Score Details</a>
+       
         <script>
             window.addEventListener("load", () => {
   const elem = document.getElementById("main");
