@@ -316,7 +316,7 @@ listSeenCategory.add(currentGymnastCategory);
             Total D+E+A
            </th>
            <th rowspan="2">PENALTY</th> 
-           <th rowspan="2">FINAL SCORE</th>
+           <th rowspan="2" style="position: sticky; right: 0; z-index: 2;background-color:white">FINAL SCORE</th>
            <!--<th rowspan="2">RANK</th>-->
           </tr>
 
@@ -379,7 +379,7 @@ listSeenCategory.add(currentGymnastCategory);
            <td><%= String.format("%.2f",10 - (composite.getScore().get(i).getMiddleEScore()))%></td>
            <td><%= composite.getScore().get(i).getTotalScore()%></td>
            <td><%= String.format("%.2f",composite.getScore().get(i).getTechnicalDeduction())%></td>
-           <td><%= String.format("%.2f",composite.getScore().get(i).getFinalScore()) %></td>
+           <td class="bg-light" style="position: sticky; right: 0; z-index: 2;"><%= String.format("%.2f",composite.getScore().get(i).getFinalScore()) %></td>
            <!--<td><%= composite.getGymnast().get(i).getGymnastID()%></td>-->
           </tr>
           <%

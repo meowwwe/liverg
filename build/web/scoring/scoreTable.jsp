@@ -455,7 +455,8 @@ listSeenCategory.add(currentGymnastCategory);
                             "<td>" + data[i].scoreA.toFixed(2) + "</td>" +
                             "<td>" + data[i].scoreE.toFixed(2) + "</td>" +
                             "<td>" + data[i].totalScore.toFixed(2) + "</td>" +
-                            "<td>" + data[i].penalty.toFixed(2) + "</td>" +
+                            "<td stle='postion:sticky;right:0;background-color:white;z-index:2'>" + data[i].penalty.toFixed(2) + "</td>" +
+     
                             "<td>" + data[i].finalScore.toFixed(2) + "</td>";
                     tableBody.appendChild(row);
                 }

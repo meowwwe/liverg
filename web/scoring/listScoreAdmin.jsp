@@ -113,6 +113,36 @@
    h5{
     font-family: 'Poppins';
    }
+         .sidebar-toggle-btn {
+            display: none; /* Initially hide the toggle button */
+        }
+   
+   
+    @media (max-width: 1000.98px) {
+        .sidebar-toggle-btn {
+        display: block; /* Show the toggle button */
+    }
+            .sidebar-offcanvas {
+                -webkit-transform: translateX(-100%);
+                transform: translateX(-100%);
+                position: fixed;
+                padding-top: 8px; /* Height of navbar */
+                left: 0px;
+            }
+            .sidebar-offcanvas.show {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+            
+            
+            
+        }
+   
+   @media only screen and (max-width: 600px) {
+  .navbar-togglers  {
+    display: block;
+  }
+}
 
 
 
@@ -126,27 +156,36 @@
    <!-- partial:partials/_navbar.html -->
    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-     <a class="navbar-brand brand-logo" style="font-size:17px" href="">RG SCORING</a>
-     <a class="navbar-brand brand-logo-mini" href=""><img src="registration/assets/img/curved-images/gym.jpg" alt="logo"/></a>
+<!--     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/gymnastLogo.png"
+                                                           class="mr-1" alt="logo" /></a>
+     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/miniLogo.png" alt="logo" /></a>-->
     </div>
-    <div class="navbar-menu-wrapper pl-0 d-flex align-items-center justify-content-end">
+    <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
       <span class="icon-menu"></span>
      </button>
+        
 
+        
      <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item dropdown">
-      </li>
-      <li class="nav-item nav-profile dropdown">
-       <div aria-labelledby="profileDropdown">
-        <a  href="LiveIndividualScore">
-         <i class="ti-power-off text-primary"></i>
-         Logout
-        </a>
-       </div>
-      </li>
-     </ul>
-
+        <li class="nav-item dropdown">
+            <!-- Dropdown menu content -->
+        </li>
+        <li class="nav-item nav-profile dropdown">
+            <div aria-labelledby="profileDropdown">
+                <a href="../LogoutServlet" class="dropdown-item">
+                    <i class="ti-power-off text-primary"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <!-- Sidebar Toggle Button (Font Awesome Icon) -->
+            <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
+                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+            </button>
+        </li>
+    </ul>
     </div>
    </nav>
    <!-- partial -->
@@ -154,7 +193,7 @@
     <!-- partial:partials/_settings-panel.html -->
 
     <!-- partial:partials/_sidebar.html -->
-    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <nav class="sidebar sidebar sidebar-offcanvas" id="sidebar">
      <ul class="nav">
       <!--                        <li class="nav-item">
                                   <a class="nav-link" href="dashboard.jsp">
@@ -347,7 +386,7 @@ if(!category.equals("")){
                 <th>HOOP</th>
                 <th>BALL</th>
                 <th>CLUBS</th>
-                <th>INDIVIDUAL SCORE</th>
+                <th style="position: sticky; right: 0; background-color: #2F94CE; z-index: 2;">INDIVIDUAL SCORE</th>
                 <th></th>
                </tr>
               </thead>
@@ -432,7 +471,7 @@ if(!category.equals("")){
                 <th>HOOP</th>
                 <th>BALL</th>
                 <th>CLUBS</th>
-                <th>INDIVIDUAL SCORE</th>
+                <th class="bg-primary" style="position: sticky; right: 0; z-index: 2;">INDIVIDUAL SCORE</th>
                 <th>ACTION</th>
                </tr>
               </thead>
@@ -454,6 +493,16 @@ if(!category.equals("")){
       </footer>
       <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+      <script>
+          function showSidebar(){
+                var sidebar = document.getElementById("sidebar");
+        if (sidebar.style.visibility === "visible") {
+            sidebar.style.visibility = "hidden";
+        } else {
+            sidebar.style.visibility = "visible";
+        }
+          }
+      </script>
       <script>
        function rankingTable() {
 
@@ -554,7 +603,12 @@ if(!category.equals("")){
          }
 
 
-         const scoreCell = document.createElement('td');
+         const scoreCell = document.createElement('td');                     
+         scoreCell.style.position = 'sticky';
+           scoreCell.style.right = '0';
+           scoreCell.style.backgroundColor = 'white';
+           scoreCell.style.zIndex = '2';
+         
          const scoreAnchor = document.createElement('a');
          scoreAnchor.innerText = gymnast.score.toFixed(2);
          // You can customize the link URL here
@@ -694,6 +748,12 @@ if(!category.equals("")){
   <script src="registration/assets/template.js" type="text/javascript"></script>
   <script src="registration/assets/settings.js" type="text/javascript"></script>
   <script src="registration/assets/todolist.js" type="text/javascript"></script>
+  <script>$(document).ready(function() {
+    $('.sidebar-toggle-btn').on('click', function() {
+        $('.sidebar-offcanvas').toggleClass('show');
+    });
+});
+</script>
  </body>
 </html>
 

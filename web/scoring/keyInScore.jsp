@@ -112,7 +112,30 @@
     background-color: #f8f9fe; /* Active icon background color */
     color: #5e72e4; /* Active icon color */
    }
-
+   .sidebar-toggle-btn {
+            display: none; /* Initially hide the toggle button */
+        }
+   
+   
+    @media (max-width: 1000.98px) {
+        .sidebar-toggle-btn {
+        display: block; /* Show the toggle button */
+    }
+            .sidebar-offcanvas {
+                -webkit-transform: translateX(-100%);
+                transform: translateX(-100%);
+                position: fixed;
+                padding-top: 8px; /* Height of navbar */
+                left: 0px;
+            }
+            .sidebar-offcanvas.show {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+            
+            
+            
+        }
 
 
   </style>
@@ -124,27 +147,36 @@
    <!-- partial:partials/_navbar.html -->
    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-     <a class="navbar-brand brand-logo" style="font-size:17px" href="">RG SCORING</a>
-     <a class="navbar-brand brand-logo-mini" href=""><img src="registration/assets/img/curved-images/gym.jpg" alt="logo"/></a>
+<!--     <a class="navbar-brand brand-logo mr-5" href=""> <img src="assets/img/curved-images/gymnastLogo.png"
+                                                           class="mr-1" alt="logo" /></a>
+     <a class="navbar-brand brand-logo-mini" href=""><img src="assets/img/curved-images/miniLogo.png" alt="logo" /></a>-->
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
      <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
       <span class="icon-menu"></span>
      </button>
+        
 
+        
      <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item dropdown">
-      </li>
-      <li class="nav-item nav-profile dropdown">
-       <div aria-labelledby="profileDropdown">
-        <a href="LiveIndividualScore">
-         <i class="ti-power-off text-primary"></i>
-         Logout
-        </a>
-       </div>
-      </li>
-     </ul>
-
+        <li class="nav-item dropdown">
+            <!-- Dropdown menu content -->
+        </li>
+        <li class="nav-item nav-profile dropdown">
+            <div aria-labelledby="profileDropdown">
+                <a href="../LogoutServlet" class="dropdown-item">
+                    <i class="ti-power-off text-primary"></i>
+                    Logout
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <!-- Sidebar Toggle Button (Font Awesome Icon) -->
+            <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
+                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+            </button>
+        </li>
+    </ul>
     </div>
    </nav>
    <!-- partial -->
@@ -529,7 +561,12 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
+  <script>$(document).ready(function() {
+    $('.sidebar-toggle-btn').on('click', function() {
+        $('.sidebar-offcanvas').toggleClass('show');
+    });
+});
+</script>
   <script>
 
    $("#categoryName").on("change", function () {

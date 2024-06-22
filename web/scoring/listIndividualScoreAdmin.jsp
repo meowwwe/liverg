@@ -301,7 +301,7 @@ if(!listSeenGymnast.contains(currentGymnastName)){
                                                                 <th>HOOP</th>
                                                                 <th>BALL</th>
                                                                 <th>CLUBS</th>
-                                                                <th>INDIVIDUAL SCORE</th>
+                                                                <th style="position: sticky; right: 0; background-color: #2F94CE; z-index: 2;">INDIVIDUAL SCORE</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -491,6 +491,10 @@ if(!listSeenGymnast.contains(currentGymnastName)){
                                     }
 
                                     const scoreCell = document.createElement('td');
+                                    scoreCell.style.position = 'sticky';
+                                    scoreCell.style.right = '0';
+                                    scoreCell.style.backgroundColor = 'white';
+                                    scoreCell.style.zIndex = '2';
                                     const scoreAnchor = document.createElement('a');
                                     scoreAnchor.innerText = gymnast.score.toFixed(2);
                                     // You can customize the link URL here
