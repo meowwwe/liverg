@@ -175,7 +175,7 @@ body {
   color: white;
   opacity: 90%;
   line-height: 0.82;
-  font-size: 125px;
+  font-size: 100px;
   font-family: "neue-haas-grotesk-display", sans-serif;
   font-weight: 900;
   font-style: normal;
