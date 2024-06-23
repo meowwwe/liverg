@@ -125,6 +125,12 @@ public class UpdateGymnastServlet extends HttpServlet {
      pstmtDelete.setInt(1, updateGymnastID);
      pstmtDelete.executeUpdate();
     }
+    // Delete composite entries for the gymnast
+    String deleteComposite = "DELETE FROM COMPOSITE WHERE gymnastID = ?";
+    try (PreparedStatement pstmtDeleteComposite = con.prepareStatement(deleteComposite)) {
+     pstmtDeleteComposite.setInt(1, updateGymnastID);
+     pstmtDeleteComposite.executeUpdate();
+    }
 
     // Insert new apparatus entries for the gymnast
     String insertQuery = "INSERT INTO GYMNAST_APP (gymnastID, apparatusID) VALUES (?, ?)";
@@ -134,6 +140,18 @@ public class UpdateGymnastServlet extends HttpServlet {
       pstmtInsert.setInt(1, updateGymnastID);
       pstmtInsert.setInt(2, apparatusID);
       pstmtInsert.executeUpdate();
+     }
+    }
+
+    // Insert new apparatus entries for the gymnast
+    String insertComposite = "INSERT INTO COMPOSITE (gymnastID, teamID, apparatusID) VALUES (?, ?, ?)";
+    try (PreparedStatement pstmtInsertComposite = con.prepareStatement(insertComposite)) {
+     for (String apparatusIDStr : selectedApparatusIDs) {
+      int apparatusID = Integer.parseInt(apparatusIDStr.trim());
+      pstmtInsertComposite.setInt(1, updateGymnastID);
+      pstmtInsertComposite.setInt(2, updateGymnastTeam);
+      pstmtInsertComposite.setInt(3, apparatusID);
+      pstmtInsertComposite.executeUpdate();
      }
     }
    }
