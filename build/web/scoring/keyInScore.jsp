@@ -221,11 +221,11 @@
           <div class="card-header pb-0">
            <h6>Gymnast Score Information</h6>
           </div>
-          <div class="card-body pb-0">
-
-
-           <form action="" class="d-flex mt-3" method="post">
-            <select class="form-control mb-3 ml-3 bg-primary text-white" id="gymnastID" name="gymnastID">
+          <div class="card-body pb-0 container-fluid">
+           <form action="" class="row" method="post">
+               
+               <div class="col-md-3 col-sm-6">
+            <select class="form-control mb-3 bg-primary text-white" id="gymnastID" name="gymnastID">
              <option class="bg-white text-dark" value="0" selected>GYMNAST</option>
              <% 
        List<Composite> listGymnast = (List<Composite>) request.getAttribute("listGymnast");
@@ -249,8 +249,10 @@
 
              %>
             </select>
-
-            <select class="form-control mb-3 ml-3 bg-primary text-white" id="teamID" name="teamID" >
+       </div>
+            
+            <div class="col-md-3 col-sm-6">
+            <select class="form-control mb-3 bg-primary text-white" id="teamID" name="teamID" >
              <option class="bg-white text-dark" value="0" selected>TEAM</option>
              <%
                List<Composite> listTeam = (List<Composite>) request.getAttribute("listTeam");
@@ -274,10 +276,10 @@
        }
              %>
             </select>
+</div>
 
-
-
-            <select class="form-control mb-3 ml-3 bg-primary text-white" id="apparatusID" name="apparatusID" >
+            <div class="col-md-3 col-sm-6">
+            <select class="form-control mb-3  bg-primary text-white" id="apparatusID" name="apparatusID" >
              <option class="bg-white text-dark" selected value="0">APPARATUS</option>
              <% 
                       List<Composite> listApparatus = (List<Composite>) request.getAttribute("listApparatus");  
@@ -304,7 +306,10 @@
 
              %>
             </select>
-            <select class="form-control mb-3 ml-3 bg-primary text-white" id="categoryName" id="categoryName" name="categoryName"  style="font-family: 'Poppins'">
+            </div>
+            
+            <div class="col-md-3 col-sm-6">
+            <select class="form-control mb-3 bg-primary text-white" id="categoryName" id="categoryName" name="categoryName"  style="font-family: 'Poppins'">
              <option class="bg-white text-dark" value="0" selected>CATEGORY</option>
              <% 
        List<Composite> listGymnast2 = (List<Composite>) request.getAttribute("listCategory");
@@ -329,7 +334,7 @@
 }
              %>
             </select>
-
+</div>
             <!--<button type="submit" name="submit" class="btn btn-primary mx-3" >Filter</button>-->
            </form>
 
