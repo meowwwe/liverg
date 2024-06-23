@@ -73,114 +73,115 @@
   <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 
   <style>
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: -30px;
-        }
+   .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -30px;
+   }
 
-        .table th,
-        .table td {
-            vertical-align: middle;
-            text-align: center;
-        }
+   .table th,
+   .table td {
+    vertical-align: middle;
+    text-align: center;
+   }
 
-        .table thead th {
-            background-color: #343a40;
-            color: #fff;
-        }
+   .table thead th {
+    background-color: #343a40;
+    color: #fff;
+   }
 
-        .table tbody tr:hover {
-            background-color: #f1f1f1;
-        }
+   .table tbody tr:hover {
+    background-color: #f1f1f1;
+   }
 
-        .container-fluid {
-            padding: 20px;
-            background-color: #f8f9fa;
-            padding-top: 0;
-            margin-top: 0px;
-        }
+   .container-fluid {
+    padding: 20px;
+    background-color: #f8f9fa;
+    padding-top: 0;
+    margin-top: 0px;
+   }
 
-        .card-header h6 {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
+   .card-header h6 {
+    font-size: 1.25rem;
+    font-weight: bold;
+   }
 
-        .modal-body {
-            text-align: left;
-        }
+   .modal-body {
+    text-align: left;
+   }
 
-        .page-body-wrapper {
-            padding-top: 0px;
-        }
+   .page-body-wrapper {
+    padding-top: 0px;
+   }
 
-        .page-header {
-            margin-top: 80px !important; /* Create space between the header and the image */
-        }
+   .page-header {
+    margin-top: 80px !important; /* Create space between the header and the image */
+   }
 
-        .sidebar {
-            padding-top: 70px; /* Add padding to avoid overlap with fixed header */
-        }
+   .sidebar {
+    padding-top: 70px; /* Add padding to avoid overlap with fixed header */
+   }
 
-        .toast.bg-success {
-            background-color: #28a745;
-        }
+   .toast.bg-success {
+    background-color: #28a745;
+   }
 
-        .toast.bg-danger {
-            background-color: #dc3545;
-        }
+   .toast.bg-danger {
+    background-color: #dc3545;
+   }
 
-        .toast .toast-header {
-            border-bottom: none;
-        }
+   .toast .toast-header {
+    border-bottom: none;
+   }
 
-        .toast .toast-body {
-            color: #ffffff;
-        }
+   .toast .toast-body {
+    color: #ffffff;
+   }
 
-        .toast .btn-close {
-            filter: invert(100%);
-        }
+   .toast .btn-close {
+    filter: invert(100%);
+   }
 
-        .toast-container {
-            z-index: 9999;
-        }
+   .toast-container {
+    z-index: 9999;
+   }
 
-        .toast {
-            margin-bottom: 1rem;
-        }
-        
-         #apparatusValuesContainer .badge {
-      margin-right: 5px;
-      margin-bottom: 5px;
+   .toast {
+    margin-bottom: 1rem;
+   }
+
+   #apparatusValuesContainer .badge {
+    margin-right: 5px;
+    margin-bottom: 5px;
+   }
+
+   /* #apparatusValuesContainer p {
+     color: black;
+     font-weight: bold;
+   } */
+
+   .sidebar-toggle-btn {
+    display: none; /* Initially hide the toggle button */
+   }
+
+
+   @media (max-width: 1000.98px) {
+    .sidebar-toggle-btn {
+     display: block; /* Show the toggle button */
     }
-    
-    /* #apparatusValuesContainer p {
-      color: black;
-      font-weight: bold;
-    } */
-        
-     .sidebar-toggle-btn {
-            display: none; /* Initially hide the toggle button */
-        }
-   
-   
-    @media (max-width: 1000.98px) {
-        .sidebar-toggle-btn {
-                display: block; /* Show the toggle button */
-            }
-            .sidebar-offcanvas {
-                -webkit-transform: translateX(-100%);
-                transform: translateX(-100%);
-                position: fixed;
-                padding-top: 8px; /* Height of navbar */
-                left: 0px;
-            }
-            .sidebar-offcanvas.show {
-                -webkit-transform: translateX(0);
-                transform: translateX(0);
-            }
-            
-        }
+    .sidebar-offcanvas {
+     -webkit-transform: translateX(-100%);
+     transform: translateX(-100%);
+     position: fixed;
+     padding-top: 8px; /* Height of navbar */
+     left: 0px;
+    }
+    .sidebar-offcanvas.show {
+     -webkit-transform: translateX(0);
+     transform: translateX(0);
+    }
+
+
+   }
 
   </style>
 
@@ -201,24 +202,24 @@
      </button>
 
      <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item dropdown">
-            <!-- Dropdown menu content -->
-        </li>
-        <li class="nav-item nav-profile dropdown">
-            <div aria-labelledby="profileDropdown">
-                <a href="../LogoutServlet" class="dropdown-item">
-                    <i class="ti-power-off text-primary"></i>
-                    Logout
-                </a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <!-- Sidebar Toggle Button (Font Awesome Icon) -->
-            <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
-                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
-            </button>
-        </li>
-    </ul>
+      <li class="nav-item dropdown">
+       <!-- Dropdown menu content -->
+      </li>
+      <li class="nav-item nav-profile dropdown">
+       <div aria-labelledby="profileDropdown">
+        <a href="../LogoutServlet" class="dropdown-item">
+         <i class="ti-power-off text-primary"></i>
+         Logout
+        </a>
+       </div>
+      </li>
+      <li class="nav-item">
+       <!-- Sidebar Toggle Button (Font Awesome Icon) -->
+       <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
+        <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+       </button>
+      </li>
+     </ul>
     </div>
    </nav>
    <!-- partial -->
@@ -227,6 +228,7 @@
     <%
         // Get the user's role from the session
         String userRole = (String) session.getAttribute("userRole");
+        Integer staffID = (Integer) session.getAttribute("staffID");
 
         // Include the navbar based on the user's role
         if (userRole != null) {
@@ -283,7 +285,18 @@
           <div class="card mb-2" style="margin-top: -30px;"> <!-- Negative margin to pull the card upwards -->
            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
             <h6>Gymnast Personal Information</h6>
+            <input type="hidden" id="staffID" value="<%= staffID %>">
+            <%
+              if(staffID != null) {
+            %>
+            <!--Hide The Add Button-->
+            <%
+             } else {
+            %>
             <a href="#" class="btn btn-sm bg-gradient-dark my-4 mb-2" data-bs-toggle="modal" data-bs-target="#AddGymnastModal">Add</a>
+            <%
+             }
+            %>
            </div>
            <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
@@ -297,7 +310,17 @@
                 <th scope="col"> Category</th>
                 <th scope="col"> Apparatus</th>
                 <th scope="col"> Gymnast Team</th>
-                <th scope="col"> Action</th>
+                 <%
+                   if(staffID != null) {
+                 %>
+                <!--Hide The Add Button-->
+                <%
+                 } else {
+                %>
+                <th scope="col">Action</th>
+                 <%
+                  }
+                 %>
                </tr>
               </thead>
 
@@ -423,9 +446,9 @@
                     </select>
                    </div>
 
-                      <div id="apparatusValuesContainer"></div> 
-                  
-                   
+                   <div id="apparatusValuesContainer"></div> 
+
+
                    <div class="mb-3">
                     <label class="form-label">Gymnast Apparatus</label>
                     <select name="select3" id="select3" class="form-control" style="color: black" multiple>
@@ -467,7 +490,7 @@
                   <h5 class="modal-title" id="exampleModalLabel">Identity Card Image</h5>
                  </div>
                  <div class="modal-body">
-                  <div id="imageContainer">Image Here</div>
+                  <div id="imageContainer" class="img-container"></div>
                   <div class="mb-3">
                    <!--<label class="form-label">Gymnast ID</label>-->
                    <input hidden type="text" name="imageGymnastID" id="imageGymnastID" class="form-control">
@@ -538,6 +561,7 @@
 
 <script>
                     function fetchGymnastData() {
+                     var staffID = $('#staffID').val();
                      $.ajax({
                       type: 'GET',
                       url: '../ListGymnastServlet',
@@ -608,8 +632,15 @@
                          // Append buttons to a cell
                          var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
-                         // Append cells to the row
-                         row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastApparatusCell, gymnastTeamCell, actionCell);
+                         // Check if staffID is not null, undefined, or an empty string
+                         if (staffID === 'null') {
+                          // Append cells to the row
+                          row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastApparatusCell, gymnastTeamCell, actionCell);
+                         } else {
+                          // Append cells to the row
+                          row.append(rowNumberCell, gymnastNameCell, gymnastICCell, gymnastSchoolCell, gymnastCategoryCell, gymnastApparatusCell, gymnastTeamCell);
+                         }
+
 
                          // Append row to the table body
                          $('#gymnastTableBody').append(row);
@@ -896,41 +927,41 @@
 
 
 <script>
-    function displayGymnast(gymnastID) {
-      $.ajax({
-        type: 'GET',
-        url: '../DisplayGymnastServlet',
-        data: { gymnastID: gymnastID },
-        dataType: 'JSON',
-        success: function (gymnast) {
-          $('#updateGymnastName').val(gymnast.gymnastName);
-          $('#updateGymnastIC').val(gymnast.gymnastIC);
-          $('#updateGymnastSchool').val(gymnast.gymnastSchool);
-          $('#updateGymnastCategory').val(gymnast.gymnastCategory);
+ function displayGymnast(gymnastID) {
+  $.ajax({
+   type: 'GET',
+   url: '../DisplayGymnastServlet',
+   data: {gymnastID: gymnastID},
+   dataType: 'JSON',
+   success: function (gymnast) {
+    $('#updateGymnastName').val(gymnast.gymnastName);
+    $('#updateGymnastIC').val(gymnast.gymnastIC);
+    $('#updateGymnastSchool').val(gymnast.gymnastSchool);
+    $('#updateGymnastCategory').val(gymnast.gymnastCategory);
 
-          // Split the comma-separated apparatus list into an array
-          var apparatusArray = gymnast.apparatusList.split(',');
-          console.log("Apparatus List: " + apparatusArray);
+    // Split the comma-separated apparatus list into an array
+    var apparatusArray = gymnast.apparatusList.split(',');
+    console.log("Apparatus List: " + apparatusArray);
 
-          var apparatusHtml = '<p style="font-family: Arial, sans-serif;">Current Apparatus:</p>';
-apparatusArray.forEach(function(apparatus) {
-  apparatusHtml += '<span class="badge badge-secondary" style="background-color: pink; color: white; margin-right: 5px;">' + apparatus.trim() + '</span>';
-});
+    var apparatusHtml = '<p style="font-family: Arial, sans-serif;">Current Apparatus:</p>';
+    apparatusArray.forEach(function (apparatus) {
+     apparatusHtml += '<span class="badge badge-secondary" style="background-color: pink; color: white; margin-right: 5px;">' + apparatus.trim() + '</span>';
+    });
 
 
-          $('#apparatusValuesContainer').html(apparatusHtml);
+    $('#apparatusValuesContainer').html(apparatusHtml);
 
-          $('#updateGymnastID').val(gymnast.gymnastID);
-          $('#updateGymnastTeam').val(gymnast.teamID);
+    $('#updateGymnastID').val(gymnast.gymnastID);
+    $('#updateGymnastTeam').val(gymnast.teamID);
 
-          $('#updateGymnastModal').modal('show');
-        },
-        error: function (xhr, status, error) {
-          console.error("Error retrieving gymnast information:", error);
-        }
-      });
-    }
-  </script>
+    $('#updateGymnastModal').modal('show');
+   },
+   error: function (xhr, status, error) {
+    console.error("Error retrieving gymnast information:", error);
+   }
+  });
+ }
+</script>
 
 
 
@@ -980,7 +1011,7 @@ apparatusArray.forEach(function(apparatus) {
     // Construct the full image URL using the imagePath attribute
     var imagePath = '/liverg/registration/uploads/' + gymnast.gymnastICPic;
     console.log("Image Path:", imagePath); // Add this line for debugging
-    var img = $('<img>').attr('src', imagePath);
+    var img = $('<img>').attr('src', imagePath).addClass('img-fluid'); // Added img-fluid class for Bootstrap
     $('#imageContainer').empty().append(img);
 
    },
@@ -991,13 +1022,13 @@ apparatusArray.forEach(function(apparatus) {
  }
 </script>
 
-          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $('.sidebar-toggle-btn').on('click', function() {
-        $('.sidebar-offcanvas').toggleClass('show');
-    });
-});
+ $(document).ready(function () {
+  $('.sidebar-toggle-btn').on('click', function () {
+   $('.sidebar-offcanvas').toggleClass('show');
+  });
+ });
 </script>
 
 

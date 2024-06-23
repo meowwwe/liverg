@@ -33,105 +33,105 @@
   <!-- CSS Files -->
   <link href="assets/css/soft-ui-dashboard.css" rel="stylesheet" type="text/css"/>
 
-   <style>
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: -30px;
-        }
+  <style>
+   .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: -30px;
+   }
 
-        .table th,
-        .table td {
-            vertical-align: middle;
-            text-align: center;
-        }
+   .table th,
+   .table td {
+    vertical-align: middle;
+    text-align: center;
+   }
 
-        .table thead th {
-            background-color: #343a40;
-            color: #fff;
-        }
+   .table thead th {
+    background-color: #343a40;
+    color: #fff;
+   }
 
-        .table tbody tr:hover {
-            background-color: #f1f1f1;
-        }
+   .table tbody tr:hover {
+    background-color: #f1f1f1;
+   }
 
-        .container-fluid {
-            padding: 20px;
-            background-color: #f8f9fa;
-            padding-top: 0;
-            margin-top: 0px;
-        }
+   .container-fluid {
+    padding: 20px;
+    background-color: #f8f9fa;
+    padding-top: 0;
+    margin-top: 0px;
+   }
 
-        .card-header h6 {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
+   .card-header h6 {
+    font-size: 1.25rem;
+    font-weight: bold;
+   }
 
-        .modal-body {
-            text-align: left;
-        }
+   .modal-body {
+    text-align: left;
+   }
 
-        .page-body-wrapper {
-            padding-top: 0px;
-        }
+   .page-body-wrapper {
+    padding-top: 0px;
+   }
 
-        .page-header {
-            margin-top: 80px !important; /* Create space between the header and the image */
-        }
+   .page-header {
+    margin-top: 80px !important; /* Create space between the header and the image */
+   }
 
-        .sidebar {
-            padding-top: 70px; /* Add padding to avoid overlap with fixed header */
-        }
+   .sidebar {
+    padding-top: 70px; /* Add padding to avoid overlap with fixed header */
+   }
 
-        .toast.bg-success {
-            background-color: #28a745;
-        }
+   .toast.bg-success {
+    background-color: #28a745;
+   }
 
-        .toast.bg-danger {
-            background-color: #dc3545;
-        }
+   .toast.bg-danger {
+    background-color: #dc3545;
+   }
 
-        .toast .toast-header {
-            border-bottom: none;
-        }
+   .toast .toast-header {
+    border-bottom: none;
+   }
 
-        .toast .toast-body {
-            color: #ffffff;
-        }
+   .toast .toast-body {
+    color: #ffffff;
+   }
 
-        .toast .btn-close {
-            filter: invert(100%);
-        }
+   .toast .btn-close {
+    filter: invert(100%);
+   }
 
-        .toast-container {
-            z-index: 9999;
-        }
+   .toast-container {
+    z-index: 9999;
+   }
 
-        .toast {
-            margin-bottom: 1rem;
-        }
-        
-     .sidebar-toggle-btn {
-            display: none; /* Initially hide the toggle button */
-        }
-   
-   
-    @media (max-width: 1000.98px) {
-        .sidebar-toggle-btn {
-        display: block; /* Show the toggle button */
+   .toast {
+    margin-bottom: 1rem;
+   }
+
+   .sidebar-toggle-btn {
+    display: none; /* Initially hide the toggle button */
+   }
+
+
+   @media (max-width: 1000.98px) {
+    .sidebar-toggle-btn {
+     display: block; /* Show the toggle button */
     }
-            .sidebar-offcanvas {
-                -webkit-transform: translateX(-100%);
-                transform: translateX(-100%);
-                position: fixed;
-                padding-top: 8px; /* Height of navbar */
-                left: 0px;
-            }
-            .sidebar-offcanvas.show {
-                -webkit-transform: translateX(0);
-                transform: translateX(0);
-            }
-            
-        }
+    .sidebar-offcanvas {
+     -webkit-transform: translateX(-100%);
+     transform: translateX(-100%);
+     position: fixed;
+     padding-top: 8px; /* Height of navbar */
+     left: 0px;
+    }
+    .sidebar-offcanvas.show {
+     -webkit-transform: translateX(0);
+     transform: translateX(0);
+    }
+
+   }
 
   </style>
  </head>
@@ -151,24 +151,24 @@
      </button>
 
      <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item dropdown">
-            <!-- Dropdown menu content -->
-        </li>
-        <li class="nav-item nav-profile dropdown">
-            <div aria-labelledby="profileDropdown">
-                <a href="../LogoutServlet" class="dropdown-item">
-                    <i class="ti-power-off text-primary"></i>
-                    Logout
-                </a>
-            </div>
-        </li>
-        <li class="nav-item">
-            <!-- Sidebar Toggle Button (Font Awesome Icon) -->
-            <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
-                <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
-            </button>
-        </li>
-    </ul>
+      <li class="nav-item dropdown">
+       <!-- Dropdown menu content -->
+      </li>
+      <li class="nav-item nav-profile dropdown">
+       <div aria-labelledby="profileDropdown">
+        <a href="../LogoutServlet" class="dropdown-item">
+         <i class="ti-power-off text-primary"></i>
+         Logout
+        </a>
+       </div>
+      </li>
+      <li class="nav-item">
+       <!-- Sidebar Toggle Button (Font Awesome Icon) -->
+       <button class="sidebar-toggle-btn" type="button" data-toggle="sidebar">
+        <i class="fas fa-bars"></i> <!-- Font Awesome icon for bars -->
+       </button>
+      </li>
+     </ul>
     </div>
    </nav>
    <!-- partial -->
@@ -177,6 +177,7 @@
     <%
         // Get the user's role from the session
         String userRole = (String) session.getAttribute("userRole");
+        Integer staffID = (Integer) session.getAttribute("staffID");
 
         // Include the navbar based on the user's role
         if (userRole != null) {
@@ -234,8 +235,19 @@
           <div class="card mb-2" style="margin-top: -30px;"> <!-- Negative margin to pull the card upwards -->
            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
             <h6>Team Information</h6>
+            <input type="hidden" id="staffID" value="<%= staffID %>">
             <div class="d-flex">
+             <%
+               if(staffID != null) {
+             %>
+             <!--Hide The Add Button-->
+             <%
+              } else {
+             %>
              <a href="#" class="btn btn-sm bg-gradient-dark my-4 mb-2 me-2" data-bs-toggle="modal" data-bs-target="#addCoachModal">Add Coach/Team</a>
+             <%
+              }
+             %>
             </div>
            </div>
            <div class="card-body px-0 pt-0 pb-2">
@@ -251,7 +263,17 @@
                 <!--                <th scope="col">Fisio Identity Card</th>
                                 <th scope="col">Fisio Place Of Duty</th>-->
                 <th scope="col">Team Name</th>
+                 <%
+                   if(staffID != null) {
+                 %>
+                <!--Hide The Add Button-->
+                <%
+                 } else {
+                %>
                 <th scope="col">Action</th>
+                 <%
+                  }
+                 %>
                </tr>
               </thead>
 
@@ -430,6 +452,7 @@
 
   <script>
                     function fetchTeamData() {
+                     var staffID = $('#staffID').val();
                      $.ajax({
                       type: 'GET',
                       url: '../ListTeamServlet',
@@ -498,8 +521,14 @@
                          // Append buttons to a cell
                          var actionCell = $('<td>').addClass('align-middle text-center text-sm').append(editButton, deleteButton);
 
-                         // Append cells to the row
-                         row.append(rowNumberCell, coachNameICPOD, fisioNameICPOD, teamNameCell, actionCell);
+                         // Check if staffID is not null, undefined, or an empty string
+                         if (staffID === 'null') {
+                          // Append cells to the row
+                          row.append(rowNumberCell, coachNameICPOD, fisioNameICPOD, teamNameCell, actionCell);
+                         } else {
+                          // Append cells to the row
+                          row.append(rowNumberCell, coachNameICPOD, fisioNameICPOD, teamNameCell);
+                         }
 
                          // Append row to the table body
                          $('#teamTableBody').append(row);
@@ -710,15 +739,15 @@
     });
    }
   </script>
-  
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('.sidebar-toggle-btn').on('click', function() {
-        $('.sidebar-offcanvas').toggleClass('show');
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+   $(document).ready(function () {
+    $('.sidebar-toggle-btn').on('click', function () {
+     $('.sidebar-offcanvas').toggleClass('show');
     });
-});
-</script>
+   });
+  </script>
 
  </body>
 </html>
