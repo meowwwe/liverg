@@ -83,8 +83,8 @@ public class LiveIndividualScoreServlet extends HttpServlet {
         request.setAttribute("gymnastID", gymnastID);
         request.setAttribute("teamID", teamID);
        
-        ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneId.of("UTC"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm a 'UTC'");
+        ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneId.of("Asia/Kuala_Lumpur"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm a ");
         String formattedDateTime = currentDateTime.format(formatter);
         request.setAttribute("datetime", formattedDateTime);
         System.out.println("Date : "+formattedDateTime);
@@ -114,8 +114,8 @@ public class LiveIndividualScoreServlet extends HttpServlet {
 
         request.setAttribute("categoryName", "no");
           
-        ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneId.of("UTC"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm a 'UTC'");
+        ZonedDateTime currentDateTime = ZonedDateTime.now(ZoneId.of("Asia/Kuala_Lumpur"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm a ");
         String formattedDateTime = currentDateTime.format(formatter);
         request.setAttribute("datetime", formattedDateTime);
         System.out.println("Date : "+ formattedDateTime);

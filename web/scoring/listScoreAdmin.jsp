@@ -242,7 +242,7 @@
                <div class="col-md-3 col-sm-6 mb-3">
                    
                <select class="form-control  bg-primary text-white"  id="gymnastID" name="gymnastID" >
-             <option class="bg-white text-dark" value="0" selected>GYMNAST</option>
+             <option class="bg-white text-dark" hidden value="0" selected>GYMNAST</option>
              <% 
        List<Composite> listGymnast = (List<Composite>) request.getAttribute("listGymnast");
                     List<String> listSeenGymnast = new ArrayList<>();
@@ -272,7 +272,7 @@
             <div class="col-md-3 col-sm-6">
                  
             <select class="form-control  mb-3 bg-primary text-white" id="teamID" name="teamID" >
-             <option value="0" class="bg-light text-dark" selected>TEAM</option>
+             <option value="0" class="bg-light text-dark" hidden selected>TEAM</option>
              <%
                List<Composite> listTeam = (List<Composite>) request.getAttribute("listTeam");
                List<String> listSeenTeamNames = new ArrayList<>(); // Store unique team names
@@ -302,7 +302,7 @@
             <div class="col-md-3 col-sm-6">
                 
             <select class="form-control  mb-3 bg-primary text-white" id="apparatusID" name="apparatusID" >
-             <option selected value="0" class="bg-light text-dark">APPARATUS</option>
+             <option selected value="0" hidden class="bg-light text-dark">APPARATUS</option>
              <% 
                       List<Composite> listApparatus = (List<Composite>) request.getAttribute("listApparatus");  
                       List<String> listSeenApparatusNames = new ArrayList<>();
@@ -334,7 +334,7 @@
             <div class=" col-md-3 col-sm-6">
                 
             <select class="form-control mb-3  bg-primary text-white" id="categoryName" id="categoryName" name="categoryName" >
-             <option class="bg-white text-dark" value="0" selected>CATEGORY</option>
+             <option class="bg-white text-dark" hidden value="0" selected>CATEGORY</option>
              <% 
        List<Composite> listGymnast2 = (List<Composite>) request.getAttribute("listCategory");
                                    List<String> listSeenCategory = new ArrayList<>();

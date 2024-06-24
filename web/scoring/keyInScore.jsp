@@ -226,7 +226,7 @@
                
                <div class="col-md-3 col-sm-6">
             <select class="form-control mb-3 bg-primary text-white" id="gymnastID" name="gymnastID">
-             <option class="bg-white text-dark" value="0" selected>GYMNAST</option>
+             <option class="bg-white text-dark" value="0" hidden selected>GYMNAST</option>
              <% 
        List<Composite> listGymnast = (List<Composite>) request.getAttribute("listGymnast");
                    List<String> listSeenGymnastNames = new ArrayList<>();
@@ -238,7 +238,7 @@
          if (!listSeenGymnastNames.contains(currentTeamName)) {
              %>
 
-             <option class="bg-white text-dark" value="<%= composite2.getGymnast().get(x).getGymnastID()%>"><%= composite2.getGymnast().get(x).getGymnastName()%></option>
+             <option class="bg-white text-dark"  value="<%= composite2.getGymnast().get(x).getGymnastID()%>"><%= composite2.getGymnast().get(x).getGymnastName()%></option>
 
              <%
                  listSeenGymnastNames.add(currentTeamName);
@@ -252,8 +252,8 @@
        </div>
             
             <div class="col-md-3 col-sm-6">
-            <select class="form-control mb-3 bg-primary text-white" id="teamID" name="teamID" >
-             <option class="bg-white text-dark" value="0" selected>TEAM</option>
+            <select class="form-control mb-3 bg-primary text-white"  id="teamID" name="teamID" >
+             <option class="bg-white text-dark" value="0" hidden selected>TEAM</option>
              <%
                List<Composite> listTeam = (List<Composite>) request.getAttribute("listTeam");
                List<String> listSeenTeamNames = new ArrayList<>(); // Store unique team names
@@ -280,7 +280,7 @@
 
             <div class="col-md-3 col-sm-6">
             <select class="form-control mb-3  bg-primary text-white" id="apparatusID" name="apparatusID" >
-             <option class="bg-white text-dark" selected value="0">APPARATUS</option>
+             <option class="bg-white text-dark" hidden selected value="0">APPARATUS</option>
              <% 
                       List<Composite> listApparatus = (List<Composite>) request.getAttribute("listApparatus");  
                       List<String> listSeenApparatusNames = new ArrayList<>();
@@ -310,7 +310,7 @@
             
             <div class="col-md-3 col-sm-6">
             <select class="form-control mb-3 bg-primary text-white" id="categoryName" id="categoryName" name="categoryName"  style="font-family: 'Poppins'">
-             <option class="bg-white text-dark" value="0" selected>CATEGORY</option>
+             <option class="bg-white text-dark" value="0" hidden selected>CATEGORY</option>
              <% 
        List<Composite> listGymnast2 = (List<Composite>) request.getAttribute("listCategory");
                                    List<String> listSeenCategory = new ArrayList<>();
